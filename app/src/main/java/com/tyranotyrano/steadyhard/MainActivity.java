@@ -16,5 +16,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView.setText("버터나이프 테스트");
+        // github network test
     }
 }
