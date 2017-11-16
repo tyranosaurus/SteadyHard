@@ -1,6 +1,5 @@
 package com.tyranotyrano.steadyhard;
 
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -18,5 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
         textView.setText("버터나이프 테스트");
         Snackbar.make(getWindow().getDecorView().getRootView(), "스낵바 테스트", Snackbar.LENGTH_SHORT).show();
+        // github network test
     }
 }
