@@ -12,13 +12,13 @@ public class SplashActivity extends AppCompatActivity {
 
         // 스플래시 액티비티 0.5초 동안 유지
         try {
-            Thread.sleep(500);
+            Thread.sleep(700);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // 메인 액티비티 호출
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 
         // 스플래시 액티비티 종료
