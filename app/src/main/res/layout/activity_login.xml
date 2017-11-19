@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ff000000">
+    android:background="@color/colorBlack">
 
     <View
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         android:gravity="center"
         android:text="Steady Hard"
         android:textAllCaps="false"
-        android:textColor="#ffffffff"
+        android:textColor="@color/colorWhite"
         android:textSize="40dp" />
 
     <EditText
@@ -36,12 +36,11 @@
         android:background="@drawable/login_rectangle"
         android:hint=" 이메일"
         android:inputType="textEmailAddress"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:paddingLeft="10dp"
-        android:textCursorDrawable="@null"
-        android:textColorHighlight="#80CBC4"
-        android:theme="@style/EditTextTheme"/>
+        android:paddingLeft="10dp"/>
+
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
@@ -53,16 +52,12 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:paddingLeft="10dp"
-        android:textCursorDrawable="@null"
-        android:textColorHighlight="#80CBC4"
-        android:theme="@style/EditTextTheme"/>
+        android:paddingLeft="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
 
         <CheckBox
             android:id="@+id/checkBoxAutoLogin"
@@ -70,10 +65,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
-            android:layout_marginTop="30dp"
             android:text="자동로그인"
-            android:textColor="#ffffffff"
-            app:buttonTint="#ffffffff" />
+            android:textColor="@color/colorWhite"
+            android:buttonTint="@color/colorWhite" />
+
     </LinearLayout>
 
     <Button
@@ -85,7 +80,7 @@
         android:background="@drawable/selector_login_button"
         android:text="로그인"
         android:textAllCaps="false"
-        android:textColor="#ffffffff"
+        android:textColor="@color/colorWhite"
         android:textSize="25dp" />
 
     <View
@@ -98,9 +93,9 @@
         android:id="@+id/textViewJoin"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#ffffffff"
+        android:background="@color/colorWhite"
         android:gravity="center"
         android:text="가입하기"
-        android:textColor="#ff000000" />
+        android:textColor="@color/colorBlack" />
 
 </LinearLayout>
