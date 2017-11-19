@@ -3,4 +3,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- 커스텀 컬러 -->
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorBlack">#FF000000</color>
+    <color name="colorGray">#FFBDBDBD</color>
+    <color name="colorFragmentBackground">#FFF5F5F5</color>
 </resources>
