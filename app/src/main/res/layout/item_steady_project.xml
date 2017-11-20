@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardCornerRadius="3dp"
+        card_view:cardUseCompatPadding="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageViewProjectImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_black_star"
+                app:civ_border_color="@color/colorLiteGray"
+                app:civ_border_width="1dp" />
+
+            <!-- 프로젝트 타이틀 1줄로 고정, 일정 글자수 넘어가면 ...으로 나고게 수정 할 것. -->
+            <TextView
+                android:id="@+id/textViewProjectTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:text="프로젝트 타이틀"
+                android:textSize="14dp"
+                android:textColor="@color/colorBlack"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/textViewOpenBracket"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="("
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/textViewCurrentDays"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/textViewPer"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text=" / "
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/textViewCompleteDays"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="100"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/textViewCloseBracket"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text=")"
+                android:textColor="@color/colorBlack"/>
+
+            <ImageView
+                android:id="@+id/imageViewProjectMenu"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/selector_steady_project_menu"
+                android:src="@drawable/icon_project_menu" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

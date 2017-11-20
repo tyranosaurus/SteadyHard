@@ -2,14 +2,19 @@ package com.tyranotyrano.steadyhard.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.tyranotyrano.steadyhard.R;
+
+import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -17,11 +22,27 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
 
         /** 툴바 세팅 */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false); // 앱 기본 이름 안보이게 하는 것.
+
+        /** 플로팅 액션 버튼 세팅하는 부분 */
+        FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "플로팅 액션 버튼", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        /** 홈 프래그먼트 세팅 */
+        HomeFragment homeFragment = HomeFragment.newInstance("param1", "param2");
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutFragmentContainer, homeFragment).commit();
+
+        /** init() 함수 만들 것 */
     }
 
     @Override

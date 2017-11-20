@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tyranotyrano.steadyhard.view.HomeFragment">
+
+    <!-- 홈 프래그먼트의 디폴트 레이아웃 -->
+    <LinearLayout
+        android:id="@+id/linearLayoutHomeDefault"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLiteGray"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imageViewDefaultLogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/logo_black_star" />
+
+        <TextView
+            android:id="@+id/textViewDefaultTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:gravity="center"
+            android:text="Steady Hard"
+            android:textColor="@color/colorBlack"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/textViewDefaultMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="꾸준함에는 천재가 없다."
+            android:textColor="@color/colorBlack" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
+
+    </LinearLayout>
+
+    <!-- 홈 프래그먼트의 Steady Project 리사이클러뷰가 들어갈 레이아웃 -->
+    <LinearLayout
+        android:id="@+id/linearLayoutHomeSteadyProject"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLiteGray"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewSteadyProject"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+    </LinearLayout>
+
+</FrameLayout>
