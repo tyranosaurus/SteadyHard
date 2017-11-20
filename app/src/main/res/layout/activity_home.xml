@@ -88,6 +88,8 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
+        android:background="@color/colorWhite"
+        android:elevation="8dp"
         app:itemBackground="@android:color/white"
         app:itemIconTint="@drawable/selector_bottomnavigatorview"
         app:itemTextColor="@drawable/selector_bottomnavigatorview"

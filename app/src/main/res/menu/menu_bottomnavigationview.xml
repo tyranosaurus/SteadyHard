@@ -17,5 +17,5 @@
         app:showAsAction="always"
         android:enabled="true"
         android:icon="@drawable/icon_user"
-        android:title="User" />
+        android:title="Profile" />
 </menu>
