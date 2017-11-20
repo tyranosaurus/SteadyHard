@@ -1,7 +1,6 @@
 package com.tyranotyrano.steadyhard.view.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -182,23 +181,23 @@ public class HomeFragment extends Fragment {
              *  추가 : 프로젝트 실패시 빨간색으로 표시할 것.
              * */
             if ( item.getCurrentDays() >= 1 && item.getCurrentDays() <=30 ) {
-                holder.textViewOpenBracket.setTextColor(Color.parseColor("#FFD54F"));
-                holder.textViewCurrentDays.setTextColor(Color.parseColor("#FFD54F"));
-                holder.textViewPer.setTextColor(Color.parseColor("#FFD54F"));
-                holder.textViewCompleteDays.setTextColor(Color.parseColor("#FFD54F"));
-                holder.textViewCloseBracket.setTextColor(Color.parseColor("#FFD54F"));
+                holder.textViewOpenBracket.setTextColor(getResources().getColor(R.color.colorYellow));
+                holder.textViewCurrentDays.setTextColor(getResources().getColor(R.color.colorYellow));
+                holder.textViewPer.setTextColor(getResources().getColor(R.color.colorYellow));
+                holder.textViewCompleteDays.setTextColor(getResources().getColor(R.color.colorYellow));
+                holder.textViewCloseBracket.setTextColor(getResources().getColor(R.color.colorYellow));
             } else if ( item.getCurrentDays() >= 31 && item.getCurrentDays() <=70 ) {
-                holder.textViewOpenBracket.setTextColor(Color.parseColor("#4FC3F7"));
-                holder.textViewCurrentDays.setTextColor(Color.parseColor("#4FC3F7"));
-                holder.textViewPer.setTextColor(Color.parseColor("#4FC3F7"));
-                holder.textViewCompleteDays.setTextColor(Color.parseColor("#4FC3F7"));
-                holder.textViewCloseBracket.setTextColor(Color.parseColor("#4FC3F7"));
+                holder.textViewOpenBracket.setTextColor(getResources().getColor(R.color.colorBlueSky));
+                holder.textViewCurrentDays.setTextColor(getResources().getColor(R.color.colorBlueSky));
+                holder.textViewPer.setTextColor(getResources().getColor(R.color.colorBlueSky));
+                holder.textViewCompleteDays.setTextColor(getResources().getColor(R.color.colorBlueSky));
+                holder.textViewCloseBracket.setTextColor(getResources().getColor(R.color.colorBlueSky));
             } else if ( item.getCurrentDays() >= 71 && item.getCurrentDays() <= item.getCompleteDays() ) {
-                holder.textViewOpenBracket.setTextColor(Color.parseColor("#00E676"));
-                holder.textViewCurrentDays.setTextColor(Color.parseColor("#00E676"));
-                holder.textViewPer.setTextColor(Color.parseColor("#00E676"));
-                holder.textViewCompleteDays.setTextColor(Color.parseColor("#00E676"));
-                holder.textViewCloseBracket.setTextColor(Color.parseColor("#00E676"));
+                holder.textViewOpenBracket.setTextColor(getResources().getColor(R.color.colorGreen));
+                holder.textViewCurrentDays.setTextColor(getResources().getColor(R.color.colorGreen));
+                holder.textViewPer.setTextColor(getResources().getColor(R.color.colorGreen));
+                holder.textViewCompleteDays.setTextColor(getResources().getColor(R.color.colorGreen));
+                holder.textViewCloseBracket.setTextColor(getResources().getColor(R.color.colorGreen));
             }
         }
 
