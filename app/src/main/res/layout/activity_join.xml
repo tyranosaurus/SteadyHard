@@ -29,8 +29,28 @@
         android:textColor="@color/colorWhite"
         android:textSize="40dp" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfileImage"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:src="@drawable/icon_profile_default"
+        app:civ_border_color="@color/colorLiteGray"
+        app:civ_border_width="2dp" />
+
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editTextNickname"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/login_rectangle"
+        android:hint=" 닉네임"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:textSize="15dp" />
+
+    <EditText
+        android:id="@+id/editTextInputEmail"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/login_rectangle"
@@ -42,46 +62,29 @@
         android:paddingLeft="10dp"/>
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/editTextInputPasswordFirst"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/login_rectangle"
         android:hint=" 비밀번호"
         android:inputType="textPassword"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:paddingLeft="10dp"/>
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/editTextInputPasswordSecond"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/checkBoxAutoLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:text="자동로그인"
-            android:textColor="@color/colorWhite"
-            android:buttonTint="@color/colorWhite" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/login_rectangle"
+        android:hint=" 비밀번호 확인"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:background="@drawable/selector_login_button"
-        android:text="로그인"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="25dp" />
+        android:paddingLeft="10dp"/>
 
     <View
         android:id="@+id/view"
@@ -90,13 +93,13 @@
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/textViewJoin"
+        android:id="@+id/textViewDoJoin"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/selector_join_button"
         android:clickable="true"
         android:gravity="center"
-        android:text="회원 가입"
+        android:text="가입하기"
         android:textColor="@color/colorBlack"
         android:textStyle="bold" />
 

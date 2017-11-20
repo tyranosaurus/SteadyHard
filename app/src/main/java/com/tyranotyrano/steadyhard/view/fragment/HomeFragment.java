@@ -1,4 +1,4 @@
-package com.tyranotyrano.steadyhard.view;
+package com.tyranotyrano.steadyhard.view.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.model.SteadyProject;
+import com.tyranotyrano.steadyhard.view.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;

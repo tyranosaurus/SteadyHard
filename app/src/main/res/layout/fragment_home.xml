@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tyranotyrano.steadyhard.view.HomeFragment">
+    tools:context="com.tyranotyrano.steadyhard.view.fragment.HomeFragment">
 
     <!-- 홈 프래그먼트의 디폴트 레이아웃 -->
     <LinearLayout

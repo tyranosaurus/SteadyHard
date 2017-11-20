@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.tyranotyrano.steadyhard.R;
+import com.tyranotyrano.steadyhard.view.fragment.HomeFragment;
 
 import butterknife.ButterKnife;
 
