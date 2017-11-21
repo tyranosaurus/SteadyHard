@@ -73,6 +73,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        /** MVP 패턴으로 모두 바꿀 것! */
         /** 프로젝트의 개수가 0 이면 홈 디폴트 리니어레이아웃, 0 보다 크면 홈 프로젝트 리니어레이아웃 */
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
 

@@ -9,7 +9,10 @@
     <color name="colorBlack">#FF000000</color>
     <color name="colorGray">#FFBDBDBD</color>
     <color name="colorLiteGray">#FFF5F5F5</color>
+    <color name="colorMiddleGray">#E0E0E0</color>
     <color name="colorYellow">#FFD54F</color>
     <color name="colorBlueSky">#4FC3F7</color>
+    <color name="colorLiteBlue">#42A5F5</color>
+    <color name="colorMiddleBlue">#1565C0</color>
     <color name="colorGreen">#00E676</color>
 </resources>
