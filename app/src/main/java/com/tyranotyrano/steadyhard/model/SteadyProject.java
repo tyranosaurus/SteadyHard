@@ -13,12 +13,14 @@ public class SteadyProject {
     private String projectTitle;
     private int currentDays;
     private int completeDays;
+    private String description;
 
-    public SteadyProject(int projectImage, String projectTitle, int currentDays, int completeDays) {
+    public SteadyProject(int projectImage, String projectTitle, int currentDays, int completeDays, String description) {
         this.projectImage = projectImage;
         this.projectTitle = projectTitle;
         this.currentDays = currentDays;
         this.completeDays = completeDays;
+        this.description = description;
     }
 
     public int getProjectImage() {
@@ -51,5 +53,13 @@ public class SteadyProject {
 
     public void setCompleteDays(int completeDays) {
         this.completeDays = completeDays;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

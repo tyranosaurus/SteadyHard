@@ -1,9 +1,9 @@
 package com.tyranotyrano.steadyhard.view;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -14,7 +14,6 @@ import android.view.View;
 
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.view.fragment.HomeFragment;
-import com.tyranotyrano.steadyhard.view.fragment.ProfileFragment;
 
 import butterknife.ButterKnife;
 
@@ -36,7 +35,8 @@ public class HomeActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "플로팅 액션 버튼", Snackbar.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, NewSteadyProjectActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -45,8 +45,8 @@ public class HomeActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutFragmentContainer, homeFragment).commit();
 
         /** 프로필 프래그먼트 세팅하는 부분 */
-        ProfileFragment profileFragment = ProfileFragment.newInstance("param1", "param2");
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutFragmentContainer, profileFragment).commit();
+        //ProfileFragment profileFragment = ProfileFragment.newInstance("param1", "param2");
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutFragmentContainer, profileFragment).commit();
 
         /** init() 함수 만들 것 */
     }
