@@ -25,7 +25,6 @@
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="Steady Hard"
-        android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="40dp" />
 
@@ -33,7 +32,7 @@
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/login_rectangle"
+        android:background="@drawable/edittext_rectangle"
         android:hint=" 이메일"
         android:inputType="textEmailAddress"
         android:layout_marginTop="30dp"
@@ -45,7 +44,7 @@
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/login_rectangle"
+        android:background="@drawable/edittext_rectangle"
         android:hint=" 비밀번호"
         android:inputType="textPassword"
         android:layout_marginTop="10dp"
