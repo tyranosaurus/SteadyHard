@@ -69,11 +69,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -85,8 +85,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
                 android:background="@color/colorBlack" />
 
         </LinearLayout>
@@ -100,17 +100,17 @@
             android:background="@drawable/rectangle_dark"
             android:hint="타이틀을 입력해주세요."
             android:inputType="text"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -122,9 +122,9 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
                 android:layout_gravity="center"
-                android:background="@color/colorBlack"/>
+                android:layout_marginLeft="16dp"
+                android:background="@color/colorBlack" />
 
         </LinearLayout>
 
@@ -134,18 +134,18 @@
             android:layout_height="150dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:padding="10dp"
             android:background="@drawable/rectangle_dark"
-            android:src="@drawable/icon_project_image_default"/>
+            android:padding="10dp"
+            android:src="@drawable/icon_project_image_default" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -157,8 +157,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
                 android:background="@color/colorBlack" />
 
         </LinearLayout>
@@ -173,7 +173,6 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:background="@drawable/rectangle_dark"
                 android:hint="ex) 7, 30, 100"
                 android:inputType="number"
@@ -182,20 +181,30 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:text="Days"
                 android:textColor="@color/colorBlack"
                 android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:text="( 7 ~ 365일 중 입력 )"
+                android:textColor="@color/colorGray"
+                android:textSize="14dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -207,8 +216,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
                 android:background="@color/colorBlack" />
 
         </LinearLayout>
@@ -217,14 +226,14 @@
             android:id="@+id/editTextProjectDescription"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
             android:background="@drawable/rectangle_dark"
+            android:gravity="top"
             android:hint="프로젝트에 대해 설명해주세요."
             android:inputType="none"
-            android:padding="10dp"
-            android:gravity="top"/>
+            android:padding="10dp" />
 
     </LinearLayout>
 

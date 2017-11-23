@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.tyranotyrano.steadyhard.R;
-import com.tyranotyrano.steadyhard.view.fragment.HomeFragment;
+import com.tyranotyrano.steadyhard.view.fragment.ContentFragment;
 
 import butterknife.ButterKnife;
 
@@ -41,8 +41,12 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         /** 홈 프래그먼트 세팅 */
-        HomeFragment homeFragment = HomeFragment.newInstance("param1", "param2");
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutFragmentContainer, homeFragment).commit();
+        //HomeFragment homeFragment = HomeFragment.newInstance("param1", "param2");
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutFragmentContainer, homeFragment).commit();
+
+        /** 콘텐츠 프래그먼트 세팅하는 부분 */
+        ContentFragment contentFragment = ContentFragment.newInstance("param1", "param2");
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutFragmentContainer, contentFragment).commit();
 
         /** 프로필 프래그먼트 세팅하는 부분 */
         //ProfileFragment profileFragment = ProfileFragment.newInstance("param1", "param2");

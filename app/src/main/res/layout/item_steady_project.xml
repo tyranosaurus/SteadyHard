@@ -20,6 +20,14 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <View
+                android:id="@+id/viewTodayCheck"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_today_check" />
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImageViewProjectImage"
                 android:layout_width="48dp"
