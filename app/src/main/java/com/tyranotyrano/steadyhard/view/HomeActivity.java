@@ -94,6 +94,11 @@ public class HomeActivity extends AppCompatActivity {
                         .replace(R.id.frameLayoutFragmentContainer, fragment)
                         .commit();
 
+                /** 이런식으로 프래그먼트에 따라 Floating Action 버튼 기능 설정할 것 - 기능은 함수로 따로 구현 */
+                /*if ( fragment instanceof ProfileFragment ) {
+                    floatingActionButton.setVisibility(View.GONE);
+                }*/
+
                 return true;
             }
         };
