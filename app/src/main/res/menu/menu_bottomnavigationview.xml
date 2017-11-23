@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_one"
+        android:id="@+id/bottom_Home"
         app:showAsAction="always"
         android:enabled="true"
         android:icon="@drawable/icon_home"
         android:title="Home" />
     <item
-        android:id="@+id/action_two"
+        android:id="@+id/bottom_Steady"
         app:showAsAction="always"
         android:icon="@drawable/icon_content"
         android:title="Steady" />
     <item
-        android:id="@+id/action_three"
+        android:id="@+id/bottom_Pofile"
         app:showAsAction="always"
         android:enabled="true"
         android:icon="@drawable/icon_user"
