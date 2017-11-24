@@ -16,13 +16,13 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
 
     public void attachView(HomeContract.View view) {
         if ( view != null ) {
-            mView = view;
+            this.mView = view;
         }
     }
 
     @Override
     public void detachView() {
-        mView = null;
+        this.mView = null;
     }
 
     @Override
@@ -48,6 +48,7 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
     public void onItemClick(int position) {
         SteadyProject item = adapterModel.getItem(position);
 
+        // 임시로 넣은 것 : 삭제할 것
         mView.showSnackBar(item.getProjectTitle());
     }
 }

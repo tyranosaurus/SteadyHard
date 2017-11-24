@@ -11,6 +11,7 @@ import com.tyranotyrano.steadyhard.contract.base.BaseView;
 public interface HomeContract {
     // HomeFragment 관련 View 처리
     interface View extends BaseView {
+        /** 임시로 넣은 것 : 삭제할 것.*/
         void showSnackBar(String message);
     }
 

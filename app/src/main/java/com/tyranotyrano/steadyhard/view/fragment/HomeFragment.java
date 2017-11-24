@@ -117,6 +117,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         /** HomePresenter 세팅하는 부분 : 코드 위치 맞는지 확인하고 다시 수정할 것.*/
         // Presenter 할당
         mPresenter = new HomePresenter();
+        // Presenter에 HomeContract.View 할당
         mPresenter.attachView(this);
         // SteadyProjectAdapterContract의 View 할당
         mPresenter.setSteadyProjectAdapterView(adapter);
@@ -129,13 +130,17 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-
-        // Activity 해제
-        activity = null;
+    public void onDestroyView() {
+        super.onDestroyView();
         // Presenter 해제
         mPresenter.detachView();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        // Activity 해제
+        activity = null;
     }
 
     @Override
@@ -185,6 +190,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
              *
              *  추가 : 프로젝트 실패시 빨간색으로 표시할 것.
              * */
+            // holder의 이벤트
             holder.setDurationColor(item.getCurrentDays(), item.getCompleteDays());
             holder.onBindItemClickListener(item, position);
         }
@@ -219,6 +225,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         public class SteadyProjectViewHolder extends RecyclerView.ViewHolder {
 
+            Context context = null;
+            SteadyProjectAdapterContract.OnItemClickListener itemClickListener = null;
+
             CircleImageView circleImageViewProjectImage = null;
             TextView textViewProjectTitle = null;
             TextView textViewOpenBracket = null;
@@ -227,9 +236,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             TextView textViewCompleteDays = null;
             TextView textViewCloseBracket = null;
             ImageView imageViewProjectMenu = null;
-
-            Context context = null;
-            SteadyProjectAdapterContract.OnItemClickListener itemClickListener = null;
 
             public SteadyProjectViewHolder(Context context, ViewGroup parent, SteadyProjectAdapterContract.OnItemClickListener itemClickListener) {
                 super(LayoutInflater.from(context).inflate(R.layout.item_steady_project, parent, false));
