@@ -1,4 +1,4 @@
-package com.tyranotyrano.steadyhard.contract;
+package com.tyranotyrano.steadyhard.contract.base;
 
 /**
  * Created by cyj on 2017-11-24.

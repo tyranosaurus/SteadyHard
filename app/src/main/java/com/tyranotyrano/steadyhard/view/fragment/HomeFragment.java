@@ -1,7 +1,7 @@
 package com.tyranotyrano.steadyhard.view.fragment;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -15,15 +15,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tyranotyrano.steadyhard.R;
+import com.tyranotyrano.steadyhard.contract.HomeContract;
+import com.tyranotyrano.steadyhard.contract.adapter.SteadyProjectAdapterContract;
 import com.tyranotyrano.steadyhard.model.SteadyProject;
-import com.tyranotyrano.steadyhard.view.HomeActivity;
+import com.tyranotyrano.steadyhard.presenter.HomePresenter;
+import com.tyranotyrano.steadyhard.view.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeContract.View {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -31,8 +34,8 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private HomeActivity activity = null;
-    private OnFragmentInteractionListener mListener;
+    private MainActivity activity = null;
+    private HomePresenter mPresenter = null;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -50,15 +53,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        activity = (HomeActivity)getActivity();
-
-        /** 일단 주석처리. */
-        /*if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }*/
+        // Activity 할당
+        activity = (MainActivity)getActivity();
     }
 
     @Override
@@ -118,37 +114,45 @@ public class HomeFragment extends Fragment {
             recyclerViewSteadyProject.setVisibility(View.GONE);
         }
 
-        return rootView;
-    }
+        /** HomePresenter 세팅하는 부분 : 코드 위치 맞는지 확인하고 다시 수정할 것.*/
+        // Presenter 할당
+        mPresenter = new HomePresenter();
+        mPresenter.attachView(this);
+        // SteadyProjectAdapterContract의 View 할당
+        mPresenter.setSteadyProjectAdapterView(adapter);
+        // SteadyProjectAdapterContract의 Model 할당
+        mPresenter.setSteadyProjectAdapterModel(adapter);
+        // SteadyProjectAdapterContract의 OnItemClickListener 할당(SteadyProjectAdapterContract의 View 할당한 이후에 호출해야함)
+        mPresenter.setSteadyProjectAdapterOnItemClickListener();
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        return rootView;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
+        // Activity 해제
+        activity = null;
+        // Presenter 해제
+        mPresenter.detachView();
     }
 
-    public interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void showSnackBar(String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
     /** 일단 리사이클러뷰의 어댑터를 여기에다가 정의 : 나중에 mvp 패턴에 맞게 수정할 것! */
     /** 리사이클러뷰 어댑터 */
-    private class SteadyProjectRecyclerViewAdapter extends RecyclerView.Adapter<SteadyProjectRecyclerViewAdapter.SteadyProjectViewHolder> {
+    private class SteadyProjectRecyclerViewAdapter extends RecyclerView.Adapter<SteadyProjectRecyclerViewAdapter.SteadyProjectViewHolder>
+                                                   implements SteadyProjectAdapterContract.View, SteadyProjectAdapterContract.Model {
+
+        // SteadyProjectAdapterContract 의 OnItemClickListener
+        SteadyProjectAdapterContract.OnItemClickListener itemClickListener = null;
 
         // 아이템을 저장할 리스트
         List<SteadyProject> items = new ArrayList<>();
-
-        // 리사이클러뷰 어댑터에 데이터를 추가해주는 메소드
-        public void addItem(SteadyProject item) {
-            items.add(item);
-        }
 
         // 뷰홀더를 생성
         @Override
@@ -157,7 +161,7 @@ public class HomeFragment extends Fragment {
             // 여기서 부모 뷰그룹은 리사이클러뷰가 된다.
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_steady_project, parent, false);
 
-            return new SteadyProjectViewHolder(view);
+            return new SteadyProjectViewHolder(parent.getContext(), parent, itemClickListener);
         }
 
         // 뷰홀더를 데이터와 바인딩 해준다. (뷰홀더 재사용)
@@ -181,31 +185,36 @@ public class HomeFragment extends Fragment {
              *
              *  추가 : 프로젝트 실패시 빨간색으로 표시할 것.
              * */
-            if ( item.getCurrentDays() >= 1 && item.getCurrentDays() <=30 ) {
-                holder.textViewOpenBracket.setTextColor(getResources().getColor(R.color.colorYellow));
-                holder.textViewCurrentDays.setTextColor(getResources().getColor(R.color.colorYellow));
-                holder.textViewPer.setTextColor(getResources().getColor(R.color.colorYellow));
-                holder.textViewCompleteDays.setTextColor(getResources().getColor(R.color.colorYellow));
-                holder.textViewCloseBracket.setTextColor(getResources().getColor(R.color.colorYellow));
-            } else if ( item.getCurrentDays() >= 31 && item.getCurrentDays() <=70 ) {
-                holder.textViewOpenBracket.setTextColor(getResources().getColor(R.color.colorBlueSky));
-                holder.textViewCurrentDays.setTextColor(getResources().getColor(R.color.colorBlueSky));
-                holder.textViewPer.setTextColor(getResources().getColor(R.color.colorBlueSky));
-                holder.textViewCompleteDays.setTextColor(getResources().getColor(R.color.colorBlueSky));
-                holder.textViewCloseBracket.setTextColor(getResources().getColor(R.color.colorBlueSky));
-            } else if ( item.getCurrentDays() >= 71 && item.getCurrentDays() <= item.getCompleteDays() ) {
-                holder.textViewOpenBracket.setTextColor(getResources().getColor(R.color.colorGreen));
-                holder.textViewCurrentDays.setTextColor(getResources().getColor(R.color.colorGreen));
-                holder.textViewPer.setTextColor(getResources().getColor(R.color.colorGreen));
-                holder.textViewCompleteDays.setTextColor(getResources().getColor(R.color.colorGreen));
-                holder.textViewCloseBracket.setTextColor(getResources().getColor(R.color.colorGreen));
-            }
+            holder.setDurationColor(item.getCurrentDays(), item.getCompleteDays());
+            holder.onBindItemClickListener(item, position);
         }
 
         @Override
         public int getItemCount() {
             // 어댑터가 가지고있는 아이템의 총 개수를 반환한다.
             return items.size();
+        }
+
+        @Override
+        public void notifyAdapter() {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void addItem(SteadyProject item) {
+            items.add(item);
+        }
+
+        @Override
+        public void setOnItemClickListener(SteadyProjectAdapterContract.OnItemClickListener onItemClickListener) {
+            if ( onItemClickListener != null ) {
+                this.itemClickListener = onItemClickListener;
+            }
+        }
+
+        @Override
+        public SteadyProject getItem(int position) {
+            return items.get(position);
         }
 
         public class SteadyProjectViewHolder extends RecyclerView.ViewHolder {
@@ -219,8 +228,19 @@ public class HomeFragment extends Fragment {
             TextView textViewCloseBracket = null;
             ImageView imageViewProjectMenu = null;
 
-            public SteadyProjectViewHolder(View itemView) {
-                super(itemView);
+            Context context = null;
+            SteadyProjectAdapterContract.OnItemClickListener itemClickListener = null;
+
+            public SteadyProjectViewHolder(Context context, ViewGroup parent, SteadyProjectAdapterContract.OnItemClickListener itemClickListener) {
+                super(LayoutInflater.from(context).inflate(R.layout.item_steady_project, parent, false));
+
+                if ( context != null ) {
+                    this.context = context;
+                }
+
+                if ( itemClickListener != null ) {
+                    this.itemClickListener = itemClickListener;
+                }
 
                 circleImageViewProjectImage = (CircleImageView) itemView.findViewById(R.id.circleImageViewProjectImage);
                 textViewProjectTitle = (TextView) itemView.findViewById(R.id.textViewProjectTitle);
@@ -236,6 +256,39 @@ public class HomeFragment extends Fragment {
                         Snackbar.make(v, "프로젝트의 메뉴버튼 클릭", Snackbar.LENGTH_SHORT).show();
                     }
                 });
+            }
+
+            public void onBindItemClickListener(SteadyProject item, final int position) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if ( itemClickListener != null ) {
+                            itemClickListener.onItemClick(position);
+                        }
+                    }
+                });
+            }
+
+            public void setDurationColor(int currentDays, int completeDays) {
+                if ( currentDays >= 1 && currentDays <=30 ) {
+                    textViewOpenBracket.setTextColor(Color.parseColor("#FFD54F"));
+                    textViewCurrentDays.setTextColor(Color.parseColor("#FFD54F"));
+                    textViewPer.setTextColor(Color.parseColor("#FFD54F"));
+                    textViewCompleteDays.setTextColor(Color.parseColor("#FFD54F"));
+                    textViewCloseBracket.setTextColor(Color.parseColor("#FFD54F"));
+                } else if ( currentDays >= 31 && currentDays <=70 ) {
+                    textViewOpenBracket.setTextColor(Color.parseColor("#4FC3F7"));
+                    textViewCurrentDays.setTextColor(Color.parseColor("#4FC3F7"));
+                    textViewPer.setTextColor(Color.parseColor("#4FC3F7"));
+                    textViewCompleteDays.setTextColor(Color.parseColor("#4FC3F7"));
+                    textViewCloseBracket.setTextColor(Color.parseColor("#4FC3F7"));
+                } else if ( currentDays >= 71 && currentDays <= completeDays ) {
+                    textViewOpenBracket.setTextColor(Color.parseColor("#00E676"));
+                    textViewCurrentDays.setTextColor(Color.parseColor("#00E676"));
+                    textViewPer.setTextColor(Color.parseColor("#00E676"));
+                    textViewCompleteDays.setTextColor(Color.parseColor("#00E676"));
+                    textViewCloseBracket.setTextColor(Color.parseColor("#00E676"));
+                }
             }
         }
     }

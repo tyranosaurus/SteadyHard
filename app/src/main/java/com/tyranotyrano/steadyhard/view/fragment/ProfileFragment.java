@@ -16,7 +16,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.tyranotyrano.steadyhard.R;
-import com.tyranotyrano.steadyhard.view.HomeActivity;
+import com.tyranotyrano.steadyhard.view.MainActivity;
 
 import java.util.ArrayList;
 
@@ -45,7 +45,7 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private HomeActivity activity = null;
+    private MainActivity activity = null;
     private OnFragmentInteractionListener mListener;
 
     public ProfileFragment() {
@@ -65,7 +65,7 @@ public class ProfileFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        activity = (HomeActivity)getActivity();
+        activity = (MainActivity)getActivity();
 
         /** 일단 주석처리. */
         /*if (context instanceof OnFragmentInteractionListener) {

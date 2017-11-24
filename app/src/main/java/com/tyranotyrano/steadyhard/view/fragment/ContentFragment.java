@@ -1,6 +1,7 @@
 package com.tyranotyrano.steadyhard.view.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -17,7 +18,7 @@ import android.widget.TextView;
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.model.SteadyContent;
 import com.tyranotyrano.steadyhard.model.SteadyProject;
-import com.tyranotyrano.steadyhard.view.HomeActivity;
+import com.tyranotyrano.steadyhard.view.MainActivity;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ public class ContentFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private HomeActivity activity = null;
+    private MainActivity activity = null;
     private OnFragmentInteractionListener mListener;
 
     public ContentFragment() {
@@ -51,7 +52,7 @@ public class ContentFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        activity = (HomeActivity)getActivity();
+        activity = (MainActivity)getActivity();
 
         /** 일단 주석처리. */
         /*if (context instanceof OnFragmentInteractionListener) {
@@ -145,7 +146,7 @@ public class ContentFragment extends Fragment {
 
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_steady_content, parent, false);
 
-            return new SteadyContentViewHolder(view);
+            return new SteadyContentViewHolder(parent.getContext(), parent);
         }
 
         @Override
@@ -159,11 +160,11 @@ public class ContentFragment extends Fragment {
             holder.textViewCurrentDays.setText(String.valueOf(item.getSteadyProject().getCurrentDays()));
             holder.textViewCompleteDays.setText(String.valueOf(item.getSteadyProject().getCompleteDays()));
 
-            setDurationColor(holder, item.getSteadyProject().getCurrentDays(), item.getSteadyProject().getCompleteDays());
-
             // 콘텐츠의 내용
             holder.imageViewContentImage.setImageResource(item.getContentImage());
             holder.textViewContentText.setText(item.getContentText());
+
+            holder.setDurationColor(item.getSteadyProject().getCurrentDays(), item.getSteadyProject().getCompleteDays());
         }
 
         @Override
@@ -209,8 +210,8 @@ public class ContentFragment extends Fragment {
             ImageView imageViewContentImage = null;
             TextView textViewContentText = null;
 
-            public SteadyContentViewHolder(View itemView) {
-                super(itemView);
+            public SteadyContentViewHolder(Context context, ViewGroup parent) {
+                super(LayoutInflater.from(context).inflate(R.layout.item_steady_content, parent, false));
 
                 // 콘텐츠의 툴바
                 circleImageViewProjectImage = (CircleImageView) itemView.findViewById(R.id.circleImageViewProjectImage);
@@ -231,6 +232,28 @@ public class ContentFragment extends Fragment {
                 // 콘텐츠의 내용
                 imageViewContentImage = (ImageView) itemView.findViewById(R.id.imageViewContentImage);
                 textViewContentText = (TextView) itemView.findViewById(R.id.textViewContentText);
+            }
+
+            public void setDurationColor(int currentDays, int completeDays) {
+                if ( currentDays >= 1 && currentDays <=30 ) {
+                    textViewOpenBracket.setTextColor(Color.parseColor("#FFD54F"));
+                    textViewCurrentDays.setTextColor(Color.parseColor("#FFD54F"));
+                    textViewPer.setTextColor(Color.parseColor("#FFD54F"));
+                    textViewCompleteDays.setTextColor(Color.parseColor("#FFD54F"));
+                    textViewCloseBracket.setTextColor(Color.parseColor("#FFD54F"));
+                } else if ( currentDays >= 31 && currentDays <=70 ) {
+                    textViewOpenBracket.setTextColor(Color.parseColor("#4FC3F7"));
+                    textViewCurrentDays.setTextColor(Color.parseColor("#4FC3F7"));
+                    textViewPer.setTextColor(Color.parseColor("#4FC3F7"));
+                    textViewCompleteDays.setTextColor(Color.parseColor("#4FC3F7"));
+                    textViewCloseBracket.setTextColor(Color.parseColor("#4FC3F7"));
+                } else if ( currentDays >= 71 && currentDays <= completeDays ) {
+                    textViewOpenBracket.setTextColor(Color.parseColor("#00E676"));
+                    textViewCurrentDays.setTextColor(Color.parseColor("#00E676"));
+                    textViewPer.setTextColor(Color.parseColor("#00E676"));
+                    textViewCompleteDays.setTextColor(Color.parseColor("#00E676"));
+                    textViewCloseBracket.setTextColor(Color.parseColor("#00E676"));
+                }
             }
         }
     }

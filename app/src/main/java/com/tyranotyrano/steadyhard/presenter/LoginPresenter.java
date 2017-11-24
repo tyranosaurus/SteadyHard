@@ -1,7 +1,5 @@
 package com.tyranotyrano.steadyhard.presenter;
 
-import android.content.Intent;
-
 import com.tyranotyrano.steadyhard.contract.LoginContract;
 
 /**
@@ -12,14 +10,19 @@ public class LoginPresenter implements LoginContract.Presenter {
     LoginContract.View mView = null;
 
     @Override
-    public void setView(LoginContract.View view) {
+    public void attachView(LoginContract.View view) {
         if ( view != null ) {
             mView = view;
         }
     }
 
     @Override
-    public void callActivity(Intent intent) {
-        mView.callActivity(intent);
+    public void detachView() {
+        mView = null;
+    }
+
+    @Override
+    public void callActivity(int callCode) {
+        mView.callActivity(callCode);
     }
 }
