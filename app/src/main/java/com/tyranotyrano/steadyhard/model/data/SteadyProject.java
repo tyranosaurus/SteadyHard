@@ -1,4 +1,4 @@
-package com.tyranotyrano.steadyhard.model;
+package com.tyranotyrano.steadyhard.model.data;
 
 /**
  * Created by cyj on 2017-11-20.

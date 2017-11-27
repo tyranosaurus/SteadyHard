@@ -1,6 +1,6 @@
 package com.tyranotyrano.steadyhard.contract.adapter;
 
-import com.tyranotyrano.steadyhard.model.SteadyContent;
+import com.tyranotyrano.steadyhard.model.data.SteadyContent;
 
 /**
  * Created by cyj on 2017-11-24.

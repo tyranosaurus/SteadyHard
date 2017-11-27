@@ -2,7 +2,7 @@ package com.tyranotyrano.steadyhard.presenter;
 
 import com.tyranotyrano.steadyhard.contract.ContentContract;
 import com.tyranotyrano.steadyhard.contract.adapter.SteadyContentAdapterContract;
-import com.tyranotyrano.steadyhard.model.SteadyContent;
+import com.tyranotyrano.steadyhard.model.data.SteadyContent;
 
 /**
  * Created by cyj on 2017-11-24.

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.HomeContract;
 import com.tyranotyrano.steadyhard.contract.adapter.SteadyProjectAdapterContract;
-import com.tyranotyrano.steadyhard.model.SteadyProject;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.presenter.HomePresenter;
 import com.tyranotyrano.steadyhard.view.MainActivity;
 

@@ -1,6 +1,6 @@
 package com.tyranotyrano.steadyhard.contract.adapter;
 
-import com.tyranotyrano.steadyhard.model.SteadyProject;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 
 /**
  * Created by cyj on 2017-11-24.
