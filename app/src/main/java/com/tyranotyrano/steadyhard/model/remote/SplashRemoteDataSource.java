@@ -2,9 +2,7 @@ package com.tyranotyrano.steadyhard.model.remote;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.tyranotyrano.steadyhard.model.data.User;
-import com.tyranotyrano.steadyhard.model.remote.datasource.LoginDataSource;
+import com.tyranotyrano.steadyhard.model.remote.datasource.SplashDataSource;
 import com.tyranotyrano.steadyhard.network.NetworkDefineConstant;
 import com.tyranotyrano.steadyhard.network.OkHttpAPICall;
 import com.tyranotyrano.steadyhard.network.OkHttpInitSingtonManager;
@@ -20,51 +18,40 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by cyj on 2017-11-26.
+ * Created by cyj on 2017-11-28.
  */
 
-public class LoginRemoteDataSource implements LoginDataSource {
-
-    final String TAG = "==LoginRemoteDataSource";
+public class SplashRemoteDataSource implements SplashDataSource {
+    final String TAG = "=SplashRemoteDataSource";
 
     @Override
-    public User checkLogin(String email, String password) {
-        // 로그인 체크를 위한 네트워크 처리
+    public String startAutoLogin(String token) {
+        // 자동로그인을 위한 네트워크 처리
         OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
         Response response = null;
-        // Gson 객체 생성
-        Gson gson = new Gson();
 
-        User userInfo = null;
+        String cookie = null;
         String message = null;
 
-        // 로그인 정보를 담은 RequestBody 생성
+        // 토큰 정보를 담은 RequestBody 생성
         /*RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("email", email)
-                .addFormDataPart("password", password)
+                .addFormDataPart("token", token)
                 .build();*/
         RequestBody requestBody = new FormBody.Builder()
-                .add("email", email)
-                .add("password", password)
+                .add("token", token)
                 .build();
 
         try {
-            response = OkHttpAPICall.POST(client, NetworkDefineConstant.SERVER_URL_CHECK_LOGIN, requestBody);
+            response = OkHttpAPICall.POST(client, NetworkDefineConstant.SERVER_URL_AUTO_LOGIN, requestBody);
 
             if ( response == null ) {
-                Log.e(TAG, "Response of checkLogin() is null.");
+                Log.e(TAG, "Response of startAutoLogin() is null.");
 
                 return null;
             } else {
                 JSONObject jsonFromServer = new JSONObject(response.body().string());
-
-                if ( !jsonFromServer.has("user") ) {
-                    return null;
-                }
-
-                userInfo = gson.fromJson(jsonFromServer.getJSONObject("user").toString(), User.class);
-                userInfo.setCookie(response.header("Set-Cookie"));
+                cookie = response.header("Set-Cookie");
 
                 if ( jsonFromServer.has("message") ) {
                     message = jsonFromServer.getString("message");
@@ -84,6 +71,6 @@ public class LoginRemoteDataSource implements LoginDataSource {
             }
         }
 
-        return userInfo;
+        return cookie;
     }
 }

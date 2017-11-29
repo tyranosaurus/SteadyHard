@@ -170,7 +170,7 @@
 
             <EditText
                 android:id="@+id/editTextProjectDuration"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:background="@drawable/rectangle_dark"

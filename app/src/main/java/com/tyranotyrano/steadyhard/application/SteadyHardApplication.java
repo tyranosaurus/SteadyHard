@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 
 public class SteadyHardApplication extends Application {
     private static Context mContext;
+    private static String mCookie = "";
 
     @Override
     public void onCreate() {
@@ -20,15 +21,29 @@ public class SteadyHardApplication extends Application {
         mContext = this;
     }
 
-    public static Context getTestContext() {
+    public static Context getSteadyHardContext() {
 
         if ( mContext == null ) {
-            Log.e("CONTEXT_ERROR", "Test application Context is null");
+            Log.e("CONTEXT_ERROR", "SteadyHard application Context is null");
 
             return null;
         }
 
         return mContext;
+    }
+
+    public static void setCookie(String cookie) {
+        if ( cookie != null ) {
+            mCookie = cookie;
+        }
+    }
+
+    public static String getCookie() {
+        return mCookie;
+    }
+
+    public static void clearCookie() {
+        mCookie = "";
     }
 
     /** Glide 사용시 OOM 처리 */

@@ -1,5 +1,6 @@
 package com.tyranotyrano.steadyhard.model;
 
+import com.tyranotyrano.steadyhard.model.data.User;
 import com.tyranotyrano.steadyhard.model.remote.LoginRemoteDataSource;
 import com.tyranotyrano.steadyhard.model.remote.datasource.LoginDataSource;
 
@@ -18,9 +19,9 @@ public class LoginRepository implements LoginDataSource {
     }
 
     @Override
-    public boolean checkLogin(String email, String password) {
-        boolean isLogin = mLoginRemoteDataSource.checkLogin(email, password);
+    public User checkLogin(String email, String password) {
+        User userInfo = mLoginRemoteDataSource.checkLogin(email, password);
 
-        return isLogin;
+        return userInfo;
     }
 }

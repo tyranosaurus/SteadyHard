@@ -4,18 +4,14 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 
-/**
- * Created by cyj on 2017-11-27.
- */
-
 public class OkHttpInitSingtonManager {
-    private static OkHttpClient okHttpClient;
+    private static OkHttpClient okHttpClient = null;
 
     static {
-        // 최대 10초 동안 연결
+        // 최대 20초 동안 연결
         okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
                 .build();
     }
 
@@ -24,12 +20,13 @@ public class OkHttpInitSingtonManager {
     }
 
     public static OkHttpClient getOkHttpClient(){
+
         if ( okHttpClient != null ) {
             return okHttpClient;
         } else {
             okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(10, TimeUnit.SECONDS)
+                    .connectTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(20, TimeUnit.SECONDS)
                     .build();
         }
         return okHttpClient;

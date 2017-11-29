@@ -2,6 +2,7 @@ package com.tyranotyrano.steadyhard.contract;
 
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
+import com.tyranotyrano.steadyhard.model.data.User;
 import com.tyranotyrano.steadyhard.model.remote.datasource.LoginDataSource;
 
 /**
@@ -10,9 +11,10 @@ import com.tyranotyrano.steadyhard.model.remote.datasource.LoginDataSource;
 
 public interface LoginContract {
     // LoginActivity 관련 View 처리
-   interface View extends BaseView {
+    interface View extends BaseView {
         void callActivity(int callCode);
         void showSnackBar(String message);
+        void setLoginSharedpreferences(User user);
     }
 
     // LoginActivity 관련 Presenter 처리

@@ -1,7 +1,8 @@
 package com.tyranotyrano.steadyhard.view.fragment;
 
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,9 +17,22 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.tyranotyrano.steadyhard.R;
+import com.tyranotyrano.steadyhard.application.SteadyHardApplication;
+import com.tyranotyrano.steadyhard.contract.ProfileContract;
+import com.tyranotyrano.steadyhard.model.ProfileRepository;
+import com.tyranotyrano.steadyhard.model.remote.ProfileRemoteDataSource;
+import com.tyranotyrano.steadyhard.model.remote.datasource.ProfileDataSource;
+import com.tyranotyrano.steadyhard.presenter.ProfilePresenter;
+import com.tyranotyrano.steadyhard.view.LoginActivity;
 import com.tyranotyrano.steadyhard.view.MainActivity;
 
 import java.util.ArrayList;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Copyright 2016 Philipp Jahoda
@@ -37,16 +51,21 @@ import java.util.ArrayList;
  * See the License for the specific language governing permissions and limitations under the License.
  * */
 
-public class ProfileFragment extends Fragment {
-
+public class ProfileFragment extends Fragment implements ProfileContract.View {
+    private static final String TAG = "========ProfileFragment";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
     private String mParam2;
 
+    private Context mContext = null;
     private MainActivity activity = null;
-    private OnFragmentInteractionListener mListener;
+
+    ProfilePresenter mPresenter = null;
+    ProfileDataSource mRepository = null;
+
+    Unbinder unbinder = null;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -65,14 +84,8 @@ public class ProfileFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        activity = (MainActivity)getActivity();
-
-        /** 일단 주석처리. */
-        /*if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }*/
+        this.mContext = context;
+        this.activity = (MainActivity)getActivity();
     }
 
     @Override
@@ -86,8 +99,16 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_profile, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
+
+        /** ProfilePresenter 세팅하는 부분 : 코드 위치 맞는지 확인하고 다시 수정할 것.*/
+        // Presenter에 View 할당
+        mPresenter = new ProfilePresenter();
+        mPresenter.attachView(this);
+        // Presenter에 Model 할당
+        mRepository = new ProfileRepository(new ProfileRemoteDataSource());
+        mPresenter.setProfileRepository(mRepository);
 
         /** 파이 차트 */
         PieChart pieChart = pieChart = (PieChart)rootView.findViewById(R.id.pieChart);
@@ -136,20 +157,59 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        unbinder.unbind();
+        mPresenter.detachView();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
+        this.mContext = null;
+        this.activity = null;
     }
 
-    public interface OnFragmentInteractionListener {
+    @OnClick(R.id.textViewProfileFragmentLogout)
+    public void onClick() {
+        // 로그아웃 처리
+        mPresenter.clearSessionToken(MainActivity.user.getToken());
+    }
 
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void clearCookie() {
+        // SteadyHardApplication에 저장된 쿠키정보 초기화
+        SteadyHardApplication.clearCookie();
+
+        // SharedPreferences에 저장된 쿠키정보 삭제
+        SharedPreferences cookiePreferences = activity.getSharedPreferences("cookie", MODE_PRIVATE);
+        SharedPreferences.Editor cookieInfoEditor = cookiePreferences.edit();
+        cookieInfoEditor.clear();
+        cookieInfoEditor.commit();
+    }
+
+    @Override
+    public void clearUserInfo() {
+        // SharedPreferences에 저장된 유저정보 삭제
+        SharedPreferences userInfoPreferences = activity.getSharedPreferences("userInfo", MODE_PRIVATE);
+        SharedPreferences.Editor userInfoEditor = userInfoPreferences.edit();
+        userInfoEditor.clear();
+        userInfoEditor.commit();
+    }
+
+    @Override
+    public void callLoginActivity() {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        startActivity(intent);
+
+        activity.finish();
+    }
+
+    @Override
+    public void turnOffAutoLogin() {
+        activity.setUnAutoLogin();
     }
 }
