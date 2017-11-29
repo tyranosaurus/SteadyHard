@@ -8,12 +8,16 @@ import android.widget.TextView;
 
 import com.tyranotyrano.steadyhard.R;
 
+import butterknife.ButterKnife;
+
 public class JoinActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
+        // ButterKnife 세팅
+        ButterKnife.bind(this);
 
         /** 가입하기 버튼 처리 */
         TextView textViewDoJoin = (TextView) findViewById(R.id.textViewDoJoin);
