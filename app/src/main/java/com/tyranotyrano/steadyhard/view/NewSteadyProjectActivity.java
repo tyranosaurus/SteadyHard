@@ -36,7 +36,7 @@ public class NewSteadyProjectActivity extends AppCompatActivity {
         imageViewProjectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 그래들에 compile "com.android.support:exifinterface:25.1.0" 추가
+
                 selectPictureByGallery();
             }
         });
@@ -61,7 +61,6 @@ public class NewSteadyProjectActivity extends AppCompatActivity {
 
     // 갤러리에서 사진을 가져오는 경우
     private void selectPictureByGallery() {
-
         //사진가져오기
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
@@ -70,6 +69,7 @@ public class NewSteadyProjectActivity extends AppCompatActivity {
     }
 
     private void getPicture(Intent data) {
+
         Glide.with(this) // 애플리케이션의 Context 넣으면 에러발생 -> this(NewProjectActivity)를 넣어준다.
                 .load(data.getData()) // 불러올 이미지 경로
                 .into(imageViewProjectImage); // 이미지 넣어줄 ImageView

@@ -29,62 +29,114 @@
         android:textColor="@color/colorWhite"
         android:textSize="40dp" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageViewProfileImage"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:src="@drawable/icon_profile_default"
-        app:civ_border_color="@color/colorLiteGray"
-        app:civ_border_width="2dp" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/editTextNickname"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/edittext_rectangle"
-        android:hint=" 닉네임"
-        android:inputType="textPersonName"
-        android:paddingLeft="10dp"
-        android:textSize="15dp" />
+        <!-- 회원가입 -->
+        <LinearLayout
+            android:id="@+id/linearLayoutEmailPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-    <EditText
-        android:id="@+id/editTextInputEmail"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/edittext_rectangle"
-        android:hint=" 이메일"
-        android:inputType="textEmailAddress"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:paddingLeft="10dp"/>
+            <EditText
+                android:id="@+id/editTextInputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_rectangle"
+                android:hint=" 이메일"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="10dp"
+                android:textSize="18dp" />
 
-    <EditText
-        android:id="@+id/editTextInputPasswordFirst"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/edittext_rectangle"
-        android:hint=" 비밀번호"
-        android:inputType="textPassword"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:paddingLeft="10dp"/>
+            <TextView
+                android:id="@+id/textViewCheckEmailDuplication"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="10dp"
+                android:text="중복확인"
+                android:textColor="@color/colorWhite"
+                android:textSize="16dp" />
 
-    <EditText
-        android:id="@+id/editTextInputPasswordSecond"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/edittext_rectangle"
-        android:hint=" 비밀번호 확인"
-        android:inputType="textPassword"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:paddingLeft="10dp"/>
+            <EditText
+                android:id="@+id/editTextInputPasswordFirst"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_rectangle"
+                android:hint=" 비밀번호"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:textSize="18dp" />
+
+            <EditText
+                android:id="@+id/editTextInputPasswordSecond"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_rectangle"
+                android:hint=" 비밀번호 확인"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="(비밀번호는 최소 8자 이상 입력해주세요)"
+                android:textSize="14dp"
+                android:textColor="@color/colorWhite"/>
+
+        </LinearLayout>
+
+        <!-- 프로필 사진, 닉네입 입력 -->
+        <LinearLayout
+            android:id="@+id/linearLayoutProfileInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageViewProfileImage"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_profile_default"
+                app:civ_border_color="@color/colorLiteGray"
+                app:civ_border_width="2dp" />
+
+            <EditText
+                android:id="@+id/editTextNickname"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_rectangle"
+                android:hint=" 닉네임"
+                android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+    </FrameLayout>
 
     <View
         android:id="@+id/view"
@@ -92,15 +144,33 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/textViewDoJoin"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/selector_join_button"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="가입하기"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textViewDoJoin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/selector_join_button"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="가입하기"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewSaveProfile"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/selector_join_button"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="프로필 저장"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </FrameLayout>
+
+
 
 </LinearLayout>

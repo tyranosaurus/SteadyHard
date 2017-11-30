@@ -6,6 +6,8 @@ import com.tyranotyrano.steadyhard.contract.LoginContract;
 import com.tyranotyrano.steadyhard.model.data.User;
 import com.tyranotyrano.steadyhard.model.remote.datasource.LoginDataSource;
 
+import java.util.regex.Pattern;
+
 /**
  * Created by cyj on 2017-11-24.
  */
@@ -36,8 +38,19 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void checkLogin(String email, String password, int callCode) {
+
+        String regExp = "\\w+@\\w+\\.\\w+(\\.\\w+)?";
+        boolean checkEmail = Pattern.matches(regExp,email);
+
         if ( email == null || email.length() < 1 ) {
             String message = "이메일을 입력해주세요.";
+            mView.showSnackBar(message);
+
+            return;
+        }
+
+        if ( !checkEmail ) {
+            String message = "이메일 형식이 올바르지 않습니다.";
             mView.showSnackBar(message);
 
             return;

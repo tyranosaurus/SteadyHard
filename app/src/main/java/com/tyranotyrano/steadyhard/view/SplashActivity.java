@@ -19,7 +19,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
     public static final int CALL_CODE_ACTIVITY_MAIN = 101;
     public static final int CALL_CODE_ACTIVITY_LOGIN = 102;
-    final String TAG = "=========SplashActivity";
+    public static final String TAG = "=========SplashActivity";
 
     public static SplashActivity SPLASH_ACTIVITY = null;
 
