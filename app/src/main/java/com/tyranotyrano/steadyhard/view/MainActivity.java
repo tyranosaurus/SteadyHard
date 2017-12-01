@@ -176,15 +176,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_toolbar_searchview, menu);
-
         /** SearchView 설정 */
-        MenuItem searchItem = menu.findItem(R.id.menuItemSearch);
-        // 1. SearchView : hint 설정
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("검색어를 입력하세요.");
-        // 2. SearchView : underline 제거
-        searchView.findViewById(android.support.v7.appcompat.R.id.search_plate).setBackgroundColor(Color.parseColor("#ffffffff"));
+        setSearchView(menu);
 
         return true;
     }
@@ -220,6 +213,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         String nickname = userInfoPreferences.getString("nickname", null);
 
         user = new User(no, email, token, profile_image, nickname);
+    }
+
+    public void setSearchView(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar_searchview, menu);
+        MenuItem searchItem = menu.findItem(R.id.menuItemSearch);
+        // 1. SearchView : hint 설정
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setQueryHint("검색어를 입력하세요.");
+        // 2. SearchView : underline 제거
+        searchView.findViewById(android.support.v7.appcompat.R.id.search_plate).setBackgroundColor(Color.parseColor("#ffffffff"));
     }
 
     public void setUnAutoLogin() {
