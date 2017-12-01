@@ -95,6 +95,6 @@
         app:itemTextColor="@drawable/selector_bottomnavigatorview"
         app:menu="@menu/menu_bottomnavigationview"
         app:layout_insetEdge="bottom"
-        app:layout_behavior="com.tyranotyrano.steadyhard.presenter.BottomNavigationBehavior"/>
+        app:layout_behavior="com.tyranotyrano.steadyhard.behavior.BottomNavigationBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

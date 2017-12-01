@@ -1,4 +1,4 @@
-package com.tyranotyrano.steadyhard.presenter;
+package com.tyranotyrano.steadyhard.behavior;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;

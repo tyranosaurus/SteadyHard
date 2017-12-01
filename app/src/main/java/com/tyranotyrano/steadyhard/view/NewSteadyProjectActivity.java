@@ -3,6 +3,7 @@ package com.tyranotyrano.steadyhard.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -21,6 +22,11 @@ public class NewSteadyProjectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_steady_project);
+
+        /** 툴바 세팅 */
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarNewProject);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // 앱 기본 이름 안보이게 하는 것.
 
         // Back 화살표 눌렀을 때
         imageViewNewProjectBack = (ImageView) findViewById(R.id.imageViewNewProjectBack);

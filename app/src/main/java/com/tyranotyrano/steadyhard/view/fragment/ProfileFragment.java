@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -28,9 +30,11 @@ import com.tyranotyrano.steadyhard.view.MainActivity;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -67,6 +71,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     Unbinder unbinder = null;
 
+    @BindView(R.id.circleImageViewProfileFragmentProfileImage) CircleImageView circleImageViewProfileFragmentProfileImage;
+    @BindView(R.id.textViewProfileFragmentProfileNickname) TextView textViewProfileFragmentProfileNickname;
+    @BindView(R.id.textViewProfileFragmentProfileEmail) TextView textViewProfileFragmentProfileEmail;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -100,15 +108,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_profile, container, false);
+        // 버터나이프
         unbinder = ButterKnife.bind(this, rootView);
 
-        /** ProfilePresenter 세팅하는 부분 : 코드 위치 맞는지 확인하고 다시 수정할 것.*/
-        // Presenter에 View 할당
-        mPresenter = new ProfilePresenter();
-        mPresenter.attachView(this);
-        // Presenter에 Model 할당
-        mRepository = new ProfileRepository(new ProfileRemoteDataSource());
-        mPresenter.setProfileRepository(mRepository);
+        init();
 
         /** 파이 차트 */
         PieChart pieChart = pieChart = (PieChart)rootView.findViewById(R.id.pieChart);
@@ -173,9 +176,32 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         this.activity = null;
     }
 
+    private void init() {
+        // Presenter에 View 할당
+        mPresenter = new ProfilePresenter();
+        mPresenter.attachView(this);
+        // Presenter에 Model 할당
+        mRepository = new ProfileRepository(new ProfileRemoteDataSource());
+        mPresenter.setProfileRepository(mRepository);
+
+        // 유저 프로필사진, 닉네임, 이메일 설정
+        if ( MainActivity.user.getProfile_image() != null ) {
+            Glide.with(ProfileFragment.this)
+                    .load(MainActivity.user.getProfile_image())
+                    .into(circleImageViewProfileFragmentProfileImage);
+        } else {
+            Glide.with(ProfileFragment.this)
+                    .load(R.drawable.icon_profile_default_black)
+                    .into(circleImageViewProfileFragmentProfileImage);
+        }
+        textViewProfileFragmentProfileNickname.setText(MainActivity.user.getNickname());
+        textViewProfileFragmentProfileEmail.setText(MainActivity.user.getEmail());
+    }
+
     @OnClick(R.id.textViewProfileFragmentLogout)
     public void onClick() {
         // 로그아웃 처리
+        activity.setUserLogout();
         mPresenter.clearSessionToken(MainActivity.user.getToken());
     }
 

@@ -36,9 +36,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public static final String TAG = "==========MainActivity";
     public static User user = null;
 
-    // User SharedPreferences
-    SharedPreferences userInfoPreferences = null;
-
     // Presenter, Movel
     MainContract.Presenter mPresenter = null;
     MainDataSource mRepository = null;
@@ -47,15 +44,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     Fragment fragment = null;
     BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener= null;
 
+    boolean isLogout = false;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
         // ButterKnife 세팅
         ButterKnife.bind(this);
         // 스플래시 액티비티 종료
         SplashActivity.SPLASH_ACTIVITY.finish();
-
-        userInfoPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
 
         // Presenter에 View 할당
         mPresenter = new MainPresenter();
@@ -163,8 +160,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     protected void onDestroy() {
         super.onDestroy();
 
-        // MainActivity 종료시 세션에 있는 토큰 정보 삭제
-        mPresenter.clearSessionToken(user.getToken());
+        if ( !isLogout ) {
+            // 로그아웃 없이 MainActivity 종료시 세션에 있는 토큰 정보 삭제
+            mPresenter.clearSessionToken(user.getToken());
+        }
 
         // 자동 로그인이 아닌 경우
         SharedPreferences autoLoginPreferences = getSharedPreferences("autoLogin", MODE_PRIVATE);
@@ -205,9 +204,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void clearUserInfo() {
         // 유저정보 삭제
+        SharedPreferences userInfoPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
         SharedPreferences.Editor userInfoEditor = userInfoPreferences.edit();
         userInfoEditor.clear();
         userInfoEditor.commit();
+    }
+
+    private void init() {
+        SharedPreferences userInfoPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
+
+        int no = userInfoPreferences.getInt("no", -1);
+        String email = userInfoPreferences.getString("email", null);
+        String token = userInfoPreferences.getString("token", null);
+        String profile_image = userInfoPreferences.getString("profile_image", null);
+        String nickname = userInfoPreferences.getString("nickname", null);
+
+        user = new User(no, email, token, profile_image, nickname);
     }
 
     public void setUnAutoLogin() {
@@ -217,13 +229,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         autoLoginEditor.commit();
     }
 
-    private void init() {
-        int no = userInfoPreferences.getInt("no", -1);
-        String email = userInfoPreferences.getString("email", null);
-        String token = userInfoPreferences.getString("token", null);
-        String profile_image = userInfoPreferences.getString("profile_image", null);
-        String nickname = userInfoPreferences.getString("nickname", null);
-
-        user = new User(no, email, token, profile_image, nickname);
+    public void setUserLogout() {
+        isLogout = true;
     }
 }

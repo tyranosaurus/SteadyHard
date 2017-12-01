@@ -28,10 +28,10 @@
             android:name=".view.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.JoinActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.JoinActivity"
+            android:name=".view.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.NewSteadyProjectActivity"
