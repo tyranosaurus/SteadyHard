@@ -15,4 +15,6 @@
     <color name="colorLiteBlue">#42A5F5</color>
     <color name="colorMiddleBlue">#1565C0</color>
     <color name="colorGreen">#00E676</color>
+    <color name="colorLiteRed">#EF5350</color>
+    <color name="colorMiddleRed">#C62828</color>
 </resources>

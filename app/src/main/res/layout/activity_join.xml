@@ -99,8 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="(비밀번호는 최소 8자 이상 입력해주세요)"
-                android:textSize="14dp"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
 
         </LinearLayout>
 

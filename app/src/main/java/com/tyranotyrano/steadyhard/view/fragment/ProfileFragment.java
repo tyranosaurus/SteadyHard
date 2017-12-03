@@ -27,6 +27,7 @@ import com.tyranotyrano.steadyhard.model.remote.datasource.ProfileDataSource;
 import com.tyranotyrano.steadyhard.presenter.ProfilePresenter;
 import com.tyranotyrano.steadyhard.view.LoginActivity;
 import com.tyranotyrano.steadyhard.view.MainActivity;
+import com.tyranotyrano.steadyhard.view.ProfileManagerActivity;
 
 import java.util.ArrayList;
 
@@ -198,8 +199,14 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         textViewProfileFragmentProfileEmail.setText(MainActivity.user.getEmail());
     }
 
+    @OnClick(R.id.textViewProfileFragmentModifyProfile)
+    public void onProfileModifyClick() {
+        Intent intent = new Intent(activity, ProfileManagerActivity.class);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.textViewProfileFragmentLogout)
-    public void onClick() {
+    public void onLogoutClick() {
         // 로그아웃 처리
         activity.setUserLogout();
         mPresenter.clearSessionToken(MainActivity.user.getToken());
