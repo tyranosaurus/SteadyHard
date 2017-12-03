@@ -1,24 +1,32 @@
 package com.tyranotyrano.steadyhard.model.data;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by cyj on 2017-11-28.
  */
 
 public class User {
+    @SerializedName("no")
     private int no;
+    @SerializedName("email")
     private String email;
+    @SerializedName("token")
     private String token;
-    private String profile_image;
+    @SerializedName("profile_image")
+    private String profileImage;
+    @SerializedName("nickname")
     private String nickname;
+    @SerializedName("cookie")
     private String cookie;
 
     public User() { }
 
-    public User(int no, String email, String token, String profile_image, String nickname) {
+    public User(int no, String email, String token, String profileImage, String nickname) {
         this.no = no;
         this.email = email;
         this.token = token;
-        this.profile_image = profile_image;
+        this.profileImage = profileImage;
         this.nickname = nickname;
     }
 
@@ -46,12 +54,12 @@ public class User {
         this.token = token;
     }
 
-    public String getProfile_image() {
-        return profile_image;
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public void setProfile_image(String profile_image) {
-        this.profile_image = profile_image;
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public String getNickname() {

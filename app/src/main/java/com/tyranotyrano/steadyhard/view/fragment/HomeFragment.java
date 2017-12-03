@@ -21,7 +21,10 @@ import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.presenter.HomePresenter;
 import com.tyranotyrano.steadyhard.view.MainActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -78,26 +81,26 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         recyclerViewSteadyProject.setHasFixedSize(true);
 
         SteadyProjectRecyclerViewAdapter adapter = new SteadyProjectRecyclerViewAdapter();
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀11111111111111111111111111111111111111111111", 100, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀2", 70, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀3", 30, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀4", 4, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀5", 5, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀6", 6, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀7", 7, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀8", 8, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀9", 9, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀10", 10, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀11", 11, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀12", 12, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀13", 13, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀14", 14, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀15", 15, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀16", 16, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀17", 17, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀18", 18, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀19", 19, 100, "설명"));
-        adapter.addItem(new SteadyProject(R.drawable.logo_black_star, "타이틀20", 20, 100, "설명"));
+        /*adapter.addItem(new SteadyProject("타이틀11111111111111111111111111111111111111111111", R.drawable.logo_black_star, 100, 100, "2017-11-01", "설명"));
+        adapter.addItem(new SteadyProject("타이틀2 : 매일 아침에 조깅 10km 하기!", R.drawable.logo_black_star, 70, 100, "2017-11-01", "설명"));
+        adapter.addItem(new SteadyProject("타이틀3", R.drawable.logo_black_star, 30, 100, "2017-11-01", "설명"));
+        adapter.addItem(new SteadyProject("타이틀4", R.drawable.logo_black_star, 4, 100, "2017-11-02", "설명"));
+        adapter.addItem(new SteadyProject("타이틀5", R.drawable.logo_black_star, 5, 100, "2017-11-02", "설명"));
+        adapter.addItem(new SteadyProject("타이틀6", R.drawable.logo_black_star, 6, 100, "2017-11-02", "설명"));
+        adapter.addItem(new SteadyProject("타이틀7", R.drawable.logo_black_star, 7, 100, "2017-11-02", "설명"));
+        adapter.addItem(new SteadyProject("타이틀8", R.drawable.logo_black_star, 8, 100, "2017-11-03", "설명"));
+        adapter.addItem(new SteadyProject("타이틀9", R.drawable.logo_black_star, 9, 100, "2017-11-03", "설명"));
+        adapter.addItem(new SteadyProject("타이틀10", R.drawable.logo_black_star, 10, 100, "2017-11-03", "설명"));
+        adapter.addItem(new SteadyProject("타이틀11", R.drawable.logo_black_star, 11, 100, "2017-11-03", "설명"));
+        adapter.addItem(new SteadyProject("타이틀12", R.drawable.logo_black_star, 12, 100, "2017-11-04", "설명"));
+        adapter.addItem(new SteadyProject("타이틀13", R.drawable.logo_black_star, 13, 100, "2017-11-04", "설명"));
+        adapter.addItem(new SteadyProject("타이틀14", R.drawable.logo_black_star, 14, 100, "2017-11-04", "설명"));
+        adapter.addItem(new SteadyProject("타이틀15", R.drawable.logo_black_star, 15, 100, "2017-11-04", "설명"));
+        adapter.addItem(new SteadyProject("타이틀16", R.drawable.logo_black_star, 16, 100, "2017-11-05", "설명"));
+        adapter.addItem(new SteadyProject("타이틀17", R.drawable.logo_black_star, 17, 100, "2017-11-05", "설명"));
+        adapter.addItem(new SteadyProject("타이틀18", R.drawable.logo_black_star, 18, 100, "2017-11-05", "설명"));
+        adapter.addItem(new SteadyProject("타이틀19", R.drawable.logo_black_star, 19, 100, "2017-11-06", "설명"));
+        adapter.addItem(new SteadyProject("타이틀20", R.drawable.logo_black_star, 20, 100, "2017-11-06", "설명"));*/
         recyclerViewSteadyProject.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
@@ -106,12 +109,13 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         //root.findViewById() 메소드를 이용해서 각 리니어레이아웃 가져온 다음 VISIBILITY, GONE 설정
         LinearLayout linearLayoutDefault = (LinearLayout) rootView.findViewById(R.id.linearLayoutHomeDefault);
+        LinearLayout linearLayoutHomeSteadyProject = (LinearLayout) rootView.findViewById(R.id.linearLayoutHomeSteadyProject);
         if (adapter.getItemCount() > 0 ) {
-            recyclerViewSteadyProject.setVisibility(View.VISIBLE);
+            linearLayoutHomeSteadyProject.setVisibility(View.VISIBLE);
             linearLayoutDefault.setVisibility(View.GONE);
         } else {
             linearLayoutDefault.setVisibility(View.VISIBLE);
-            recyclerViewSteadyProject.setVisibility(View.GONE);
+            linearLayoutHomeSteadyProject.setVisibility(View.GONE);
         }
 
         /** HomePresenter 세팅하는 부분 : 코드 위치 맞는지 확인하고 다시 수정할 것.*/
@@ -184,6 +188,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             holder.textViewCurrentDays.setText(String.valueOf(item.getCurrentDays()));
             // 프로젝트 완료 일수 설정
             holder.textViewCompleteDays.setText(String.valueOf(item.getCompleteDays()));
+            // 프로젝트 등록 날짜 설정
+            holder.textViewProjectDate.setText(holder.setProjectDateFormat(item.getProjectDate())); /**  아이템에 날짜 추가하기*/
 
             /** currentDays에 따른 색깔 구분
              *  여기서는 완료날짜가 100으로 고정되어있지만 나중에는 완료날짜에 따른 현재날짜의 비율로 계산할 것
@@ -235,6 +241,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             TextView textViewPer = null;
             TextView textViewCompleteDays = null;
             TextView textViewCloseBracket = null;
+            TextView textViewProjectDate = null;
             ImageView imageViewProjectMenu = null;
 
             public SteadyProjectViewHolder(Context context, ViewGroup parent, SteadyProjectAdapterContract.OnItemClickListener itemClickListener) {
@@ -255,6 +262,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 textViewPer = (TextView) itemView.findViewById(R.id.textViewPer);
                 textViewCompleteDays = (TextView) itemView.findViewById(R.id.textViewCompleteDays);
                 textViewCloseBracket = (TextView) itemView.findViewById(R.id.textViewCloseBracket);
+                textViewProjectDate = (TextView) itemView.findViewById(R.id.textViewProjectDate);
                 imageViewProjectMenu = (ImageView) itemView.findViewById(R.id.imageViewProjectMenu);
                 imageViewProjectMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -262,6 +270,20 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                         Snackbar.make(v, "프로젝트의 메뉴버튼 클릭", Snackbar.LENGTH_SHORT).show();
                     }
                 });
+            }
+
+            public String setProjectDateFormat(String projectDate) {
+
+                String formattedProjectDate = "0000.00.00";
+
+                try {
+                    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(projectDate);
+                    formattedProjectDate = new SimpleDateFormat("yyyy.MM.dd").format(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return formattedProjectDate;
             }
 
             public void onBindItemClickListener(SteadyProject item, final int position) {

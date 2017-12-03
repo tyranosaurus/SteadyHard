@@ -185,9 +185,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         mPresenter.setProfileRepository(mRepository);
 
         // 유저 프로필사진, 닉네임, 이메일 설정
-        if ( MainActivity.user.getProfile_image() != null ) {
+        if ( MainActivity.user.getProfileImage() != null ) {
             Glide.with(ProfileFragment.this)
-                    .load(MainActivity.user.getProfile_image())
+                    .load(MainActivity.user.getProfileImage())
                     .into(circleImageViewProfileFragmentProfileImage);
         } else {
             Glide.with(ProfileFragment.this)

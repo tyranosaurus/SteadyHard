@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         userInfoEditor.putInt("no", user.getNo());
         userInfoEditor.putString("email", user.getEmail());
         userInfoEditor.putString("token", user.getToken());
-        userInfoEditor.putString("profile_image", user.getProfile_image());
+        userInfoEditor.putString("profile_image", user.getProfileImage());
         userInfoEditor.putString("nickname", user.getNickname());
 
         userInfoEditor.commit();

@@ -19,6 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Profile"
             android:textColor="@color/colorBlack"
             android:textSize="15dp" />
@@ -41,6 +42,7 @@
             android:id="@+id/circleImageViewProfileFragmentProfileImage"
             android:layout_width="84dp"
             android:layout_height="84dp"
+            android:layout_gravity="center"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/icon_profile_default_black"
@@ -58,8 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="현승희"
-                android:textColor="@color/colorBlack"
+                android:text="닉네임"
+                android:textColor="@color/colorBlueSky"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -74,7 +76,7 @@
                 android:paddingRight="6dp"
                 android:gravity="center"
                 android:background="@drawable/profile_email"
-                android:text="tyrano09@gmail.com"
+                android:text="email@email.com"
                 android:textColor="@color/colorBlack"
                 android:textSize="15dp"/>
 
@@ -122,6 +124,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Steady Hard"
             android:textColor="@color/colorBlack"
             android:textSize="15dp" />

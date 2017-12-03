@@ -25,15 +25,17 @@
 
                 <ImageView
                     android:id="@+id/imageViewNewProjectBack"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
+                    android:paddingRight="13dp"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_back_button" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:text="새로운 프로젝트"
                     android:textSize="20dp"
                     android:textColor="@color/colorBlack"
@@ -47,11 +49,14 @@
                 <TextView
                     android:id="@+id/textViewNewProjectCreate"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginRight="16dp"
+                    android:background="@drawable/selector_steady_project_create"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="8dp"
                     android:text="완료"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/colorBlack"
                     android:textSize="18dp" />
 
             </LinearLayout>
@@ -191,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
-                android:text="( 7 ~ 365일 중 입력 )"
+                android:text="( 3 ~ 365일 중 입력 )"
                 android:textColor="@color/colorGray"
                 android:textSize="14dp" />
 

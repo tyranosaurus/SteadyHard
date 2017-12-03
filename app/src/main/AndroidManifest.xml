@@ -16,8 +16,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,6 +36,7 @@
         <activity
             android:name=".view.NewSteadyProjectActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".view.ProfileManagerActivity"></activity>
     </application>
 
 </manifest>

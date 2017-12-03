@@ -39,7 +39,6 @@
                 app:civ_border_color="@color/colorLiteGray"
                 app:civ_border_width="1dp" />
 
-            <!-- 프로젝트 타이틀 1줄로 고정, 일정 글자수 넘어가면 ...으로 나고게 수정 할 것. -->
             <TextView
                 android:id="@+id/textViewProjectTitle"
                 android:layout_width="wrap_content"
@@ -54,50 +53,77 @@
                 android:maxLines="2"
                 android:ellipsize="end"/>
 
-            <TextView
-                android:id="@+id/textViewOpenBracket"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:text="("
-                android:textColor="@color/colorBlack"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewCurrentDays"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="10"
-                android:textColor="@color/colorBlack"/>
+                <!-- 진행 일수 확인 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textViewPer"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text=" / "
-                android:textColor="@color/colorBlack"/>
+                    <TextView
+                        android:id="@+id/textViewOpenBracket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="("
+                        android:textColor="@color/colorBlack" />
 
-            <TextView
-                android:id="@+id/textViewCompleteDays"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="100"
-                android:textColor="@color/colorBlack"/>
+                    <TextView
+                        android:id="@+id/textViewCurrentDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="10"
+                        android:textColor="@color/colorBlack" />
 
-            <TextView
-                android:id="@+id/textViewCloseBracket"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text=")"
-                android:textColor="@color/colorBlack"/>
+                    <TextView
+                        android:id="@+id/textViewPer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text=" / "
+                        android:textColor="@color/colorBlack" />
+
+                    <TextView
+                        android:id="@+id/textViewCompleteDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="100"
+                        android:textColor="@color/colorBlack" />
+
+                    <TextView
+                        android:id="@+id/textViewCloseBracket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text=")"
+                        android:textColor="@color/colorBlack" />
+
+                </LinearLayout>
+
+                <!-- 프로젝트 등록 날짜 -->
+                <TextView
+                    android:id="@+id/textViewProjectDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0000.00.00"/>
+
+            </LinearLayout>
+
+
 
             <ImageView
                 android:id="@+id/imageViewProjectMenu"

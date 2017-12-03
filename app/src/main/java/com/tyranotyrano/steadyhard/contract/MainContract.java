@@ -1,5 +1,9 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
+import android.view.MenuItem;
+
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
 import com.tyranotyrano.steadyhard.model.remote.datasource.MainDataSource;
@@ -13,6 +17,8 @@ public interface MainContract {
     interface View extends BaseView {
         void clearCookie();
         void clearUserInfo();
+        void setOnBottomNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationItemSelectedListener);
+        void showSnackBar(String message);
     }
 
     // MainActivity 관련 Presenter 처리
@@ -20,6 +26,8 @@ public interface MainContract {
         // Model 관련 처리
         void setMainRepository(MainDataSource mainDataSource);
 
+        void setBottomNavigationView(FragmentManager fm);
+        void setSearchViewSettings(MenuItem searchItem);
         void clearSessionToken(String token);
         void clearUserInfo();
     }

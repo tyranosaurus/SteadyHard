@@ -18,7 +18,6 @@ import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.ContentContract;
 import com.tyranotyrano.steadyhard.contract.adapter.SteadyContentAdapterContract;
 import com.tyranotyrano.steadyhard.model.data.SteadyContent;
-import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.presenter.ContentPresenter;
 import com.tyranotyrano.steadyhard.view.MainActivity;
 
@@ -77,19 +76,19 @@ public class ContentFragment extends Fragment implements ContentContract.View{
         recyclerViewSteadyContent.setHasFixedSize(true);
 
         SteadyContentRecyclerViewAdapter adapter = new SteadyContentRecyclerViewAdapter();
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀11111111111111111111111111111111111111111111", 100, 100, "설명")
+        /*adapter.addItem(new SteadyContent(new SteadyProject("타이틀11111111111111111111111111111111111111111111", R.drawable.logo_black_star, 100, 100, "2017-11-05", "설명")
                 , R.drawable.icon_project_image_default, "내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용ㅍ"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀2", 70, 100, "설명"), R.drawable.icon_project_image_default, "내용2"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀3", 30, 100, "설명"), R.drawable.icon_project_image_default, "내용3"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀4", 4, 100, "설명"), R.drawable.icon_project_image_default, "내용4"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀5", 5, 100, "설명"), R.drawable.icon_project_image_default, "내용5"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀6", 6, 100, "설명"), R.drawable.icon_project_image_default, "내용6"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀7", 7, 100, "설명"), R.drawable.icon_project_image_default, "내용7"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀8", 8, 100, "설명"), R.drawable.icon_project_image_default, "내용8"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀9", 9, 100, "설명"), R.drawable.icon_project_image_default, "내용9"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀10", 10, 100, "설명"), R.drawable.icon_project_image_default, "내용10"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀11", 11, 100, "설명"), R.drawable.icon_project_image_default, "내용11"));
-        adapter.addItem(new SteadyContent(new SteadyProject(R.drawable.logo_black_star, "타이틀12", 12, 100, "설명"), R.drawable.icon_project_image_default, "내용12"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀2", R.drawable.logo_black_star, 70, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용2"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀3", R.drawable.logo_black_star, 30, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용3"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀4", R.drawable.logo_black_star, 4, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용4"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀5", R.drawable.logo_black_star, 5, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용5"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀6", R.drawable.logo_black_star, 6, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용6"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀7", R.drawable.logo_black_star, 7, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용7"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀8", R.drawable.logo_black_star, 8, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용8"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀9", R.drawable.logo_black_star, 9, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용9"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀10", R.drawable.logo_black_star, 10, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용10"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀11", R.drawable.logo_black_star, 11, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용11"));
+        adapter.addItem(new SteadyContent(new SteadyProject("타이틀12", R.drawable.logo_black_star, 12, 100, "2017-11-05", "설명"), R.drawable.icon_project_image_default, "내용12"));*/
         recyclerViewSteadyContent.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
