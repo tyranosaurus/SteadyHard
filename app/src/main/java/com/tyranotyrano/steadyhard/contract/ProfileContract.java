@@ -15,6 +15,8 @@ public interface ProfileContract {
         void clearUserInfo();
         void callLoginActivity();
         void turnOffAutoLogin();
+        void showSnackBar(String message);
+        void drawSteadyProjectPieChart(int success, int ongoing, int fail);
     }
 
     // ProfileFragment 관련 View 처리
@@ -23,5 +25,6 @@ public interface ProfileContract {
         void setProfileRepository(ProfileDataSource profileDataSource);
 
         void clearSessionToken(String token);
+        void getSteadyProjectStatusCount();
     }
 }

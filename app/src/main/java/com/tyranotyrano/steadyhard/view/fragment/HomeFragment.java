@@ -181,7 +181,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             SteadyProject item = items.get(position);
 
             // 프로젝트 이미지 설정
-            holder.circleImageViewProjectImage.setImageResource(item.getProjectImage());
+            holder.circleImageViewProjectImage.setImageResource(R.drawable.logo_black_star);
             // 프로젝트 타이틀 설정
             holder.textViewProjectTitle.setText(item.getProjectTitle());
             // 프로젝트 현재 진행일수 설정

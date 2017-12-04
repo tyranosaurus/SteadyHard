@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -67,7 +69,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     private Context mContext = null;
     private MainActivity activity = null;
 
-    ProfilePresenter mPresenter = null;
+    ProfileContract.Presenter mPresenter = null;
     ProfileDataSource mRepository = null;
 
     Unbinder unbinder = null;
@@ -75,6 +77,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @BindView(R.id.circleImageViewProfileFragmentProfileImage) CircleImageView circleImageViewProfileFragmentProfileImage;
     @BindView(R.id.textViewProfileFragmentProfileNickname) TextView textViewProfileFragmentProfileNickname;
     @BindView(R.id.textViewProfileFragmentProfileEmail) TextView textViewProfileFragmentProfileEmail;
+    @BindView(R.id.linearLayoutPieChartDefault) LinearLayout linearLayoutPieChartDefault;
+    @BindView(R.id.pieChart) PieChart pieChart;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -111,11 +115,81 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_profile, container, false);
         // 버터나이프
         unbinder = ButterKnife.bind(this, rootView);
-
+        // 초기화
         init();
 
-        /** 파이 차트 */
-        PieChart pieChart = pieChart = (PieChart)rootView.findViewById(R.id.pieChart);
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 프로젝트의 status 카운트 각각 가져오기
+        mPresenter.getSteadyProjectStatusCount();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        unbinder.unbind();
+        mPresenter.detachView();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        this.mContext = null;
+        this.activity = null;
+    }
+
+    @OnClick(R.id.textViewProfileFragmentModifyProfile)
+    public void onProfileModifyClick() {
+        Intent intent = new Intent(activity, ProfileManagerActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.textViewProfileFragmentLogout)
+    public void onLogoutClick() {
+        // 로그아웃 처리
+        activity.setUserLogout();
+        mPresenter.clearSessionToken(MainActivity.user.getToken());
+    }
+
+    private void init() {
+        // Presenter에 View 할당
+        mPresenter = new ProfilePresenter();
+        mPresenter.attachView(this);
+        // Presenter에 Model 할당
+        mRepository = new ProfileRepository(new ProfileRemoteDataSource());
+        mPresenter.setProfileRepository(mRepository);
+
+        // 유저 프로필사진, 닉네임, 이메일 설정
+        if ( MainActivity.user.getProfileImage() != null ) {
+            Glide.with(ProfileFragment.this)
+                    .load(MainActivity.user.getProfileImage())
+                    .into(circleImageViewProfileFragmentProfileImage);
+        } else {
+            Glide.with(ProfileFragment.this)
+                    .load(R.drawable.icon_profile_default_black)
+                    .into(circleImageViewProfileFragmentProfileImage);
+        }
+
+        textViewProfileFragmentProfileNickname.setText(MainActivity.user.getNickname());
+        textViewProfileFragmentProfileEmail.setText(MainActivity.user.getEmail());
+    }
+
+    public void createPieChart(int successCount, int ongoingCount, int failCount) {
+        if ( successCount + ongoingCount + failCount == 0 ) {
+            linearLayoutPieChartDefault.setVisibility(View.VISIBLE);
+            pieChart.setVisibility(View.GONE);
+
+            return;
+        } else {
+            pieChart.setVisibility(View.VISIBLE);
+            linearLayoutPieChartDefault.setVisibility(View.GONE);
+        }
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
@@ -132,10 +206,17 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
         // Pie Chart y축 데이터 설정
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+        if ( successCount > 0 ) {
+            yValues.add(new PieEntry(successCount,"Success"));
+        }
 
-        yValues.add(new PieEntry(3f,"Success"));
-        yValues.add(new PieEntry(2f,"Ongoing"));
-        yValues.add(new PieEntry(1f,"Fail"));
+        if ( ongoingCount > 0 ) {
+            yValues.add(new PieEntry(ongoingCount,"Ongoing"));
+        }
+
+        if ( failCount > 0 ) {
+            yValues.add(new PieEntry(failCount,"Fail"));
+        }
 
         // Pie Chart 애니메이션 설정
         pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic);
@@ -157,59 +238,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         pieChart.setEntryLabelColor(getResources().getColor(R.color.colorBlack));
 
         pieChart.setData(data);
-
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        unbinder.unbind();
-        mPresenter.detachView();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        this.mContext = null;
-        this.activity = null;
-    }
-
-    private void init() {
-        // Presenter에 View 할당
-        mPresenter = new ProfilePresenter();
-        mPresenter.attachView(this);
-        // Presenter에 Model 할당
-        mRepository = new ProfileRepository(new ProfileRemoteDataSource());
-        mPresenter.setProfileRepository(mRepository);
-
-        // 유저 프로필사진, 닉네임, 이메일 설정
-        if ( MainActivity.user.getProfileImage() != null ) {
-            Glide.with(ProfileFragment.this)
-                    .load(MainActivity.user.getProfileImage())
-                    .into(circleImageViewProfileFragmentProfileImage);
-        } else {
-            Glide.with(ProfileFragment.this)
-                    .load(R.drawable.icon_profile_default_black)
-                    .into(circleImageViewProfileFragmentProfileImage);
-        }
-        textViewProfileFragmentProfileNickname.setText(MainActivity.user.getNickname());
-        textViewProfileFragmentProfileEmail.setText(MainActivity.user.getEmail());
-    }
-
-    @OnClick(R.id.textViewProfileFragmentModifyProfile)
-    public void onProfileModifyClick() {
-        Intent intent = new Intent(activity, ProfileManagerActivity.class);
-        startActivity(intent);
-    }
-
-    @OnClick(R.id.textViewProfileFragmentLogout)
-    public void onLogoutClick() {
-        // 로그아웃 처리
-        activity.setUserLogout();
-        mPresenter.clearSessionToken(MainActivity.user.getToken());
     }
 
     @Override
@@ -244,5 +272,15 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @Override
     public void turnOffAutoLogin() {
         activity.setUnAutoLogin();
+    }
+
+    @Override
+    public void showSnackBar(String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void drawSteadyProjectPieChart(int success, int ongoing, int fail) {
+        createPieChart(success, ongoing, fail);
     }
 }

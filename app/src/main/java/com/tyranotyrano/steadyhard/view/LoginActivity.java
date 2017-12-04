@@ -34,10 +34,10 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
 
+    static final String TAG = "==========LoginActivity";
     static final int MULTIPLE_PERMISSIONS = 100;
     static final int REQUEST_CODE_ACTIVITY_MAIN = 101;
     static final int REQUEST_CODE_ACTIVITY_JOIN = 103;
-    static final String TAG = "==========LoginActivity";
 
     LoginContract.Presenter mPresenter = null;
     LoginDataSource mRepository = null;

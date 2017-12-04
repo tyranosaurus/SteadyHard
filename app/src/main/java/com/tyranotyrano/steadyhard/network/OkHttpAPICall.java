@@ -26,6 +26,7 @@ public class OkHttpAPICall {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Cookie", SteadyHardApplication.getCookie())
+                .get()
                 .build();
         // Request 요청 및 Response 응답
         Response response = client.newCall(request).execute();
@@ -77,7 +78,7 @@ public class OkHttpAPICall {
         RESPONSE_FLAG = response.isSuccessful();
 
         if ( !RESPONSE_FLAG ) {
-            Log.e(TAG, "Response of POST method returns false.");
+            Log.e(TAG, "Response of PUT method returns false.");
 
             return null;
         }
@@ -101,7 +102,7 @@ public class OkHttpAPICall {
         RESPONSE_FLAG = response.isSuccessful();
 
         if ( !RESPONSE_FLAG ) {
-            Log.e(TAG, "Response of POST method returns false.");
+            Log.e(TAG, "Response of DELETE method returns false.");
 
             return null;
         }

@@ -6,7 +6,7 @@ package com.tyranotyrano.steadyhard.network;
 
 public class NetworkDefineConstant {
     // Host 주소
-    public static final String HOST_URL = "";
+    public static final String HOST_URL = "http://192.168.123.108";
 
     //요청 URL path
     // 로그인
@@ -22,6 +22,9 @@ public class NetworkDefineConstant {
     public static String SERVER_URL_UPLOAD_STEADY_PROJECT_IMAGE;
     public static String SERVER_URL_DELETE_NEW_PROJECT_IMAGE;
     public static String SERVER_URL_CREATE_NEW_STEADY_PROJECT;
+    // 프로필
+    public static String SERVER_URL_DELETE_USER;
+    public static String SERVER_URL_GET_PROJECT_STATUS;
 
     static {
         // 로그인
@@ -37,5 +40,8 @@ public class NetworkDefineConstant {
         SERVER_URL_UPLOAD_STEADY_PROJECT_IMAGE = HOST_URL + "/steadyhard/newproject/uploadSteadyPojectImage.php";
         SERVER_URL_DELETE_NEW_PROJECT_IMAGE = HOST_URL + "/steadyhard/newproject/deleteNewProjectImage.php";
         SERVER_URL_CREATE_NEW_STEADY_PROJECT = HOST_URL + "/steadyhard/newproject/createNewSteadyProject.php";
+        // 프로필
+        SERVER_URL_DELETE_USER = HOST_URL + "/steadyhard/profile/deleteUser.php";
+        SERVER_URL_GET_PROJECT_STATUS = HOST_URL + "/steadyhard/profile/getProjectStatus.php?userNo=";
     }
 }

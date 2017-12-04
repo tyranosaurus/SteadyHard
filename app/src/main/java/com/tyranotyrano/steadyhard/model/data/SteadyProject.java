@@ -13,7 +13,7 @@ public class SteadyProject {
     @SerializedName("title")
     private String projectTitle;
     @SerializedName("project_image")
-    private int projectImage;
+    private String projectImage;
     @SerializedName("current_days")
     private int currentDays;
     @SerializedName("complete_days")
@@ -38,7 +38,7 @@ public class SteadyProject {
     public SteadyProject() { }
 
     /**임시 생성자 - 나중에 지울 것 */
-    public SteadyProject(String projectTitle, int projectImage, int currentDays, int completeDays, String projectDate, String description) {
+    public SteadyProject(String projectTitle, String projectImage, int currentDays, int completeDays, String projectDate, String description) {
         this.projectImage = projectImage;
         this.projectTitle = projectTitle;
         this.currentDays = currentDays;
@@ -47,7 +47,7 @@ public class SteadyProject {
         this.description = description;
     }
 
-    public SteadyProject(int no, String projectTitle, int projectImage, int currentDays, int completeDays,
+    public SteadyProject(int no, String projectTitle, String projectImage, int currentDays, int completeDays,
                          String description, String projectDate, int status, boolean today, int userNo) {
         this.no = no;
         this.projectTitle = projectTitle;
@@ -77,11 +77,11 @@ public class SteadyProject {
         this.projectTitle = projectTitle;
     }
 
-    public int getProjectImage() {
+    public String getProjectImage() {
         return projectImage;
     }
 
-    public void setProjectImage(int projectImage) {
+    public void setProjectImage(String projectImage) {
         this.projectImage = projectImage;
     }
 

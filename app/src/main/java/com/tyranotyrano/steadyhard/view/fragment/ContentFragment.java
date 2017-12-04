@@ -164,7 +164,7 @@ public class ContentFragment extends Fragment implements ContentContract.View{
             SteadyContent item = items.get(position);
 
             // 콘텐츠의 툴바
-            holder.circleImageViewProjectImage.setImageResource(item.getSteadyProject().getProjectImage());
+            holder.circleImageViewProjectImage.setImageResource(R.drawable.logo_black_star);
             holder.textViewProjectTitle.setText(item.getSteadyProject().getProjectTitle());
             holder.textViewCurrentDays.setText(String.valueOf(item.getSteadyProject().getCurrentDays()));
             holder.textViewCompleteDays.setText(String.valueOf(item.getSteadyProject().getCompleteDays()));

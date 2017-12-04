@@ -62,7 +62,7 @@ public class NewSteadyProjectActivity extends AppCompatActivity implements NewSt
     protected void onDestroy() {
         super.onDestroy();
         // 프로젝트 생성 취소시 서버에 저장된 프로젝트 이미지 삭제
-        if ( steadyProjectImagePath != null ) {
+        if ( steadyProjectImagePath != null && steadyProjectImagePath.contains("_NewProjectImage")) {
             String deleteFileName = MainActivity.user.getEmail() + "_NewProjectImage.png";
             mPresenter.deleteNewProjectImage(deleteFileName);
         }
@@ -143,6 +143,8 @@ public class NewSteadyProjectActivity extends AppCompatActivity implements NewSt
         String description = editTextProjectDescription.getText().toString().trim();
 
         mPresenter.createNewProject(projectTitle, steadyProjectImagePath, completeDays, description);
+
+        steadyProjectImagePath = steadyProjectImagePath.replace("NewProjectImage", projectTitle);
     }
 
     @OnClick(R.id.imageViewProjectImage)

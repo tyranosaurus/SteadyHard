@@ -48,38 +48,6 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
         new NewProjectImageDeleteTask().execute(deleteFileName);
     }
 
-    public class SteadyProjectImageUploadTask extends AsyncTask<String, Integer, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // 프로그래스바 다이얼로그 띄우는 용도로 사용
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String imagePath = params[0];
-            String steadyProjectImagePath = mRepository.uploadSteadyProjectImage(imagePath);
-
-            return steadyProjectImagePath;
-        }
-
-        @Override
-        protected void onPostExecute(String steadyProjectImagePath) {
-            super.onPostExecute(steadyProjectImagePath);
-
-            if ( steadyProjectImagePath != null ) {
-                // 이미지 전송에 성공한 경우
-                mView.setSteadyProjectImagePath(steadyProjectImagePath);
-            } else {
-                // 이미지 전송에 실패한 경우
-                String message = "프로젝트 사진 설정에 실패하였습니다.\n 다른 사진을 선택해주세요.";
-                mView.showSnackBar(message);
-                // 디폴트 이미지로 전환
-                mView.setDefaultSteadyProjectImage();
-            }
-        }
-    }
-
     @Override
     public void createNewProject(String projectTitle, String steadyProjectImagePath, String completeDaysStr, String description) {
         int completeDate = 0;
@@ -127,6 +95,38 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
         }
 
         new NewProjectCreateTask().execute(projectTitle, steadyProjectImagePath, completeDate, description, projectImageName);
+    }
+
+    public class SteadyProjectImageUploadTask extends AsyncTask<String, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // 프로그래스바 다이얼로그 띄우는 용도로 사용
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String imagePath = params[0];
+            String steadyProjectImagePath = mRepository.uploadSteadyProjectImage(imagePath);
+
+            return steadyProjectImagePath;
+        }
+
+        @Override
+        protected void onPostExecute(String steadyProjectImagePath) {
+            super.onPostExecute(steadyProjectImagePath);
+
+            if ( steadyProjectImagePath != null ) {
+                // 이미지 전송에 성공한 경우
+                mView.setSteadyProjectImagePath(steadyProjectImagePath);
+            } else {
+                // 이미지 전송에 실패한 경우
+                String message = "프로젝트 사진 설정에 실패하였습니다.\n 다른 사진을 선택해주세요.";
+                mView.showSnackBar(message);
+                // 디폴트 이미지로 전환
+                mView.setDefaultSteadyProjectImage();
+            }
+        }
     }
 
     public class NewProjectImageDeleteTask extends AsyncTask<String, Integer, Boolean> {
