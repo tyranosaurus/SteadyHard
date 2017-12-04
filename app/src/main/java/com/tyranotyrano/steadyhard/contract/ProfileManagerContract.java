@@ -17,6 +17,10 @@ public interface ProfileManagerContract {
         void showSnackBar(String message);
         void clearSharedPreferencesData();
         void callLoginActivity();
+        void selectPictureByGallery();
+        void setOriginalProfileImage();
+        void setNewProfileImagePath(String newProfileImagePath);
+        void updatedNewProfileInfo();
     }
 
     // ProfileManagerActivity 관련 Presenter 처리
@@ -25,5 +29,9 @@ public interface ProfileManagerContract {
         void setProfileManagerRepository(ProfileManagerDataSource profileManagerDataSource);
 
         AlertDialog.Builder buildAlertDialog(AlertDialog.Builder builder, EditText edittextInputPassword);
+        void selectPictureByGallery();
+        void uploadNewProfileImage(String projectImagePath);
+        void deleteNewProfileImage(String deleteFileName);
+        void updateNewProfile(String newProfileImagePath, String newNickname, String originalPassword, String newPasswordFirst, String newPasswordSecond);
     }
 }

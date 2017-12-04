@@ -22,4 +22,25 @@ public class ProfileManagerRepository implements ProfileManagerDataSource {
 
         return deleteResult;
     }
+
+    @Override
+    public String uploadNewProfileImage(String imagePath) {
+        String newProfileImagePath = mProfileManagerRemoteDataSource.uploadNewProfileImage(imagePath);
+
+        return newProfileImagePath;
+    }
+
+    @Override
+    public boolean deletedNewProfileImage(String deleteFileName) {
+        boolean deleteResult = mProfileManagerRemoteDataSource.deletedNewProfileImage(deleteFileName);
+
+        return deleteResult;
+    }
+
+    @Override
+    public boolean updateNewProfile(String newProfileImagePath, String newNickname, String originalPassword, String newPassword) {
+        boolean updateResult = mProfileManagerRemoteDataSource.updateNewProfile(newProfileImagePath, newNickname, originalPassword, newPassword);
+
+        return updateResult;
+    }
 }

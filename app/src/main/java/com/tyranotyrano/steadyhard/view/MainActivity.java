@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /** SearchView 설정 */
+        // SearchView 설정
         setSearchView(menu);
 
         return true;
