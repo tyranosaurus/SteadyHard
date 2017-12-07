@@ -51,8 +51,7 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
         builder.setPositiveButton("입력",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // 회원탈퇴 처리==============================================================
-                        // model 통신
+                        // 회원탈퇴
                         String deletePassword = edittextInputPassword.getText().toString().trim();
                         new UserDeleteTask().execute(deletePassword);
 

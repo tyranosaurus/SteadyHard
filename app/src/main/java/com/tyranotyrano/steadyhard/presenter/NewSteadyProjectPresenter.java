@@ -3,7 +3,10 @@ package com.tyranotyrano.steadyhard.presenter;
 import android.os.AsyncTask;
 
 import com.tyranotyrano.steadyhard.contract.NewSteadyProjectContract;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.remote.datasource.NewSteadyProjectDataSource;
+
+import java.util.Map;
 
 /**
  * Created by cyj on 2017-12-03.
@@ -158,7 +161,7 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
         }
     }
 
-    public class NewProjectCreateTask extends AsyncTask<Object, Integer, Boolean> {
+    public class NewProjectCreateTask extends AsyncTask<Object, Integer, Map<String, Object>> {
 
         @Override
         protected void onPreExecute() {
@@ -167,7 +170,7 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
         }
 
         @Override
-        protected Boolean doInBackground(Object... params) {
+        protected Map<String, Object> doInBackground(Object... params) {
             String projectTitle = null;
             String steadyProjectImagePath = null;
             int completeDate = 0;
@@ -194,22 +197,24 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
                 projectImageName = (String)params[4];
             }
 
-            boolean result = mRepository.createNewSteadyProject(projectTitle, steadyProjectImagePath, completeDate, description, projectImageName);
+            Map<String, Object> map = mRepository.createNewSteadyProject(projectTitle, steadyProjectImagePath, completeDate, description, projectImageName);
 
-            return result;
+            return map;
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(Map<String, Object> map) {
+            super.onPostExecute(map);
 
-            if ( result ) {
-                // 새로운 프로젝트 생성 성공 시
-                // HomeFragment 리사이클러뷰 어댑터에 방금 만든 새 프로젝트 넣어주고 notifyDatasetChanged() 호출할 것.
-                // 방법1. startActivityForResult() 같은거 사용해서 방금만든 프로젝트 데이터 넘기기.
-                // 방법2. 새 프로젝트 완료 후 메인 액티비티 새로고침하기 -> 데이터 새로 가져오게.(메인 액티비티 생명주기 start에서 새로고침)
-                /**** 일단 액티비티는 종료시킴 ****/
-                mView.completeNewSteadyProject();
+            if ( map != null ) {
+                if ( (boolean)map.get("result") ) {
+                    SteadyProject newSteadyProject = (SteadyProject)map.get("newSteadyProject");
+
+                    mView.completeNewSteadyProject(newSteadyProject);
+                } else {
+                    String message = "새 프로젝트 정보를 가져오는데 실패하였습니다.\n잠시후 다시 시도해주세요.";
+                    mView.showSnackBar(message);
+                }
             } else {
                 String message = "새 프로젝트 생성에 실패하였습니다.\n잠시후 다시 시도해주세요.";
                 mView.showSnackBar(message);

@@ -1,5 +1,8 @@
 package com.tyranotyrano.steadyhard.model.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -7,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 
-public class SteadyProject {
+public class SteadyProject implements Parcelable {
     @SerializedName("no")
     private int no;
     @SerializedName("title")
@@ -24,31 +27,15 @@ public class SteadyProject {
     private String projectDate;
     @SerializedName("status")
     private int status;
-    @SerializedName("today")
-    private boolean today;
+    @SerializedName("last_date")
+    private String last_date;
     @SerializedName("user_no")
     private int userNo;
-    /**
-     * 중요!
-     * no, status, today, user_no : GSON으로 받아올떄 steady_project 테이블의 모든 컬럼내용 다 가져와야함!
-     * projectImage : 지금은 int로 되어있는데 나중에 서버에 저장된 주소 가져와야 하므로 String 으로 바꿔야함.
-     * GSON 사용할려면 서버에서보내주는 JSON의 키값이랑 변수이름이랑 일치해야됨!
-     * */
 
     public SteadyProject() { }
 
-    /**임시 생성자 - 나중에 지울 것 */
-    public SteadyProject(String projectTitle, String projectImage, int currentDays, int completeDays, String projectDate, String description) {
-        this.projectImage = projectImage;
-        this.projectTitle = projectTitle;
-        this.currentDays = currentDays;
-        this.completeDays = completeDays;
-        this.projectDate = projectDate;
-        this.description = description;
-    }
-
     public SteadyProject(int no, String projectTitle, String projectImage, int currentDays, int completeDays,
-                         String description, String projectDate, int status, boolean today, int userNo) {
+                         String description, String projectDate, int status, String last_date, int userNo) {
         this.no = no;
         this.projectTitle = projectTitle;
         this.projectImage = projectImage;
@@ -57,8 +44,50 @@ public class SteadyProject {
         this.description = description;
         this.projectDate = projectDate;
         this.status = status;
-        this.today = today;
+        this.last_date = last_date;
         this.userNo = userNo;
+    }
+
+    public SteadyProject(Parcel src) {
+        no = src.readInt();
+        projectTitle = src.readString();
+        projectImage = src.readString();
+        currentDays = src.readInt();
+        completeDays = src.readInt();
+        description = src.readString();
+        projectDate = src.readString();
+        status = src.readInt();
+        last_date = src.readString();
+        userNo = src.readInt();
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public SteadyProject createFromParcel(Parcel src) {
+            return new SteadyProject(src);
+        }
+
+        public SteadyProject[] newArray(int size) {
+            return new SteadyProject[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(no);
+        dest.writeString(projectTitle);
+        dest.writeString(projectImage);
+        dest.writeInt(currentDays);
+        dest.writeInt(completeDays);
+        dest.writeString(description);
+        dest.writeString(projectDate);
+        dest.writeInt(status);
+        dest.writeString(last_date);
+        dest.writeInt(userNo);
     }
 
     public int getNo() {
@@ -125,12 +154,12 @@ public class SteadyProject {
         this.status = status;
     }
 
-    public boolean isToday() {
-        return today;
+    public String getLast_date() {
+        return last_date;
     }
 
-    public void setToday(boolean today) {
-        this.today = today;
+    public void setLast_date(String last_date) {
+        this.last_date = last_date;
     }
 
     public int getUserNo() {

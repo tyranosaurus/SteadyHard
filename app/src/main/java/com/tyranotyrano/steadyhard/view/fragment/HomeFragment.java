@@ -1,23 +1,29 @@
 package com.tyranotyrano.steadyhard.view.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.HomeContract;
 import com.tyranotyrano.steadyhard.contract.adapter.SteadyProjectAdapterContract;
+import com.tyranotyrano.steadyhard.model.HomeRepository;
 import com.tyranotyrano.steadyhard.model.data.SteadyProject;
+import com.tyranotyrano.steadyhard.model.remote.HomeRemoteDatasource;
+import com.tyranotyrano.steadyhard.model.remote.datasource.HomeDataSource;
 import com.tyranotyrano.steadyhard.presenter.HomePresenter;
 import com.tyranotyrano.steadyhard.view.MainActivity;
 
@@ -27,6 +33,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
@@ -37,8 +48,19 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private String mParam1;
     private String mParam2;
 
+    private Context mContext = null;
     private MainActivity activity = null;
+
     private HomePresenter mPresenter = null;
+    private HomeDataSource mRepository = null;
+
+    Unbinder unbinder = null;
+
+    SteadyProjectRecyclerViewAdapter adapter = null;
+
+    @BindView(R.id.recyclerViewSteadyProject) RecyclerView recyclerViewSteadyProject;
+    @BindView(R.id.linearLayoutHomeDefault) LinearLayout linearLayoutHomeDefault;
+    @BindView(R.id.linearLayoutHomeSteadyProject) LinearLayout linearLayoutHomeSteadyProject;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -56,8 +78,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // Activity 할당
-        activity = (MainActivity)getActivity();
+
+        this.mContext = context;
+        this.activity = (MainActivity)getActivity();
     }
 
     @Override
@@ -71,64 +94,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        /** MVP 패턴으로 모두 바꿀 것! */
-        /** 프로젝트의 개수가 0 이면 홈 디폴트 리니어레이아웃, 0 보다 크면 홈 프로젝트 리니어레이아웃 */
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
+        // 버터나이프
+        unbinder = ButterKnife.bind(this, rootView);
+        // 초기화
+        init();
 
-        /** Steady Project 가 들어있는 리사이클러뷰 설정 */
-        RecyclerView recyclerViewSteadyProject = (RecyclerView)rootView.findViewById(R.id.recyclerViewSteadyProject);
-        recyclerViewSteadyProject.setHasFixedSize(true);
-
-        SteadyProjectRecyclerViewAdapter adapter = new SteadyProjectRecyclerViewAdapter();
-        /*adapter.addItem(new SteadyProject("타이틀11111111111111111111111111111111111111111111", R.drawable.logo_black_star, 100, 100, "2017-11-01", "설명"));
-        adapter.addItem(new SteadyProject("타이틀2 : 매일 아침에 조깅 10km 하기!", R.drawable.logo_black_star, 70, 100, "2017-11-01", "설명"));
-        adapter.addItem(new SteadyProject("타이틀3", R.drawable.logo_black_star, 30, 100, "2017-11-01", "설명"));
-        adapter.addItem(new SteadyProject("타이틀4", R.drawable.logo_black_star, 4, 100, "2017-11-02", "설명"));
-        adapter.addItem(new SteadyProject("타이틀5", R.drawable.logo_black_star, 5, 100, "2017-11-02", "설명"));
-        adapter.addItem(new SteadyProject("타이틀6", R.drawable.logo_black_star, 6, 100, "2017-11-02", "설명"));
-        adapter.addItem(new SteadyProject("타이틀7", R.drawable.logo_black_star, 7, 100, "2017-11-02", "설명"));
-        adapter.addItem(new SteadyProject("타이틀8", R.drawable.logo_black_star, 8, 100, "2017-11-03", "설명"));
-        adapter.addItem(new SteadyProject("타이틀9", R.drawable.logo_black_star, 9, 100, "2017-11-03", "설명"));
-        adapter.addItem(new SteadyProject("타이틀10", R.drawable.logo_black_star, 10, 100, "2017-11-03", "설명"));
-        adapter.addItem(new SteadyProject("타이틀11", R.drawable.logo_black_star, 11, 100, "2017-11-03", "설명"));
-        adapter.addItem(new SteadyProject("타이틀12", R.drawable.logo_black_star, 12, 100, "2017-11-04", "설명"));
-        adapter.addItem(new SteadyProject("타이틀13", R.drawable.logo_black_star, 13, 100, "2017-11-04", "설명"));
-        adapter.addItem(new SteadyProject("타이틀14", R.drawable.logo_black_star, 14, 100, "2017-11-04", "설명"));
-        adapter.addItem(new SteadyProject("타이틀15", R.drawable.logo_black_star, 15, 100, "2017-11-04", "설명"));
-        adapter.addItem(new SteadyProject("타이틀16", R.drawable.logo_black_star, 16, 100, "2017-11-05", "설명"));
-        adapter.addItem(new SteadyProject("타이틀17", R.drawable.logo_black_star, 17, 100, "2017-11-05", "설명"));
-        adapter.addItem(new SteadyProject("타이틀18", R.drawable.logo_black_star, 18, 100, "2017-11-05", "설명"));
-        adapter.addItem(new SteadyProject("타이틀19", R.drawable.logo_black_star, 19, 100, "2017-11-06", "설명"));
-        adapter.addItem(new SteadyProject("타이틀20", R.drawable.logo_black_star, 20, 100, "2017-11-06", "설명"));*/
-        recyclerViewSteadyProject.setAdapter(adapter);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerViewSteadyProject.setLayoutManager(layoutManager);
-
-        //root.findViewById() 메소드를 이용해서 각 리니어레이아웃 가져온 다음 VISIBILITY, GONE 설정
-        LinearLayout linearLayoutDefault = (LinearLayout) rootView.findViewById(R.id.linearLayoutHomeDefault);
-        LinearLayout linearLayoutHomeSteadyProject = (LinearLayout) rootView.findViewById(R.id.linearLayoutHomeSteadyProject);
-        if (adapter.getItemCount() > 0 ) {
-            linearLayoutHomeSteadyProject.setVisibility(View.VISIBLE);
-            linearLayoutDefault.setVisibility(View.GONE);
-        } else {
-            linearLayoutDefault.setVisibility(View.VISIBLE);
-            linearLayoutHomeSteadyProject.setVisibility(View.GONE);
-        }
-
-        /** HomePresenter 세팅하는 부분 : 코드 위치 맞는지 확인하고 다시 수정할 것.*/
-        // Presenter 할당
-        mPresenter = new HomePresenter();
-        // Presenter에 HomeContract.View 할당
-        mPresenter.attachView(this);
-        // SteadyProjectAdapterContract의 View 할당
-        mPresenter.setSteadyProjectAdapterView(adapter);
-        // SteadyProjectAdapterContract의 Model 할당
-        mPresenter.setSteadyProjectAdapterModel(adapter);
-        // SteadyProjectAdapterContract의 OnItemClickListener 할당(SteadyProjectAdapterContract의 View 할당한 이후에 호출해야함)
-        mPresenter.setSteadyProjectAdapterOnItemClickListener();
+        // DB에서 프로젝트 정보 가져와서 adapter에 모두 넣어 화면 만들기
+        mPresenter.getSteadyProjects();
 
         return rootView;
     }
@@ -136,29 +109,75 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Presenter 해제
+        unbinder.unbind();
+        mRepository = null;
         mPresenter.detachView();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        // Activity 해제
-        activity = null;
+
+        this.mContext = null;
+        this.activity = null;
+    }
+
+    public void init() {
+        // Presenter에 View 할당
+        mPresenter = new HomePresenter();
+        mPresenter.attachView(this);
+        // Presenter에 Model 할당
+        mRepository = new HomeRepository(new HomeRemoteDatasource());
+        mPresenter.setHomeRepository(mRepository);
+
+        // 리사이클러뷰 설정
+        recyclerViewSteadyProject.setHasFixedSize(true);
+        // 리사이클러뷰 어댑터 설정
+        adapter = new SteadyProjectRecyclerViewAdapter();
+        recyclerViewSteadyProject.setAdapter(adapter);
+        // 리사이클러뷰 레이아웃 매니저 설정
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewSteadyProject.setLayoutManager(linearLayoutManager);
+
+        // SteadyProjectAdapterContract의 View 할당
+        mPresenter.setSteadyProjectAdapterView(adapter);
+        // SteadyProjectAdapterContract의 Model 할당
+        mPresenter.setSteadyProjectAdapterModel(adapter);
+        // SteadyProjectAdapterContract의 OnItemClickListener 할당(리사이클러뷰 adapter 생성한 이후에 호출해야함)
+        mPresenter.setSteadyProjectAdapterOnItemClickListener();
+    }
+
+    public void addNewProject(SteadyProject newSteadyProject) {
+        adapter.addNewItem(newSteadyProject);
+        adapter.notifyItemInserted(0);
+        recyclerViewSteadyProject.scrollToPosition(0);
     }
 
     @Override
     public void showSnackBar(String message) {
+        // getView() : 프래그먼트의 root view 가져옴
         Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
-    /** 일단 리사이클러뷰의 어댑터를 여기에다가 정의 : 나중에 mvp 패턴에 맞게 수정할 것! */
-    /** 리사이클러뷰 어댑터 */
-    private class SteadyProjectRecyclerViewAdapter extends RecyclerView.Adapter<SteadyProjectRecyclerViewAdapter.SteadyProjectViewHolder>
+    @Override
+    public void showSteadyProjectsLayout() {
+        // 프로젝트의 개수가 0 이면 홈 디폴트 리니어레이아웃, 0 보다 크면 홈 프로젝트 리니어레이아웃
+        if (adapter.getItemCount() > 0 ) {
+            linearLayoutHomeSteadyProject.setVisibility(View.VISIBLE);
+            linearLayoutHomeDefault.setVisibility(View.GONE);
+        } else {
+            linearLayoutHomeDefault.setVisibility(View.VISIBLE);
+            linearLayoutHomeSteadyProject.setVisibility(View.GONE);
+        }
+    }
+
+    // 리사이클러뷰 어댑터
+    public class SteadyProjectRecyclerViewAdapter extends RecyclerView.Adapter<SteadyProjectRecyclerViewAdapter.SteadyProjectViewHolder>
                                                    implements SteadyProjectAdapterContract.View, SteadyProjectAdapterContract.Model {
 
         // SteadyProjectAdapterContract 의 OnItemClickListener
-        SteadyProjectAdapterContract.OnItemClickListener itemClickListener = null;
+        SteadyProjectAdapterContract.OnSteadyProjectClickListener onSteadyProjectClickListener = null;
 
         // 아이템을 저장할 리스트
         List<SteadyProject> items = new ArrayList<>();
@@ -166,11 +185,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         // 뷰홀더를 생성
         @Override
         public SteadyProjectRecyclerViewAdapter.SteadyProjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            // 아이템이 배치될 레이아웃을 부모 뷰그룹에 인플레이션한다.
-            // 여기서 부모 뷰그룹은 리사이클러뷰가 된다.
+
+            // 아이템이 배치될 레이아웃을 부모 뷰그룹에 인플레이션한다 : 여기서 부모 뷰그룹은 리사이클러뷰가 된다.
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_steady_project, parent, false);
 
-            return new SteadyProjectViewHolder(parent.getContext(), parent, itemClickListener);
+            return new SteadyProjectViewHolder(parent.getContext(), view, onSteadyProjectClickListener);
         }
 
         // 뷰홀더를 데이터와 바인딩 해준다. (뷰홀더 재사용)
@@ -180,8 +199,28 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             // 뷰홀더에서 사용할 아이템을 가져온다.
             SteadyProject item = items.get(position);
 
+            // 프로젝트 오늘 등록여부 설정
+            if ( item.getStatus() != 2 ) {
+                holder.viewTodayCheck.setVisibility(View.INVISIBLE);
+            }
+
+            if ( holder.checkSteadyProjectToday(item.getLast_date()) ) {
+                holder.viewTodayCheck.setBackgroundResource(R.drawable.circle_today_check_green);
+            } else {
+                holder.viewTodayCheck.setBackgroundResource(R.drawable.circle_today_check_red);
+            }
             // 프로젝트 이미지 설정
-            holder.circleImageViewProjectImage.setImageResource(R.drawable.logo_black_star);
+            if ( item.getProjectImage() != null ) {
+                Glide.with(HomeFragment.this)
+                        .load(item.getProjectImage())
+                        .override(72,72)
+                        .error(R.drawable.icon_load_fail)
+                        .into(holder.circleImageViewProjectImage);
+            } else {
+                Glide.with(HomeFragment.this)
+                        .load(R.drawable.logo_black_star)
+                        .into(holder.circleImageViewProjectImage);
+            }
             // 프로젝트 타이틀 설정
             holder.textViewProjectTitle.setText(item.getProjectTitle());
             // 프로젝트 현재 진행일수 설정
@@ -189,15 +228,24 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             // 프로젝트 완료 일수 설정
             holder.textViewCompleteDays.setText(String.valueOf(item.getCompleteDays()));
             // 프로젝트 등록 날짜 설정
-            holder.textViewProjectDate.setText(holder.setProjectDateFormat(item.getProjectDate())); /**  아이템에 날짜 추가하기*/
+            holder.textViewProjectDate.setText(holder.setProjectDateFormat(item.getProjectDate()));
+            // 프로젝트 Status 설정
+            if ( item.getStatus() == 1 ) {
+                holder.textViewProjectStatus.setVisibility(View.VISIBLE);
+                holder.textViewProjectStatus.setText("[ Success ]");
+                holder.textViewProjectStatus.setTextColor(getResources().getColor(R.color.colorGreen));
 
-            /** currentDays에 따른 색깔 구분
-             *  여기서는 완료날짜가 100으로 고정되어있지만 나중에는 완료날짜에 따른 현재날짜의 비율로 계산할 것
-             *
-             *  추가 : 프로젝트 실패시 빨간색으로 표시할 것.
-             * */
-            // holder의 이벤트
+                holder.setDurationGone();
+            } else if ( item.getStatus() == 3 ) {
+                holder.textViewProjectStatus.setVisibility(View.VISIBLE);
+                holder.textViewProjectStatus.setText("[ Fail ]");
+                holder.textViewProjectStatus.setTextColor(getResources().getColor(R.color.colorRed));
+
+                holder.setDurationGone();
+            }
+            // 프로젝트 현재 진행날짜 색깔 설정
             holder.setDurationColor(item.getCurrentDays(), item.getCompleteDays());
+            // 프로젝트 클릭 이벤트 설정
             holder.onBindItemClickListener(item, position);
         }
 
@@ -209,7 +257,15 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         @Override
         public void notifyAdapter() {
-            notifyDataSetChanged();
+            // 데이터 갱신
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void notifyAdapterDelete(int deletePosition) {
+            // 삭제 후 데이터 갱신(애니메이션)
+            adapter.notifyItemRemoved(deletePosition);
+            //adapter.notifyAdapter();
         }
 
         @Override
@@ -218,58 +274,134 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         }
 
         @Override
-        public void setOnItemClickListener(SteadyProjectAdapterContract.OnItemClickListener onItemClickListener) {
-            if ( onItemClickListener != null ) {
-                this.itemClickListener = onItemClickListener;
+        public void addNewItem(SteadyProject item) {
+            items.add(0, item);
+        }
+
+        @Override
+        public void clearAdapter() {
+            items.clear();
+        }
+
+        @Override
+        public void setOnSteadyProjectClickListener(SteadyProjectAdapterContract.OnSteadyProjectClickListener onSteadyProjectClickListener) {
+            if ( onSteadyProjectClickListener != null ) {
+                this.onSteadyProjectClickListener = onSteadyProjectClickListener;
             }
         }
 
         @Override
-        public SteadyProject getItem(int position) {
+        public SteadyProject getSteadyProjectItem(int position) {
             return items.get(position);
+        }
+
+        @Override
+        public void deleteSteadyProject(SteadyProject deleteItem) {
+            items.remove(deleteItem);
         }
 
         public class SteadyProjectViewHolder extends RecyclerView.ViewHolder {
 
             Context context = null;
-            SteadyProjectAdapterContract.OnItemClickListener itemClickListener = null;
+            SteadyProjectAdapterContract.OnSteadyProjectClickListener onSteadyProjectClickListener = null;
 
-            CircleImageView circleImageViewProjectImage = null;
-            TextView textViewProjectTitle = null;
-            TextView textViewOpenBracket = null;
-            TextView textViewCurrentDays = null;
-            TextView textViewPer = null;
-            TextView textViewCompleteDays = null;
-            TextView textViewCloseBracket = null;
-            TextView textViewProjectDate = null;
-            ImageView imageViewProjectMenu = null;
+            @BindView((R.id.viewTodayCheck)) View viewTodayCheck;
+            @BindView(R.id.circleImageViewProjectImage) CircleImageView circleImageViewProjectImage;
+            @BindView(R.id.textViewProjectTitle) TextView textViewProjectTitle;
+            @BindView(R.id.textViewOpenBracket) TextView textViewOpenBracket;
+            @BindView(R.id.textViewCurrentDays) TextView textViewCurrentDays;
+            @BindView(R.id.textViewPer) TextView textViewPer;
+            @BindView(R.id.textViewCompleteDays) TextView textViewCompleteDays;
+            @BindView(R.id.textViewCloseBracket) TextView textViewCloseBracket;
+            @BindView(R.id.textViewProjectDate) TextView textViewProjectDate;
+            @BindView(R.id.textViewProjectStatus) TextView textViewProjectStatus;
+            @BindView(R.id.imageViewProjectMenu) ImageView imageViewProjectMenu;
 
-            public SteadyProjectViewHolder(Context context, ViewGroup parent, SteadyProjectAdapterContract.OnItemClickListener itemClickListener) {
-                super(LayoutInflater.from(context).inflate(R.layout.item_steady_project, parent, false));
+            @BindViews({ R.id.textViewOpenBracket, R.id.textViewCurrentDays, R.id.textViewPer, R.id.textViewCompleteDays, R.id.textViewCloseBracket })
+            List<TextView> textViewDateStatusList;
+
+            final ButterKnife.Setter<TextView, Integer> setDateStatusGone = new ButterKnife.Setter<TextView, Integer>() {
+                @Override public void set(TextView textView, Integer gone, int index) {
+                    textView.setVisibility(gone);
+                }
+            };
+
+            final ButterKnife.Setter<TextView, Integer> setDateStatusColor = new ButterKnife.Setter<TextView, Integer>() {
+                @Override public void set(TextView textView, Integer colorValue, int index) {
+                    textView.setTextColor(colorValue);
+                }
+            };
+
+            public SteadyProjectViewHolder(Context context, View itemView, SteadyProjectAdapterContract.OnSteadyProjectClickListener onSteadyProjectClickListener) {
+                super(itemView);
+                // 버터나이프
+                ButterKnife.bind(this, itemView);
 
                 if ( context != null ) {
                     this.context = context;
                 }
 
-                if ( itemClickListener != null ) {
-                    this.itemClickListener = itemClickListener;
+                if ( onSteadyProjectClickListener != null ) {
+                    this.onSteadyProjectClickListener = onSteadyProjectClickListener;
                 }
+            }
 
-                circleImageViewProjectImage = (CircleImageView) itemView.findViewById(R.id.circleImageViewProjectImage);
-                textViewProjectTitle = (TextView) itemView.findViewById(R.id.textViewProjectTitle);
-                textViewOpenBracket = (TextView) itemView.findViewById(R.id.textViewOpenBracket);
-                textViewCurrentDays = (TextView) itemView.findViewById(R.id.textViewCurrentDays);
-                textViewPer = (TextView) itemView.findViewById(R.id.textViewPer);
-                textViewCompleteDays = (TextView) itemView.findViewById(R.id.textViewCompleteDays);
-                textViewCloseBracket = (TextView) itemView.findViewById(R.id.textViewCloseBracket);
-                textViewProjectDate = (TextView) itemView.findViewById(R.id.textViewProjectDate);
-                imageViewProjectMenu = (ImageView) itemView.findViewById(R.id.imageViewProjectMenu);
-                imageViewProjectMenu.setOnClickListener(new View.OnClickListener() {
+            @OnClick(R.id.imageViewProjectMenu)
+            public void onProjectMenuClick() {
+                // 팝업메뉴 생성(두번째 인자 : 팝업메뉴가 보여질 앵커)
+                PopupMenu popupMenu = new PopupMenu(activity, imageViewProjectMenu);
+                // 팝업메뉴 인플레이션
+                activity.getMenuInflater().inflate(R.menu.menu_project_popup, popupMenu.getMenu());
+                // 팝업메뉴 클릭 이벤트 처리
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        Snackbar.make(v, "프로젝트의 메뉴버튼 클릭", Snackbar.LENGTH_SHORT).show();
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch ( item.getItemId() ) {
+                            case R.id.popup_project_modify:
+                                // showSnackBar("프로젝트 수정됨");=====================================
+                                //Intent intent = new Integer(HomeFragment.this, Modify)
+                                break;
+                            case R.id.popup_project_delete:
+                                // 프로젝트 삭제
+                                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+                                builder = mPresenter.buildDeleteAlertDialog(builder, getAdapterPosition());
+                                builder.show();
+
+                                break;
+                            default:
+                                break;
+                        }
+                        return true;
                     }
                 });
+                // 팝업메뉴 보이기
+                popupMenu.show();
+            }
+
+            public boolean checkSteadyProjectToday(String lastDate) {
+                Date lastContentDate = null;
+                Date todayDate = null;
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String todayStr = dateFormat.format(new Date());
+
+                try {
+                    lastContentDate = dateFormat.parse(lastDate);
+                    todayDate = dateFormat.parse(todayStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if ( lastContentDate.compareTo(todayDate) == -1 ) {
+                    // 오늘 콘텐츠 안함.
+                    return false;
+                } else if ( lastContentDate.compareTo(todayDate) == 0 ) {
+                    // 오늘 콘텐츠 올림.
+                    return true;
+                }
+
+                return false;
             }
 
             public String setProjectDateFormat(String projectDate) {
@@ -287,36 +419,33 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             }
 
             public void onBindItemClickListener(SteadyProject item, final int position) {
+                // 여기서 사용하는 itemView 지역변수는 뷰홀더가 상속한 RecyclerView.ViewHolder의  itemView 이다.
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if ( itemClickListener != null ) {
-                            itemClickListener.onItemClick(position);
+                        if ( onSteadyProjectClickListener != null ) {
+                            onSteadyProjectClickListener.onSteadyProjectClick(position);
                         }
                     }
                 });
             }
 
             public void setDurationColor(int currentDays, int completeDays) {
-                if ( currentDays >= 1 && currentDays <=30 ) {
-                    textViewOpenBracket.setTextColor(Color.parseColor("#FFD54F"));
-                    textViewCurrentDays.setTextColor(Color.parseColor("#FFD54F"));
-                    textViewPer.setTextColor(Color.parseColor("#FFD54F"));
-                    textViewCompleteDays.setTextColor(Color.parseColor("#FFD54F"));
-                    textViewCloseBracket.setTextColor(Color.parseColor("#FFD54F"));
-                } else if ( currentDays >= 31 && currentDays <=70 ) {
-                    textViewOpenBracket.setTextColor(Color.parseColor("#4FC3F7"));
-                    textViewCurrentDays.setTextColor(Color.parseColor("#4FC3F7"));
-                    textViewPer.setTextColor(Color.parseColor("#4FC3F7"));
-                    textViewCompleteDays.setTextColor(Color.parseColor("#4FC3F7"));
-                    textViewCloseBracket.setTextColor(Color.parseColor("#4FC3F7"));
-                } else if ( currentDays >= 71 && currentDays <= completeDays ) {
-                    textViewOpenBracket.setTextColor(Color.parseColor("#00E676"));
-                    textViewCurrentDays.setTextColor(Color.parseColor("#00E676"));
-                    textViewPer.setTextColor(Color.parseColor("#00E676"));
-                    textViewCompleteDays.setTextColor(Color.parseColor("#00E676"));
-                    textViewCloseBracket.setTextColor(Color.parseColor("#00E676"));
+                int percent = ( currentDays * 100 ) / completeDays;
+
+                if ( currentDays == 0 ) {
+                    ButterKnife.apply(textViewDateStatusList, setDateStatusColor, getResources().getColor(R.color.colorBlack));
+                } else if ( percent > 0 && percent <= 30 ) {
+                    ButterKnife.apply(textViewDateStatusList, setDateStatusColor, getResources().getColor(R.color.colorYellow));
+                } else if ( percent >= 31 && percent <=70 ) {
+                    ButterKnife.apply(textViewDateStatusList, setDateStatusColor, getResources().getColor(R.color.colorBlueSky));
+                } else if ( percent >= 71 && percent <= 100 ) {
+                    ButterKnife.apply(textViewDateStatusList, setDateStatusColor, getResources().getColor(R.color.colorGreen));
                 }
+            }
+
+            public void setDurationGone() {
+                ButterKnife.apply(textViewDateStatusList, setDateStatusGone, View.GONE);
             }
         }
     }

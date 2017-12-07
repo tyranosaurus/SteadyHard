@@ -2,6 +2,8 @@ package com.tyranotyrano.steadyhard.model.remote;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.remote.datasource.NewSteadyProjectDataSource;
 import com.tyranotyrano.steadyhard.network.NetworkDefineConstant;
 import com.tyranotyrano.steadyhard.network.OkHttpAPICall;
@@ -13,6 +15,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -131,10 +135,14 @@ public class NewSteadyProjectRemoteDataSource implements NewSteadyProjectDataSou
     }
 
     @Override
-    public boolean createNewSteadyProject(String projectTitle, String steadyProjectImagePath, int completeDate, String description, String projectImageName) {
+    public Map<String, Object> createNewSteadyProject(String projectTitle, String steadyProjectImagePath, int completeDate, String description, String projectImageName) {
         OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
         Response response = null;
+        // Gson 객체 생성
+        Gson gson = new Gson();
 
+        Map<String, Object> map = new HashMap<>();
+        SteadyProject newSteadyProject = null;
         boolean result = false;
         String message = null;
 
@@ -161,11 +169,18 @@ public class NewSteadyProjectRemoteDataSource implements NewSteadyProjectDataSou
             if ( response == null ) {
                 Log.e(TAG, "Response of uploadProfileImage() is null.");
 
-                return false;
+                return null;
             } else {
                 JSONObject jsonFromServer = new JSONObject(response.body().string());
 
                 result = jsonFromServer.getBoolean("result");
+                map.put("result", result);
+
+                if ( jsonFromServer.has("newProject") ) {
+                    // gson, map 에 넣기
+                    newSteadyProject = gson.fromJson(jsonFromServer.getJSONObject("newProject").toString(), SteadyProject.class);
+                    map.put("newSteadyProject", newSteadyProject);
+                }
 
                 if ( jsonFromServer.has("message") ) {
                     message = jsonFromServer.getString("message");
@@ -185,6 +200,6 @@ public class NewSteadyProjectRemoteDataSource implements NewSteadyProjectDataSou
             }
         }
 
-        return result;
+        return map;
     }
 }

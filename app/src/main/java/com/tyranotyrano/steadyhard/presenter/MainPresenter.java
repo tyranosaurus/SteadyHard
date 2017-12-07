@@ -47,16 +47,11 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void setBottomNavigationView(FragmentManager fm) {
-        final FragmentManager fragmentManager = fm;
-        // 홈 프래그먼트
-        final HomeFragment homeFragment = HomeFragment.newInstance("Home", "MainActivity");
-        // 콘텐츠 프래그먼트
-        final ContentFragment contentFragment = ContentFragment.newInstance("Content", "MainActivity");
-        // 프로필 프래그먼트
-        final ProfileFragment profileFragment = ProfileFragment.newInstance("Profile", "MainActivity");
+    public void setBottomNavigationView(final FragmentManager fragmentManager, final HomeFragment homeFragment, final ContentFragment contentFragment, final ProfileFragment profileFragment) {
         // 첫 시작 프래그먼트로 홈 프래그먼트 지정
         fragmentManager.beginTransaction().replace(R.id.frameLayoutFragmentContainer, homeFragment).commit();
+        // 프래그먼트 초기화
+        fragment = homeFragment;
 
         BottomNavigationView.OnNavigationItemSelectedListener OnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -153,5 +148,14 @@ public class MainPresenter implements MainContract.Presenter {
                 Log.e("clearSessionToken()","There is no Token value for Session Logout.");
             }
         }
+    }
+
+    @Override
+    public Fragment getCurrentFragment() {
+        if ( fragment == null ) {
+            return null;
+        }
+
+        return fragment;
     }
 }

@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.NewSteadyProjectContract;
 import com.tyranotyrano.steadyhard.model.NewSteadyProjectRepository;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.remote.NewSteadyProjectRemoteDataSource;
 import com.tyranotyrano.steadyhard.model.remote.datasource.NewSteadyProjectDataSource;
 import com.tyranotyrano.steadyhard.presenter.NewSteadyProjectPresenter;
@@ -144,7 +145,9 @@ public class NewSteadyProjectActivity extends AppCompatActivity implements NewSt
 
         mPresenter.createNewProject(projectTitle, steadyProjectImagePath, completeDays, description);
 
-        steadyProjectImagePath = steadyProjectImagePath.replace("NewProjectImage", projectTitle);
+        if ( steadyProjectImagePath != null ) {
+            steadyProjectImagePath = steadyProjectImagePath.replace("NewProjectImage", projectTitle).replaceAll(" ", "_");
+        }
     }
 
     @OnClick(R.id.imageViewProjectImage)
@@ -188,7 +191,12 @@ public class NewSteadyProjectActivity extends AppCompatActivity implements NewSt
     }
 
     @Override
-    public void completeNewSteadyProject() {
+    public void completeNewSteadyProject(SteadyProject newSteadyProject) {
+        Intent intent = new Intent();
+        // Parcelable 객체
+        intent.putExtra("newSteadyProject", newSteadyProject);
+        setResult(RESULT_OK, intent);
+
         finish();
     }
 }

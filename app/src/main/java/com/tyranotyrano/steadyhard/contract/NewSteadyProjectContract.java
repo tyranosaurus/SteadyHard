@@ -2,6 +2,7 @@ package com.tyranotyrano.steadyhard.contract;
 
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.remote.datasource.NewSteadyProjectDataSource;
 
 /**
@@ -16,7 +17,7 @@ public interface NewSteadyProjectContract {
         void setSteadyProjectImagePath(String steadyProjectImagePath);
         void setDefaultSteadyProjectImage();
         void setKeyboardDown();
-        void completeNewSteadyProject();
+        void completeNewSteadyProject(SteadyProject newSteadyProject);
     }
 
     // NewSteadyProjectActivity 관련 Presenter 처리

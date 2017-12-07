@@ -26,7 +26,7 @@
                 android:layout_height="10dp"
                 android:layout_marginLeft="16dp"
                 android:layout_gravity="center"
-                android:background="@drawable/circle_today_check" />
+                android:background="@drawable/circle_today_check_green" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImageViewProjectImage"
@@ -58,6 +58,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
+
+                <!-- Success/Fail 에 따른 상태 -->
+                <TextView
+                    android:id="@+id/textViewProjectStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Project Status"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="gone"/>
 
                 <!-- 진행 일수 확인 -->
                 <LinearLayout

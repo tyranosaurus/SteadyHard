@@ -2,12 +2,14 @@ package com.tyranotyrano.steadyhard.model.remote;
 
 import android.util.Log;
 
-import com.tyranotyrano.steadyhard.model.remote.datasource.ProfileDataSource;
+import com.google.gson.Gson;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
+import com.tyranotyrano.steadyhard.model.remote.datasource.HomeDataSource;
 import com.tyranotyrano.steadyhard.network.NetworkDefineConstant;
 import com.tyranotyrano.steadyhard.network.OkHttpAPICall;
 import com.tyranotyrano.steadyhard.network.OkHttpInitSingtonManager;
-import com.tyranotyrano.steadyhard.view.MainActivity;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -23,30 +25,95 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by cyj on 2017-11-29.
+ * Created by cyj on 2017-12-06.
  */
 
-public class ProfileRemoteDataSource implements ProfileDataSource {
-    static final String TAG = "ProfileRemoteDataSource";
+public class HomeRemoteDatasource implements HomeDataSource {
+    static final String TAG = "HomeRemoteDatasource";
 
     @Override
-    public boolean clearSessionToken(String token) {
+    public Map<String, Object> getSteadyProjectsByUserNo(int userNo) {
+        OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
+        Response response = null;
+
+        Gson gson = new Gson();
+
+        Map<String, Object> map = new HashMap<>();
+        boolean result = false;
+        List<SteadyProject> steadyProjectList = new ArrayList<>();
+        String message = null;
+
+        try {
+            response = OkHttpAPICall.GET(client, NetworkDefineConstant.SERVER_URL_GET_STEADY_PROJECTS + userNo);
+
+            if ( response == null ) {
+                Log.e(TAG, "Response of getSteadyProjectsByUserNo() is null.");
+
+                return null;
+            } else {
+                JSONObject jsonFromServer = new JSONObject(response.body().string());
+                // 결과
+                result = jsonFromServer.getBoolean("result");
+                map.put("result", result);
+
+                // Steady Project List 저장
+                if ( jsonFromServer.has("steadyProjects") ) {
+                    JSONArray steadyProjectArray = jsonFromServer.getJSONArray("steadyProjects");
+
+                    SteadyProject steadyProject = null;
+                    for ( int i = 0; i < steadyProjectArray.length(); i++ ) {
+                        steadyProject = gson.fromJson(steadyProjectArray.getJSONObject(i).toString(), SteadyProject.class);
+                        steadyProjectList.add(steadyProject);
+                    }
+
+                    map.put("steadyProjectList", steadyProjectList);
+                }
+
+                if ( jsonFromServer.has("message") ) {
+                    message = jsonFromServer.getString("message");
+                    Log.e(TAG, message);
+                }
+            }
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if ( response != null ) {
+                response.close();
+            }
+        }
+
+        return map;
+    }
+
+    @Override
+    public boolean deleteSteadyProject(int deleteProjectNo, String userEmail, String projectImageName) {
         OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
         Response response = null;
 
         boolean result = false;
         String message = null;
 
-        // 로그인 정보를 담은 RequestBody 생성
-        RequestBody requestBody = new FormBody.Builder()
-                .add("token", token)
-                .build();
+        FormBody.Builder requestBuilder = new FormBody.Builder();
+
+        if ( projectImageName != null ) {
+            requestBuilder.add("projectImageName", projectImageName);
+        }
+
+        requestBuilder
+                .add("deleteProjectNo", String.valueOf(deleteProjectNo))
+                .add("userEmail", userEmail);
+
+        RequestBody requestBody = requestBuilder.build();
 
         try {
-            response = OkHttpAPICall.DELETE(client, NetworkDefineConstant.SERVER_URL_SESSION_LOGOUT, requestBody);
+            response = OkHttpAPICall.DELETE(client, NetworkDefineConstant.SERVER_URL_DELETE_STEADY_PROJECT, requestBody);
 
             if ( response == null ) {
-                Log.e(TAG, "Response of clearSessionToken() is null.");
+                Log.e(TAG, "Response of deleteSteadyProject() is null.");
 
                 return false;
             } else {
@@ -71,59 +138,5 @@ public class ProfileRemoteDataSource implements ProfileDataSource {
         }
 
         return result;
-    }
-
-    @Override
-    public Map<String, Object> getSteadyProjectStatusCount() {
-        OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
-        Response response = null;
-
-        Map<String, Object> map = new HashMap<>();
-        boolean result = false;
-        List<Integer> statusCountList = new ArrayList<>();
-        String message = null;
-
-        try {
-            response = OkHttpAPICall.GET(client, NetworkDefineConstant.SERVER_URL_GET_PROJECT_STATUS + MainActivity.user.getNo());
-
-            if ( response == null ) {
-                Log.e(TAG, "Response of clearSessionToken() is null.");
-
-                return null;
-            } else {
-                JSONObject jsonFromServer = new JSONObject(response.body().string());
-                // 결과
-                result = jsonFromServer.getBoolean("result");
-                map.put("result", result);
-
-                // Steady Project Status 저장
-                if ( jsonFromServer.has("projectStatusCount") ) {
-                    JSONObject projectStatusCount = jsonFromServer.getJSONObject("projectStatusCount");
-
-                    statusCountList.add(projectStatusCount.getInt("success"));
-                    statusCountList.add(projectStatusCount.getInt("ongoing"));
-                    statusCountList.add(projectStatusCount.getInt("fail"));
-
-                    map.put("projectStatusCount", statusCountList);
-                }
-
-                if ( jsonFromServer.has("message") ) {
-                    message = jsonFromServer.getString("message");
-                    Log.e(TAG, message);
-                }
-            }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if ( response != null ) {
-                response.close();
-            }
-        }
-
-        return map;
     }
 }

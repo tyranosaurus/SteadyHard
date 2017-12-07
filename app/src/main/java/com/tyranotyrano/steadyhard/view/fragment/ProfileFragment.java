@@ -136,7 +136,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(circleImageViewProfileFragmentProfileImage);
-
         } else {
             Glide.with(ProfileFragment.this)
                     .load(R.drawable.icon_profile_default_black)
@@ -145,8 +144,25 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
         textViewProfileFragmentProfileNickname.setText(user.getNickname());
         textViewProfileFragmentProfileEmail.setText(user.getEmail());
-        // 프로젝트의 status 카운트 각각 가져오기
+        // 프로젝트의 status 카운트 각각 가져와서 Pie Chart 그리기
         mPresenter.getSteadyProjectStatusCount();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        unbinder.unbind();
+        mRepository = null;
+        mPresenter.detachView();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        this.mContext = null;
+        this.activity = null;
     }
 
     @Override
@@ -166,22 +182,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
             }
         }
 
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        unbinder.unbind();
-        mPresenter.detachView();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        this.mContext = null;
-        this.activity = null;
     }
 
     @OnClick(R.id.textViewProfileFragmentModifyProfile)
@@ -204,23 +204,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         // Presenter에 Model 할당
         mRepository = new ProfileRepository(new ProfileRemoteDataSource());
         mPresenter.setProfileRepository(mRepository);
-
-        // 유저 프로필사진, 닉네임, 이메일 설정
-        if ( user.getProfileImage() != null ) {
-            Glide.with(ProfileFragment.this)
-                    .load(MainActivity.user.getProfileImage())
-                    .into(circleImageViewProfileFragmentProfileImage);
-
-        } else {
-            Glide.with(ProfileFragment.this)
-                    .load(R.drawable.icon_profile_default_black)
-                    .into(circleImageViewProfileFragmentProfileImage);
-        }
-
-        textViewProfileFragmentProfileNickname.setText(user.getNickname());
-        textViewProfileFragmentProfileEmail.setText(user.getEmail());
-        // 프로젝트의 status 카운트 각각 가져오기
-        mPresenter.getSteadyProjectStatusCount();
     }
 
     public void createPieChart(int successCount, int ongoingCount, int failCount) {

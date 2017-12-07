@@ -2,6 +2,8 @@ package com.tyranotyrano.steadyhard.model;
 
 import com.tyranotyrano.steadyhard.model.remote.datasource.NewSteadyProjectDataSource;
 
+import java.util.Map;
+
 /**
  * Created by cyj on 2017-12-03.
  */
@@ -29,9 +31,9 @@ public class NewSteadyProjectRepository implements NewSteadyProjectDataSource {
     }
 
     @Override
-    public boolean createNewSteadyProject(String projectTitle, String steadyProjectImagePath, int completeDate, String description, String projectImageName) {
-        boolean result = mNewSteadyProjectRemoteDataSource.createNewSteadyProject(projectTitle, steadyProjectImagePath, completeDate, description, projectImageName);
+    public Map<String, Object> createNewSteadyProject(String projectTitle, String steadyProjectImagePath, int completeDate, String description, String projectImageName) {
+        Map<String, Object> map = mNewSteadyProjectRemoteDataSource.createNewSteadyProject(projectTitle, steadyProjectImagePath, completeDate, description, projectImageName);
 
-        return result;
+        return map;
     }
 }

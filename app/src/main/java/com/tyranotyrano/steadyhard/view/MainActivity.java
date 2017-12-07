@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,10 +18,14 @@ import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.application.SteadyHardApplication;
 import com.tyranotyrano.steadyhard.contract.MainContract;
 import com.tyranotyrano.steadyhard.model.MainRepository;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.data.User;
 import com.tyranotyrano.steadyhard.model.remote.MainRemoteDataSource;
 import com.tyranotyrano.steadyhard.model.remote.datasource.MainDataSource;
 import com.tyranotyrano.steadyhard.presenter.MainPresenter;
+import com.tyranotyrano.steadyhard.view.fragment.ContentFragment;
+import com.tyranotyrano.steadyhard.view.fragment.HomeFragment;
+import com.tyranotyrano.steadyhard.view.fragment.ProfileFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +34,8 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     public static final String TAG = "==========MainActivity";
+    private static final int REQUEST_CODE_NEW_STEADY_PROJECT_ACTIVITY = 105;
+
     public static User user = null;
 
     // Presenter, Model
@@ -36,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     MainDataSource mRepository = null;
 
     boolean isLogout = false;
+    Fragment fragment = null;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
@@ -47,8 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setContentView(R.layout.activity_main);
         // ButterKnife 세팅
         ButterKnife.bind(this);
-
-        /** init() 함수 만들 것 */
+        // 초기화
         init();
     }
 
@@ -78,6 +85,43 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( resultCode == RESULT_OK ) {
+            switch ( requestCode ) {
+                case REQUEST_CODE_NEW_STEADY_PROJECT_ACTIVITY:
+                    SteadyProject newSteadyProject = data.getParcelableExtra("newSteadyProject");
+                    fragment = mPresenter.getCurrentFragment();
+
+                    if ( fragment == null ) {
+                        // 예외처리
+                        String message = "프로젝트를 불러오는데 실패하였습니다. 새로고침을 해주세요.";
+                        showSnackBar(message);
+
+                        return;
+                    }
+
+                    if ( fragment instanceof HomeFragment ) {
+                        ((HomeFragment)fragment).addNewProject(newSteadyProject);
+                    } else {
+                        String message = "프로젝트를 불러오는데 실패하였습니다. 새로고침을 해주세요.";
+                        showSnackBar(message);
+
+                        return;
+                    }
+
+
+                    String message = "새 프로젝트가 등록되었습니다.";
+                    showSnackBar(message);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     private void init() {
         // 스플래시 액티비티 종료
         SplashActivity.SPLASH_ACTIVITY.finish();
@@ -94,8 +138,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // BottomNavigationView 세팅
+        // 프래그먼트 매니저
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mPresenter.setBottomNavigationView(fragmentManager);
+        // 홈 프래그먼트
+        HomeFragment homeFragment = HomeFragment.newInstance("Home", "MainActivity");
+        // 콘텐츠 프래그먼트
+        ContentFragment contentFragment = ContentFragment.newInstance("Content", "MainActivity");
+        // 프로필 프래그먼트
+        ProfileFragment profileFragment = ProfileFragment.newInstance("Profile", "MainActivity");
+        // 프래그먼트 초기화
+        fragment = homeFragment;
+
+        mPresenter.setBottomNavigationView(fragmentManager, homeFragment, contentFragment, profileFragment);
 
         // SwipeRefreshLayout 세팅
         setSwipeRefreshLayout();
@@ -162,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void onClickFloatingActionButtion() {
         // 새 프로젝트 만드는 액티비티 호출
         Intent intent = new Intent(MainActivity.this, NewSteadyProjectActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_NEW_STEADY_PROJECT_ACTIVITY);
     }
 
     @Override

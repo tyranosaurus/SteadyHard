@@ -9,15 +9,19 @@ import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 public interface SteadyProjectAdapterContract {
     interface View {
         void notifyAdapter();
-        void setOnItemClickListener(SteadyProjectAdapterContract.OnItemClickListener onItemClickListener);
+        void notifyAdapterDelete(int deletePosition);
+        void setOnSteadyProjectClickListener(SteadyProjectAdapterContract.OnSteadyProjectClickListener onSteadyProjectClickListener);
     }
 
     interface Model {
         void addItem(SteadyProject item);
-        SteadyProject getItem(int position);
+        void addNewItem(SteadyProject item);
+        void clearAdapter();
+        SteadyProject getSteadyProjectItem(int position);
+        void deleteSteadyProject(SteadyProject deleteItem);
     }
 
-    interface OnItemClickListener {
-        void onItemClick(int position);
+    interface OnSteadyProjectClickListener {
+        void onSteadyProjectClick(int position);
     }
 }

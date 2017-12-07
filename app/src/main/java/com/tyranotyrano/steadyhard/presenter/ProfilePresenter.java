@@ -81,6 +81,7 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            // 프로그래스바 다이얼로그 띄우는 용도로 사용
         }
 
         @Override
