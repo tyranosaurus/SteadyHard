@@ -1,6 +1,7 @@
 package com.tyranotyrano.steadyhard.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.HomeContract;
 import com.tyranotyrano.steadyhard.contract.adapter.SteadyProjectAdapterContract;
@@ -26,6 +28,7 @@ import com.tyranotyrano.steadyhard.model.remote.HomeRemoteDatasource;
 import com.tyranotyrano.steadyhard.model.remote.datasource.HomeDataSource;
 import com.tyranotyrano.steadyhard.presenter.HomePresenter;
 import com.tyranotyrano.steadyhard.view.MainActivity;
+import com.tyranotyrano.steadyhard.view.ModifySteadyProjectActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +43,10 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.app.Activity.RESULT_OK;
+
 public class HomeFragment extends Fragment implements HomeContract.View {
+    private static final int REQUEST_CODE_MODIFY_STEADY_PROJECT_ACTIVITY = 106;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -120,6 +126,27 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         this.mContext = null;
         this.activity = null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( resultCode == RESULT_OK ) {
+            switch ( requestCode ) {
+                case REQUEST_CODE_MODIFY_STEADY_PROJECT_ACTIVITY:
+                    int modifyPosition = data.getIntExtra("modifyPosition", -1);
+                    SteadyProject modifySteadyProject = data.getParcelableExtra("modifySteadyProject");
+
+                    adapter.modifySteadyProject(modifyPosition, modifySteadyProject);
+
+                    String message = "프로젝트가 수정되었습니다.";
+                    showSnackBar(message);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void init() {
@@ -211,6 +238,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             }
             // 프로젝트 이미지 설정
             if ( item.getProjectImage() != null ) {
+
                 Glide.with(HomeFragment.this)
                         .load(item.getProjectImage())
                         .override(72,72)
@@ -265,7 +293,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         public void notifyAdapterDelete(int deletePosition) {
             // 삭제 후 데이터 갱신(애니메이션)
             adapter.notifyItemRemoved(deletePosition);
-            //adapter.notifyAdapter();
         }
 
         @Override
@@ -298,6 +325,30 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         @Override
         public void deleteSteadyProject(SteadyProject deleteItem) {
             items.remove(deleteItem);
+        }
+
+        @Override
+        public void modifySteadyProject(int modifyPosition, SteadyProject modifySteadyProject) {
+            //============================================================================================================================================
+            items.set(modifyPosition, modifySteadyProject);
+            // 해당 뷰홀더를 얻기
+            SteadyProjectViewHolder modifyViewHolder = (SteadyProjectViewHolder)recyclerViewSteadyProject.findViewHolderForAdapterPosition(modifyPosition);
+            // 프로젝트 이미지 갱신
+            if ( modifySteadyProject.getProjectImage() != null ) {
+                Glide.with(HomeFragment.this)
+                        .load(modifySteadyProject.getProjectImage())
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .override(72,72)
+                        .error(R.drawable.icon_load_fail)
+                        .into(modifyViewHolder.circleImageViewProjectImage);
+            } else {
+                Glide.with(HomeFragment.this)
+                        .load(R.drawable.logo_black_star)
+                        .into(modifyViewHolder.circleImageViewProjectImage);
+            }
+            // 프로젝트 타이틀 갱신
+            modifyViewHolder.textViewProjectTitle.setText(modifySteadyProject.getProjectTitle());
         }
 
         public class SteadyProjectViewHolder extends RecyclerView.ViewHolder {
@@ -358,8 +409,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch ( item.getItemId() ) {
                             case R.id.popup_project_modify:
-                                // showSnackBar("프로젝트 수정됨");=====================================
-                                //Intent intent = new Integer(HomeFragment.this, Modify)
+                                SteadyProject modifyItem = adapter.getSteadyProjectItem(getAdapterPosition());
+
+                                Intent intent = new Intent(activity, ModifySteadyProjectActivity.class);
+                                intent.putExtra("modifyPosition", getAdapterPosition());
+                                intent.putExtra("modifyItem", modifyItem);
+
+                                startActivityForResult(intent, REQUEST_CODE_MODIFY_STEADY_PROJECT_ACTIVITY);
+
                                 break;
                             case R.id.popup_project_delete:
                                 // 프로젝트 삭제

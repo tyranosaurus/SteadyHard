@@ -87,8 +87,7 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
         String imageName = null;
 
         if ( deleteItem.getProjectImage() != null ) {
-            imageName = deleteItem.getProjectImage().substring(deleteItem.getProjectImage().indexOf(MainActivity.user.getEmail()));
-            imageName = imageName.substring(imageName.indexOf("/") + 1);
+            imageName = deleteItem.getProjectImage().substring(deleteItem.getProjectImage().lastIndexOf("/") + 1);
         }
 
         final String deleteProjectImageName = imageName;

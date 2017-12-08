@@ -65,6 +65,7 @@ import static com.tyranotyrano.steadyhard.view.MainActivity.user;
 public class ProfileFragment extends Fragment implements ProfileContract.View {
     private static final String TAG = "========ProfileFragment";
     private static final int REQUEST_CODE_PROFILE_MANAGER_ACTIVITY = 104;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -153,8 +154,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
         super.onDestroyView();
 
         unbinder.unbind();
-        mRepository = null;
-        mPresenter.detachView();
+        /*mRepository = null;
+        mPresenter.detachView();*/
     }
 
     @Override

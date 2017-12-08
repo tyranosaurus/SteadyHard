@@ -23,9 +23,9 @@ public interface NewSteadyProjectContract {
     // NewSteadyProjectActivity 관련 Presenter 처리
     interface Presenter extends BasePresenter<NewSteadyProjectContract.View> {
         // model 관련 처리
+        void setNewSteadyProjectRepository(NewSteadyProjectDataSource newSteadyProjectDataSource);
 
         void selectPictureByGallery();
-        void setNewSteadyProjectRepository(NewSteadyProjectDataSource newSteadyProjectDataSource);
         void uploadSteadyProjectImage(String projectImagePath);
         void deleteNewProjectImage(String deleteFileName);
         void createNewProject(String projectTitle, String steadyProjectImagePath, String completeDays, String description);
