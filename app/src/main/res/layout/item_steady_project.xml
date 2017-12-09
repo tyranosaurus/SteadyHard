@@ -68,7 +68,7 @@
                     android:gravity="center"
                     android:text="Project Status"
                     android:textColor="@color/colorBlack"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <!-- 진행 일수 확인 -->
                 <LinearLayout
@@ -130,11 +130,9 @@
                     android:id="@+id/textViewProjectDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0000.00.00"/>
+                    android:text="0000.00.00" />
 
             </LinearLayout>
-
-
 
             <ImageView
                 android:id="@+id/imageViewProjectMenu"
@@ -142,9 +140,10 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="@drawable/selector_steady_project_menu"
-                android:src="@drawable/icon_project_menu" />
+                android:src="@drawable/icon_menu" />
 
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
+
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.support.v7.app.AlertDialog;
 import com.tyranotyrano.steadyhard.contract.adapter.SteadyProjectAdapterContract;
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.remote.datasource.HomeDataSource;
 
 /**
@@ -16,7 +17,7 @@ public interface HomeContract {
     interface View extends BaseView {
         void showSnackBar(String message);
         void showSteadyProjectsLayout();
-
+        void callContentByProjectActivity(SteadyProject steadyProject);
     }
 
     // HomeFragment 관련 Presenter 처리

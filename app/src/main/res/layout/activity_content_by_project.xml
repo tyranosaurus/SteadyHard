@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:background="@color/colorLiteGray">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorWhite" >
+
+            <LinearLayout
+                android:id="@+id/linearLayoutToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageViewContentByProjectBack"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:paddingBottom="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingTop="13dp"
+                    android:src="@drawable/icon_back_button" />
+
+                <TextView
+                    android:id="@+id/textViewProjectTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="프로젝트 타이틀"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <!-- Success/Fail 에 따른 상태 -->
+                    <TextView
+                        android:id="@+id/textViewProjectStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Project Status"
+                        android:textColor="@color/colorBlack"
+                        android:visibility="gone" />
+
+                    <!-- 진행 일수 확인 -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="4dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewOpenBracket"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="("
+                            android:textColor="@color/colorBlack" />
+
+                        <TextView
+                            android:id="@+id/textViewCurrentDays"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="10"
+                            android:textColor="@color/colorBlack" />
+
+                        <TextView
+                            android:id="@+id/textViewPer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text=" / "
+                            android:textColor="@color/colorBlack" />
+
+                        <TextView
+                            android:id="@+id/textViewCompleteDays"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="100"
+                            android:textColor="@color/colorBlack" />
+
+                        <TextView
+                            android:id="@+id/textViewCloseBracket"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text=")"
+                            android:textColor="@color/colorBlack" />
+
+                    </LinearLayout>
+
+                    <!-- 프로젝트 등록 날짜 -->
+                    <TextView
+                        android:id="@+id/textViewProjectDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0000.00.00" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="3dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageViewProjectImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_project_image_default" />
+
+                    <TextView
+                        android:id="@+id/textViewProjectDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="프로젝트 설명"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorBlack"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- 디폴트 레이아웃 : 콘텐츠 없을때 보여줌-->
+                <LinearLayout
+                    android:id="@+id/linearLayoutContentByProjectDefault"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorLiteGray"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/imageViewDefaultLogo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/logo_black_star" />
+
+                    <TextView
+                        android:id="@+id/textViewDefaultTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-10dp"
+                        android:gravity="center"
+                        android:text="Steady Hard"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="30dp" />
+
+                    <TextView
+                        android:id="@+id/textViewDefaultMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center"
+                        android:text="꾸준함의 첫 시작을 응원합니다!"
+                        android:textColor="@color/colorBlack" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2" />
+
+                </LinearLayout>
+                <!-- 리사이클러 뷰 : 콘텐츠 보여줌 -->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewContentByProject"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!-- Floating Action 버튼-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_gravity="bottom|right"
+        android:clickable="true"
+        android:src="@drawable/icon_plus"
+        app:fabSize="mini" />
+
+</android.support.design.widget.CoordinatorLayout>

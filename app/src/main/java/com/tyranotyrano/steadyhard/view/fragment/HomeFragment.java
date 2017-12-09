@@ -27,6 +27,7 @@ import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.remote.HomeRemoteDatasource;
 import com.tyranotyrano.steadyhard.model.remote.datasource.HomeDataSource;
 import com.tyranotyrano.steadyhard.presenter.HomePresenter;
+import com.tyranotyrano.steadyhard.view.ContentByProjectActivity;
 import com.tyranotyrano.steadyhard.view.MainActivity;
 import com.tyranotyrano.steadyhard.view.ModifySteadyProjectActivity;
 
@@ -47,6 +48,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
     private static final int REQUEST_CODE_MODIFY_STEADY_PROJECT_ACTIVITY = 106;
+    private static final int REQUEST_CODE_CONTENT_BY_PROJECT_ACTIVITY = 107;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -57,7 +59,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private Context mContext = null;
     private MainActivity activity = null;
 
-    private HomePresenter mPresenter = null;
+    private HomeContract.Presenter mPresenter = null;
     private HomeDataSource mRepository = null;
 
     Unbinder unbinder = null;
@@ -118,6 +120,16 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         unbinder.unbind();
         mRepository = null;
         mPresenter.detachView();
+
+        // Glide 저장된 메모리 캐시 삭제
+        Glide.get(activity).clearMemory();
+        // Gilde 저장된 디스크 캐시 삭제
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(activity).clearDiskCache();
+            }
+        }).start();
     }
 
     @Override
@@ -143,6 +155,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     String message = "프로젝트가 수정되었습니다.";
                     showSnackBar(message);
                     break;
+                case REQUEST_CODE_CONTENT_BY_PROJECT_ACTIVITY:
+                    // 프로젝트의 오늘 콘텐츠 등록했을때 화면 갱신해주는 처리===============================================================================================================================
                 default:
                     break;
             }
@@ -199,9 +213,17 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         }
     }
 
+    @Override
+    public void callContentByProjectActivity(SteadyProject steadyProject) {
+        Intent intent = new Intent(activity, ContentByProjectActivity.class);
+        intent.putExtra("steadyProject", steadyProject);
+
+        startActivityForResult(intent, REQUEST_CODE_CONTENT_BY_PROJECT_ACTIVITY);
+    }
+
     // 리사이클러뷰 어댑터
     public class SteadyProjectRecyclerViewAdapter extends RecyclerView.Adapter<SteadyProjectRecyclerViewAdapter.SteadyProjectViewHolder>
-                                                   implements SteadyProjectAdapterContract.View, SteadyProjectAdapterContract.Model {
+                                                  implements SteadyProjectAdapterContract.View, SteadyProjectAdapterContract.Model {
 
         // SteadyProjectAdapterContract 의 OnItemClickListener
         SteadyProjectAdapterContract.OnSteadyProjectClickListener onSteadyProjectClickListener = null;
@@ -238,7 +260,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             }
             // 프로젝트 이미지 설정
             if ( item.getProjectImage() != null ) {
-
                 Glide.with(HomeFragment.this)
                         .load(item.getProjectImage())
                         .override(72,72)
@@ -329,12 +350,13 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         @Override
         public void modifySteadyProject(int modifyPosition, SteadyProject modifySteadyProject) {
-            //============================================================================================================================================
             items.set(modifyPosition, modifySteadyProject);
+
             // 해당 뷰홀더를 얻기
             SteadyProjectViewHolder modifyViewHolder = (SteadyProjectViewHolder)recyclerViewSteadyProject.findViewHolderForAdapterPosition(modifyPosition);
             // 프로젝트 이미지 갱신
             if ( modifySteadyProject.getProjectImage() != null ) {
+
                 Glide.with(HomeFragment.this)
                         .load(modifySteadyProject.getProjectImage())
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -451,10 +473,10 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 }
 
                 if ( lastContentDate.compareTo(todayDate) == -1 ) {
-                    // 오늘 콘텐츠 안함.
+                    // 오늘 콘텐츠 안함.=======================================================================================================================================================================
                     return false;
                 } else if ( lastContentDate.compareTo(todayDate) == 0 ) {
-                    // 오늘 콘텐츠 올림.
+                    // 오늘 콘텐츠 올림.=======================================================================================================================================================================
                     return true;
                 }
 

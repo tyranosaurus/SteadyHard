@@ -164,7 +164,7 @@ public class ContentFragment extends Fragment implements ContentContract.View{
             SteadyContent item = items.get(position);
 
             // 콘텐츠의 툴바
-            holder.circleImageViewProjectImage.setImageResource(R.drawable.logo_black_star);
+            /*holder.circleImageViewProjectImage.setImageResource(R.drawable.logo_black_star);
             holder.textViewProjectTitle.setText(item.getSteadyProject().getProjectTitle());
             holder.textViewCurrentDays.setText(String.valueOf(item.getSteadyProject().getCurrentDays()));
             holder.textViewCompleteDays.setText(String.valueOf(item.getSteadyProject().getCompleteDays()));
@@ -175,7 +175,7 @@ public class ContentFragment extends Fragment implements ContentContract.View{
 
             // holder의 이벤트
             holder.setDurationColor(item.getSteadyProject().getCurrentDays(), item.getSteadyProject().getCompleteDays());
-            holder.onBindOnItemClickListener(item, position);
+            holder.onBindOnItemClickListener(item, position);*/
         }
 
         @Override

@@ -68,9 +68,8 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
     public void onSteadyProjectClick(int position) {
         SteadyProject item = mAdapterModel.getSteadyProjectItem(position);
 
-        // 임시로 넣은 것 : 삭제할 것
-        // 프로젝트 클릭하면 프로젝트 타이틀을 스낵바로 보여줌
-        mView.showSnackBar(item.getProjectTitle());
+        // 해당 프로젝트의 콘텐츠들 보여주는 액티비티
+        mView.callContentByProjectActivity(item);
     }
 
     @Override

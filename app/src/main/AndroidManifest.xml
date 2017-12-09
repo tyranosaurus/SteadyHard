@@ -37,7 +37,9 @@
             android:name=".view.NewSteadyProjectActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.ProfileManagerActivity" />
-        <activity android:name=".view.ModifySteadyProjectActivity"></activity>
+        <activity android:name=".view.ModifySteadyProjectActivity" />
+        <activity android:name=".view.ContentByProjectActivity" />
+        <activity android:name=".view.NewContentActivity"></activity>
     </application>
 
 </manifest>
