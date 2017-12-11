@@ -16,6 +16,7 @@ public interface ContentByProjectAdapterContract {
         void addItem(SteadyContent item);
         SteadyContent getSteadyContentItem(int position);
         void clearAdapter();
+        void modifySteadyContent(int modifyPosition, SteadyContent modifySteadyContent);
     }
 
     interface OnContentByProjectClickListener {

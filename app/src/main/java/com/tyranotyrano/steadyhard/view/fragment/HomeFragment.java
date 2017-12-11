@@ -156,7 +156,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     showSnackBar(message);
                     break;
                 case REQUEST_CODE_CONTENT_BY_PROJECT_ACTIVITY:
-                    // 프로젝트의 오늘 콘텐츠 등록했을때 화면 갱신해주는 처리===============================================================================================================================
+                    // 프로젝트의 오늘 콘텐츠 등록했을때 화면 갱신해주는 처리
+                    int position = data.getIntExtra("adapterPosition", -1);
+                    SteadyProject refreshSteadyProject = data.getParcelableExtra("steadyProject");
+
+                    adapter.refreshSteadyProject(position, refreshSteadyProject);
                 default:
                     break;
             }
@@ -190,8 +194,12 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     public void addNewProject(SteadyProject newSteadyProject) {
+
         adapter.addNewItem(newSteadyProject);
         adapter.notifyItemInserted(0);
+
+        showSteadyProjectsLayout();
+
         recyclerViewSteadyProject.scrollToPosition(0);
     }
 
@@ -214,9 +222,10 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     @Override
-    public void callContentByProjectActivity(SteadyProject steadyProject) {
+    public void callContentByProjectActivity(SteadyProject steadyProject, int position) {
         Intent intent = new Intent(activity, ContentByProjectActivity.class);
         intent.putExtra("steadyProject", steadyProject);
+        intent.putExtra("adapterPosition", position);
 
         startActivityForResult(intent, REQUEST_CODE_CONTENT_BY_PROJECT_ACTIVITY);
     }
@@ -312,6 +321,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         @Override
         public void notifyAdapterDelete(int deletePosition) {
+            showSteadyProjectsLayout();
             // 삭제 후 데이터 갱신(애니메이션)
             adapter.notifyItemRemoved(deletePosition);
         }
@@ -371,6 +381,15 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             }
             // 프로젝트 타이틀 갱신
             modifyViewHolder.textViewProjectTitle.setText(modifySteadyProject.getProjectTitle());
+        }
+
+        @Override
+        public void refreshSteadyProject(int refreshPosition, SteadyProject refreshSteadyProject) {
+            items.set(refreshPosition, refreshSteadyProject);
+
+            // 해당 뷰홀더를 얻기
+            SteadyProjectViewHolder modifyViewHolder = (SteadyProjectViewHolder)recyclerViewSteadyProject.findViewHolderForAdapterPosition(refreshPosition);
+            adapter.onBindViewHolder(modifyViewHolder, refreshPosition);
         }
 
         public class SteadyProjectViewHolder extends RecyclerView.ViewHolder {
@@ -473,10 +492,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 }
 
                 if ( lastContentDate.compareTo(todayDate) == -1 ) {
-                    // 오늘 콘텐츠 안함.=======================================================================================================================================================================
                     return false;
                 } else if ( lastContentDate.compareTo(todayDate) == 0 ) {
-                    // 오늘 콘텐츠 올림.=======================================================================================================================================================================
                     return true;
                 }
 
@@ -503,7 +520,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     @Override
                     public void onClick(View v) {
                         if ( onSteadyProjectClickListener != null ) {
-                            onSteadyProjectClickListener.onSteadyProjectClick(position);
+                            onSteadyProjectClickListener.onSteadyProjectClick(getAdapterPosition());
                         }
                     }
                 });

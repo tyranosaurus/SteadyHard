@@ -20,6 +20,7 @@ public interface SteadyProjectAdapterContract {
         SteadyProject getSteadyProjectItem(int position);
         void deleteSteadyProject(SteadyProject deleteItem);
         void modifySteadyProject(int modifyPosition, SteadyProject modifySteadyProject);
+        void refreshSteadyProject(int refreshPosition, SteadyProject refreshSteadyProject);
     }
 
     interface OnSteadyProjectClickListener {

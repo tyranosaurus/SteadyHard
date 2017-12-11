@@ -93,8 +93,8 @@ public class ModifySteadyProjectActivity extends AppCompatActivity implements Mo
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
 
-                        String profileImageName = MainActivity.user.getEmail() + "_ModifyProjectImage.png";
-                        File file = new File(getCacheDir(), profileImageName );
+                        String modifyProjectImageName = MainActivity.user.getEmail() + "_ModifyProjectImage.png";
+                        File file = new File(getCacheDir(), modifyProjectImageName );
                         file.createNewFile();
                         FileOutputStream out = new FileOutputStream(file);
 
@@ -149,7 +149,7 @@ public class ModifySteadyProjectActivity extends AppCompatActivity implements Mo
 
     @OnClick(R.id.imageViewModifyProjectBack)
     public void onModifyProjectBackClick() {
-        // 프로젝트 생성 취소시 서버에 저장된 프로젝트 이미지 삭제
+        // 프로젝트 수정 취소시 서버에 저장된 프로젝트 이미지 삭제
         if ( modifiedSteadyProjectImagePath != null && modifiedSteadyProjectImagePath.contains("_ModifyProjectImage")) {
             String deleteFileName = MainActivity.user.getEmail() + "_ModifyProjectImage.png";
             mPresenter.deleteModifyProjectImage(deleteFileName);

@@ -35,6 +35,12 @@ public class NetworkDefineConstant {
     public static String SERVER_URL_DELETE_MODIFY_PROJECT_IMAGE;
     public static String SERVER_URL_UPDATE_STEADY_PROJECT;
     public static String SERVER_URL_GET_CONTENT_BY_PROJECT;
+    public static String SERVER_URL_UPLOAD_NEW_CONTENT_IMAGE;
+    public static String SERVER_URL_DELETE_NEW_CONTENT_IMAGE;
+    public static String SERVER_URL_CREATE_NEW_CONTENT;
+    public static String SERVER_URL_UPLOAD_MODIFY_STEADY_CONTENT_IMAGE;
+    public static String SERVER_URL_DELETE_MODIFY_STEADY_CONTENT_IMAGE;
+    public static String SERVER_URL_UPDATE_STEADY_CONTENT;
 
     static {
         // 로그인
@@ -63,5 +69,11 @@ public class NetworkDefineConstant {
         SERVER_URL_DELETE_MODIFY_PROJECT_IMAGE = HOST_URL + "/steadyhard/home/deleteModifyProjectImage.php";
         SERVER_URL_UPDATE_STEADY_PROJECT = HOST_URL + "/steadyhard/home/updateModifyProject.php";
         SERVER_URL_GET_CONTENT_BY_PROJECT = HOST_URL + "/steadyhard/home/getContentByProject.php?projectNo=";
+        SERVER_URL_UPLOAD_NEW_CONTENT_IMAGE = HOST_URL + "/steadyhard/home/uploadNewContentImage.php";
+        SERVER_URL_DELETE_NEW_CONTENT_IMAGE = HOST_URL + "/steadyhard/home/deleteNewContentImage.php";
+        SERVER_URL_CREATE_NEW_CONTENT = HOST_URL + "/steadyhard/home/createNewContent.php";
+        SERVER_URL_UPLOAD_MODIFY_STEADY_CONTENT_IMAGE = HOST_URL + "/steadyhard/home/uploadModifySteadyContentImage.php";
+        SERVER_URL_DELETE_MODIFY_STEADY_CONTENT_IMAGE = HOST_URL + "/steadyhard/home/deleteModifySteadyContentImage.php";
+        SERVER_URL_UPDATE_STEADY_CONTENT = HOST_URL + "/steadyhard/home/updateSteadyContent.php";
     }
 }

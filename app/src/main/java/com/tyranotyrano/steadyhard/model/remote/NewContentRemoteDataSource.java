@@ -2,7 +2,9 @@ package com.tyranotyrano.steadyhard.model.remote;
 
 import android.util.Log;
 
-import com.tyranotyrano.steadyhard.model.remote.datasource.ProfileManagerDataSource;
+import com.google.gson.Gson;
+import com.tyranotyrano.steadyhard.model.data.SteadyContent;
+import com.tyranotyrano.steadyhard.model.remote.datasource.NewContentDataSource;
 import com.tyranotyrano.steadyhard.network.NetworkDefineConstant;
 import com.tyranotyrano.steadyhard.network.OkHttpAPICall;
 import com.tyranotyrano.steadyhard.network.OkHttpInitSingtonManager;
@@ -13,6 +15,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -22,68 +26,22 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by cyj on 2017-12-04.
+ * Created by cyj on 2017-12-10.
  */
 
-public class ProfileManagerRemoteDataSource implements ProfileManagerDataSource {
-    final String TAG = "===ProfileManagerRDS";
+public class NewContentRemoteDataSource implements NewContentDataSource {
+    final String TAG = "=======NewContentRDS";
 
     @Override
-    public boolean deleteUser(String deletePassword) {
+    public String uploadNewContentImage(String imagePath, String parentProjectPath) {
         OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
         Response response = null;
 
         boolean result = false;
+        String newContentImagePath = null;
         String message = null;
 
-        // 리퀘스트바디
-        RequestBody requestBody = new FormBody.Builder()
-                .add("email", MainActivity.user.getEmail())
-                .add("deletePassword", deletePassword)
-                .build();
-
-        try {
-            response = OkHttpAPICall.DELETE(client, NetworkDefineConstant.SERVER_URL_DELETE_USER, requestBody);
-
-            if ( response == null ) {
-                Log.e(TAG, "Response of deleteUser() is null.");
-
-                return false;
-            } else {
-
-                JSONObject jsonFromServer = new JSONObject(response.body().string());
-                result = jsonFromServer.getBoolean("result");
-
-                if ( jsonFromServer.has("message") ) {
-                    message = jsonFromServer.getString("message");
-                    Log.e(TAG, message);
-                }
-            }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if ( response != null ) {
-                response.close();
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public String uploadNewProfileImage(String imagePath) {
-        OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
-        Response response = null;
-
-        boolean result = false;
-        String newProfileImagePath = null;
-        String message = null;
-
-        // 새 프로필 사진을 담은 RequestBody 생성
+        // 콘텐츠 사진을 담은 RequestBody 생성
         String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
         MediaType MEDIA_TYPE = MediaType.parse("image/*");
         File sourFile = new File(imagePath);
@@ -91,14 +49,15 @@ public class ProfileManagerRemoteDataSource implements ProfileManagerDataSource 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("email", MainActivity.user.getEmail())
-                .addFormDataPart("newProfileImage", fileName, RequestBody.create(MEDIA_TYPE, sourFile))
+                .addFormDataPart("parentProjectPath", parentProjectPath)
+                .addFormDataPart("uploadNewContentImage", fileName, RequestBody.create(MEDIA_TYPE, sourFile))
                 .build();
 
         try {
-            response = OkHttpAPICall.POST(client, NetworkDefineConstant.SERVER_URL_UPLOAD_NEW_PROFILE_IMAGE, requestBody);
+            response = OkHttpAPICall.POST(client, NetworkDefineConstant.SERVER_URL_UPLOAD_NEW_CONTENT_IMAGE, requestBody);
 
             if ( response == null ) {
-                Log.e(TAG, "Response of uploadNewProfileImage() is null.");
+                Log.e(TAG, "Response of uploadNewContentImage() is null.");
 
                 return null;
             } else {
@@ -106,8 +65,8 @@ public class ProfileManagerRemoteDataSource implements ProfileManagerDataSource 
 
                 result = jsonFromServer.getBoolean("result");
 
-                if ( jsonFromServer.has("profileImagePath") ) {
-                    newProfileImagePath = jsonFromServer.getString("profileImagePath");
+                if ( jsonFromServer.has("imagePath") ) {
+                    newContentImagePath = jsonFromServer.getString("imagePath");
                 }
 
                 if ( jsonFromServer.has("message") ) {
@@ -128,11 +87,11 @@ public class ProfileManagerRemoteDataSource implements ProfileManagerDataSource 
             }
         }
 
-        return newProfileImagePath;
+        return newContentImagePath;
     }
 
     @Override
-    public boolean deletedNewProfileImage(String deleteFileName) {
+    public boolean deletedNewContentImage(String deleteFileName, String parentProjectPath) {
         OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
         Response response = null;
 
@@ -141,14 +100,15 @@ public class ProfileManagerRemoteDataSource implements ProfileManagerDataSource 
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("email", MainActivity.user.getEmail())
-                .add("deleteProfileImage", deleteFileName)
+                .add("parentProjectPath", parentProjectPath)
+                .add("deleteFileName", deleteFileName)
                 .build();
 
         try {
-            response = OkHttpAPICall.DELETE(client, NetworkDefineConstant.SERVER_URL_DELETE_NEW_PROFILE_IMAGE, requestBody);
+            response = OkHttpAPICall.DELETE(client, NetworkDefineConstant.SERVER_URL_DELETE_NEW_CONTENT_IMAGE, requestBody);
 
             if ( response == null ) {
-                Log.e(TAG, "Response of deletedNewProfileImage() is null.");
+                Log.e(TAG, "Response of deletedNewContentImage() is null.");
 
                 return false;
             } else {
@@ -178,44 +138,52 @@ public class ProfileManagerRemoteDataSource implements ProfileManagerDataSource 
     }
 
     @Override
-    public boolean updateNewProfile(String newProfileImagePath, String newNickname, String originalPassword, String newPassword) {
+    public Map<String, Object> createNewContent(String newContentImageURLPath, String contentText, String contentImageName, int currentDays, int completeDays, int projectNo) {
         OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
         Response response = null;
+        // Gson 객체 생성
+        Gson gson = new Gson();
 
+        Map<String, Object> map = new HashMap<>();
+        SteadyContent newSteadyContent = null;
         boolean result = false;
         String message = null;
 
-        // 새 프로필 정보를 담은 RequestBody 생성
+        // 새 콘텐츠의 정보를 담은 RequestBody 생성
         FormBody.Builder requestBuilder = new FormBody.Builder();
 
+        if ( newContentImageURLPath != null ) {
+            requestBuilder.add("newContentImageURLPath", newContentImageURLPath);
+        }
+
         requestBuilder
-                .add("userNo", String.valueOf(MainActivity.user.getNo()))
-                .add("userEmail", MainActivity.user.getEmail())
-                .add("newNickname", newNickname);
-
-        if ( newProfileImagePath != null ) {
-            requestBuilder.add("newProfileImagePath", newProfileImagePath);
-        }
-
-        if ( originalPassword != null && originalPassword.length() >= 8) {
-            requestBuilder
-                    .add("originalPassword", originalPassword)
-                    .add("newPassword", newPassword);
-        }
+                .add("email", MainActivity.user.getEmail())
+                .add("contentText", contentText)
+                .add("contentImageName", contentImageName)
+                .add("currentDays", String.valueOf(currentDays))
+                .add("completeDays", String.valueOf(completeDays))
+                .add("projectNo", String.valueOf(projectNo));
 
         RequestBody requestBody = requestBuilder.build();
 
         try {
-            response = OkHttpAPICall.PUT(client, NetworkDefineConstant.SERVER_URL_UPDATE_NEW_PROFILE_INFO, requestBody);
+            response = OkHttpAPICall.POST(client, NetworkDefineConstant.SERVER_URL_CREATE_NEW_CONTENT, requestBody);
 
             if ( response == null ) {
-                Log.e(TAG, "Response of deletedNewProfileImage() is null.");
+                Log.e(TAG, "Response of createNewContent() is null.");
 
-                return false;
+                return null;
             } else {
                 JSONObject jsonFromServer = new JSONObject(response.body().string());
 
                 result = jsonFromServer.getBoolean("result");
+                map.put("result", result);
+
+                if ( jsonFromServer.has("newContent") ) {
+                    // gson, map 에 넣기
+                    newSteadyContent = gson.fromJson(jsonFromServer.getJSONObject("newContent").toString(), SteadyContent.class);
+                    map.put("newSteadyContent", newSteadyContent);
+                }
 
                 if ( jsonFromServer.has("message") ) {
                     message = jsonFromServer.getString("message");
@@ -235,6 +203,6 @@ public class ProfileManagerRemoteDataSource implements ProfileManagerDataSource 
             }
         }
 
-        return result;
+        return map;
     }
 }

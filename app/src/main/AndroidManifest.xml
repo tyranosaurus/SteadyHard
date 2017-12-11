@@ -39,7 +39,8 @@
         <activity android:name=".view.ProfileManagerActivity" />
         <activity android:name=".view.ModifySteadyProjectActivity" />
         <activity android:name=".view.ContentByProjectActivity" />
-        <activity android:name=".view.NewContentActivity"></activity>
+        <activity android:name=".view.NewContentActivity" />
+        <activity android:name=".view.ModifySteadyContentActivity"></activity>
     </application>
 
 </manifest>

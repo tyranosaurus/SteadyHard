@@ -69,7 +69,7 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
         SteadyProject item = mAdapterModel.getSteadyProjectItem(position);
 
         // 해당 프로젝트의 콘텐츠들 보여주는 액티비티
-        mView.callContentByProjectActivity(item);
+        mView.callContentByProjectActivity(item, position);
     }
 
     @Override

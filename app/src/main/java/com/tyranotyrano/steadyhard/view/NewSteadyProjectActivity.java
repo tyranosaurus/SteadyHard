@@ -89,8 +89,8 @@ public class NewSteadyProjectActivity extends AppCompatActivity implements NewSt
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
 
-                        String profileImageName = MainActivity.user.getEmail() + "_NewProjectImage.png";
-                        File file = new File(getCacheDir(), profileImageName );
+                        String projectImageName = MainActivity.user.getEmail() + "_NewProjectImage.png";
+                        File file = new File(getCacheDir(), projectImageName );
                         file.createNewFile();
                         FileOutputStream out = new FileOutputStream(file);
 
@@ -128,7 +128,7 @@ public class NewSteadyProjectActivity extends AppCompatActivity implements NewSt
     @OnClick(R.id.imageViewNewProjectBack)
     public void onNewProjectBackClick() {
         // 프로젝트 생성 취소시 서버에 저장된 프로젝트 이미지 삭제
-        if ( steadyProjectImagePath != null ) {
+        if ( steadyProjectImagePath != null && steadyProjectImagePath.contains("_NewProjectImage") ) {
             String deleteFileName = MainActivity.user.getEmail() + "_NewProjectImage.png";
             mPresenter.deleteNewProjectImage(deleteFileName);
         }

@@ -7,27 +7,25 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tyranotyrano.steadyhard.R;
-import com.tyranotyrano.steadyhard.contract.NewContentContract;
-import com.tyranotyrano.steadyhard.model.NewContentRepository;
+import com.tyranotyrano.steadyhard.contract.ModifySteadyContentContract;
+import com.tyranotyrano.steadyhard.model.ModifySteadyContentRepository;
 import com.tyranotyrano.steadyhard.model.data.SteadyContent;
 import com.tyranotyrano.steadyhard.model.data.SteadyProject;
-import com.tyranotyrano.steadyhard.model.remote.NewContentRemoteDataSource;
-import com.tyranotyrano.steadyhard.model.remote.datasource.NewContentDataSource;
-import com.tyranotyrano.steadyhard.presenter.NewContentPresenter;
+import com.tyranotyrano.steadyhard.model.remote.ModifySteadyContentRemoteDataSource;
+import com.tyranotyrano.steadyhard.model.remote.datasource.ModifySteadyContentDataSource;
+import com.tyranotyrano.steadyhard.presenter.ModifySteadyContentPresenter;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,19 +33,22 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class NewContentActivity extends AppCompatActivity implements NewContentContract.View {
+public class ModifySteadyContentActivity extends AppCompatActivity implements ModifySteadyContentContract.View {
+
     static final int REQUEST_CODE_GALLERY = 301;
 
-    NewContentContract.Presenter mPresenter = null;
-    NewContentDataSource mRepository = null;
+    ModifySteadyContentContract.Presenter mPresenter = null;
+    ModifySteadyContentDataSource mRepository = null;
 
+    int modifyPosition = -1;
+    String projectTitle = null;
+    SteadyContent mModifyContent = null;
     SteadyProject steadyProject = null;
-    String contentImagePath = null;
-    String newContentImagePath = null;
+    String modifyContentImagePath = null;
+    String modifiedSteadyContentImagePath = null;
 
-    @BindView(R.id.toolbarNewContent) Toolbar toolbar;
-    @BindView(R.id.imageViewNewContentBack) ImageView imageViewNewContentBack;
-    @BindView(R.id.textViewNewContentCreate) TextView textViewNewContentCreate;
+    @BindView(R.id.imageViewModifyContentBack) ImageView imageViewModifyContentBack;
+    @BindView(R.id.textViewModifyContentComplete) TextView textViewModifyContentComplete;
     @BindView(R.id.textViewContentProjectTitle) TextView textViewContentProjectTitle;
     @BindView(R.id.textViewContentAccomplishDate) TextView textViewContentAccomplishDate;
     @BindView(R.id.textViewOpenBracket) TextView textViewOpenBracket;
@@ -70,7 +71,7 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_content);
+        setContentView(R.layout.activity_modify_steady_content);
         // ButterKnife 세팅
         ButterKnife.bind(this);
         // 초기화
@@ -80,16 +81,22 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // 콘텐츠 생성 취소시 서버에 저장된 콘텐츠 이미지 삭제
-        if ( newContentImagePath != null && newContentImagePath.contains("_NewContentImage") ) {
-            String deleteFileName = MainActivity.user.getEmail() + "_NewContentImage.png";
-            mPresenter.deleteNewContentImage(deleteFileName, steadyProject);
-        }
 
         // Repository 해제
         mRepository = null;
         // Presenter 해제
         mPresenter.detachView();
+    }
+
+    @Override
+    public void finish() {
+        // 콘텐츠 수정 취소시 서버에 저장된 콘텐츠 수정 이미지 삭제
+        if ( modifiedSteadyContentImagePath != null && modifiedSteadyContentImagePath.contains("_ModifyContentImage")) {
+            String deleteFileName = MainActivity.user.getEmail() + "_ModifyContentImage.png";
+            mPresenter.deleteModifyContentImage(deleteFileName, steadyProject);
+        }
+
+        super.finish();
     }
 
     @Override
@@ -101,24 +108,24 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
                 case REQUEST_CODE_GALLERY:
 
                     // 가져온 이미지 보여주기
-                    Glide.with(NewContentActivity.this)
+                    Glide.with(ModifySteadyContentActivity.this)
                             .load(data.getData())
                             .into(imageViewNewContentImage);
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
 
-                        String contentImageName = MainActivity.user.getEmail() + "_NewContentImage.png";
-                        File file = new File(getCacheDir(), contentImageName );
+                        String modifyContentImageName = MainActivity.user.getEmail() + "_ModifyContentImage.png";
+                        File file = new File(getCacheDir(), modifyContentImageName );
                         file.createNewFile();
                         FileOutputStream out = new FileOutputStream(file);
 
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
-                        contentImagePath = file.getAbsolutePath();
+                        modifyContentImagePath = file.getAbsolutePath();
 
                         out.close();
 
                         // 프로젝트 사진 서버 전송 후 저장된 경로 받아오기
-                        mPresenter.uploadNewContentImage(contentImagePath, steadyProject);
+                        mPresenter.uploadModifyContentImage(modifyContentImagePath, steadyProject);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -132,26 +139,37 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
 
     public void init() {
         // Presenter에 View 할당
-        mPresenter = new NewContentPresenter();
+        mPresenter = new ModifySteadyContentPresenter();
         mPresenter.attachView(this);
         // Presenter에 Model 할당
-        mRepository = new NewContentRepository(new NewContentRemoteDataSource());
-        mPresenter.setNewContentRepository(mRepository);
+        mRepository = new ModifySteadyContentRepository(new ModifySteadyContentRemoteDataSource());
+        mPresenter.setModifySteadyContentRepository(mRepository);
 
-        // 인텐트 데이터 할당
+        // ContentByProjectActivity 에서 보낸 데이터 세팅
         Intent intent = getIntent();
+        modifyPosition = intent.getIntExtra("modifyPosition", -1);
+        projectTitle = intent.getStringExtra("projectTitle");
+        mModifyContent = intent.getParcelableExtra("modifyContent");
         steadyProject = intent.getParcelableExtra("steadyProject");
 
-        // 툴바 세팅
-        setSupportActionBar(toolbar);
-
-        // 프로젝트 정보 세팅
-        textViewContentProjectTitle.setText(steadyProject.getProjectTitle());
-        textViewContentAccomplishDate.setText(getTodayDate());
-        textViewCurrentDays.setText(String.valueOf(steadyProject.getCurrentDays() + 1));
-        textViewCompleteDays.setText(String.valueOf(steadyProject.getCompleteDays()));
-        setDurationColor(steadyProject.getCurrentDays(), steadyProject.getCompleteDays());
-
+        // 수정할 콘텐츠 정보 세팅
+        textViewContentProjectTitle.setText(projectTitle);
+        textViewContentAccomplishDate.setText(mModifyContent.getAccomplishDate());
+        textViewCurrentDays.setText(String.valueOf(mModifyContent.getCurrentDays()));
+        textViewCompleteDays.setText(String.valueOf(mModifyContent.getCompleteDays()));
+        setDurationColor(mModifyContent.getCurrentDays(), mModifyContent.getCompleteDays());
+        if ( mModifyContent.getContentImage() != null ) {
+            Glide.with(ModifySteadyContentActivity.this)
+                    .load(mModifyContent.getContentImage())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(imageViewNewContentImage);
+        } else {
+            Glide.with(ModifySteadyContentActivity.this)
+                    .load(R.drawable.icon_project_image_default)
+                    .into(imageViewNewContentImage);
+        }
+        editTextNewContentText.setText(mModifyContent.getContentText());
     }
 
     public void setDurationColor(int currentDays, int completeDays) {
@@ -168,48 +186,41 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
         }
     }
 
-    public String getTodayDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-        String todayDateString = dateFormat.format(new Date());
-
-        return todayDateString;
-    }
-
-    @OnClick(R.id.imageViewNewContentBack)
-    public void onNewContentBackClick() {
-        // 콘텐츠 생성 취소시 서버에 저장된 콘텐츠 이미지 삭제
-        if ( newContentImagePath != null && newContentImagePath.contains("_NewContentImage") ) {
-            String deleteFileName = MainActivity.user.getEmail() + "_NewContentImage.png";
-            mPresenter.deleteNewContentImage(deleteFileName, steadyProject);
-        }
-
+    @OnClick(R.id.imageViewModifyContentBack)
+    public void onModifyContentBackClick() {
         finish();
     }
 
-    @OnClick(R.id.textViewNewContentCreate)
-    public void onNewContentCreateClick() {
-        // 새 콘텐츠(오늘의 꾸준함) 생성
-        String contentImageName = steadyProject.getProjectTitle() + "_" + steadyProject.getNo() + "_content_" + (steadyProject.getCurrentDays() + 1);
-        contentImageName = contentImageName.replaceAll(" ", "_");
+    @OnClick(R.id.textViewModifyContentComplete)
+    public void onModifyContentCompleteClick() {
+        // 수정할 데이터
+        String contentText = editTextNewContentText.getText().toString().trim();
 
-        String contextText = editTextNewContentText.getText().toString().trim();
+        mPresenter.modifySteadyContent(contentText, modifiedSteadyContentImagePath, mModifyContent, steadyProject);
 
-        mPresenter.createNewContent(newContentImagePath, contextText, steadyProject);
+        if ( modifiedSteadyContentImagePath != null ) {
+            String parentProjectPath = steadyProject.getProjectTitle().replaceAll(" ", "_") + "_" + steadyProject.getNo();
 
-        if ( newContentImagePath != null ) {
-            newContentImagePath = newContentImagePath.replace(MainActivity.user.getEmail() + "_NewContentImage", contentImageName);
+            modifiedSteadyContentImagePath = modifiedSteadyContentImagePath.replace(MainActivity.user.getEmail() + "_ModifyContentImage",
+                                                                                    parentProjectPath + "_content_" + mModifyContent.getCurrentDays())
+                                                                           .replaceAll(" ", "_");
         }
     }
 
     @OnClick(R.id.imageViewNewContentImage)
-    public void onNewContentImageClick() {
-        // 콘텐츠 이미지 처리
+    public void onModifyContentImageClick() {
         mPresenter.selectPictureByGallery();
     }
 
     @Override
     public void showSnackBar(String message) {
         Snackbar.make(getWindow().getDecorView().getRootView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setKeyboardDown() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(textViewModifyContentComplete.getWindowToken(), 0);
     }
 
     @Override
@@ -223,30 +234,18 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
     }
 
     @Override
-    public void setDefaultSteadyContentImage() {
-        Glide.with(NewContentActivity.this)
-                .load(R.drawable.icon_project_image_default)
-                .into(imageViewNewContentImage);
-    }
-
-    @Override
-    public void setNewSteadyContentImagePath(String newContentImagePath) {
-        if ( newContentImagePath != null ) {
-            this.newContentImagePath = newContentImagePath;
+    public void setModifiedContentImagePath(String modifyContentImageURLPath) {
+        if ( modifyContentImageURLPath != null ) {
+            this.modifiedSteadyContentImagePath = modifyContentImageURLPath;
         }
     }
 
     @Override
-    public void setKeyboardDown() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(textViewNewContentCreate.getWindowToken(), 0);
-    }
-
-    @Override
-    public void completeNewSteadyContent(SteadyContent newSteadyContent) {
+    public void completeModifySteadyContent(SteadyContent modifySteadyContent) {
         Intent intent = new Intent();
+        intent.putExtra("modifyPosition", modifyPosition);
         // Parcelable 객체
-        intent.putExtra("newSteadyContent", newSteadyContent);
+        intent.putExtra("modifySteadyContent", modifySteadyContent);
         setResult(RESULT_OK, intent);
 
         finish();

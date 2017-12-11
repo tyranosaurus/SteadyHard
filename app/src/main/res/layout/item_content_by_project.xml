@@ -24,7 +24,6 @@
                 android:layout_height="48dp"
                 android:orientation="horizontal">
 
-                <!-- 프로젝트 타이틀 1줄로 고정, 일정 글자수 넘어가면 ...으로 나고게 수정 할 것. -->
                 <TextView
                     android:id="@+id/textViewContentDate"
                     android:layout_width="wrap_content"
@@ -34,7 +33,7 @@
                     android:ellipsize="end"
                     android:gravity="left|center_vertical"
                     android:maxLines="2"
-                    android:text="2017.12.08"
+                    android:text="0000.00.00"
                     android:textColor="@color/colorBlack"
                     android:textSize="16dp"
                     android:textStyle="bold" />

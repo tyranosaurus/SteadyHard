@@ -17,7 +17,7 @@ public interface HomeContract {
     interface View extends BaseView {
         void showSnackBar(String message);
         void showSteadyProjectsLayout();
-        void callContentByProjectActivity(SteadyProject steadyProject);
+        void callContentByProjectActivity(SteadyProject steadyProject, int position);
     }
 
     // HomeFragment 관련 Presenter 처리

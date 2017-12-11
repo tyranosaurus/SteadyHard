@@ -44,13 +44,17 @@ import butterknife.OnClick;
 public class ContentByProjectActivity extends AppCompatActivity implements ContentByProjectContract.View {
 
     private final static int REQUEST_CODE_NEW_CONTENT_ACTIVITY = 108;
+    private final static int REQUEST_CODE_MODIFY_STEADY_CONTENT_ACTIVITY = 109;
 
     ContentByProjectContract.Presenter mPresenter = null;
     ContentByProjectDataSource mRepository = null;
 
+    int adapterPosition = 0;
+    boolean isBackClick = false;
     SteadyProject steadyProject = null;
     ContentByProjectRecyclerViewAdapter adapter = null;
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.imageViewContentByProjectBack) ImageView imageViewContentByProjectBack;
     @BindView(R.id.textViewProjectTitle) TextView textViewProjectTitle;
     @BindView(R.id.textViewOpenBracket) TextView textViewOpenBracket;
@@ -102,6 +106,77 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
         mRepository = null;
         // Presenter 해제
         mPresenter.detachView();
+
+        // Glide 저장된 메모리 캐시 삭제
+        Glide.get(ContentByProjectActivity.this).clearMemory();
+        // Gilde 저장된 디스크 캐시 삭제
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(ContentByProjectActivity.this).clearDiskCache();
+            }
+        }).start();
+    }
+
+    @Override
+    public void finish() {
+        // 액티비티 종료하면서 프로젝트 갱신
+        Intent intent = new Intent();
+        // Parcelable 객체
+        intent.putExtra("steadyProject", steadyProject);
+        intent.putExtra("adapterPosition", adapterPosition);
+        setResult(RESULT_OK, intent);
+
+        super.finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( resultCode == RESULT_OK ) {
+            switch ( requestCode ) {
+                case REQUEST_CODE_NEW_CONTENT_ACTIVITY:
+                    SteadyContent newSteadyContent = data.getParcelableExtra("newSteadyContent");
+
+                    addNewContent(newSteadyContent);
+
+                    // 프로젝트 정보 갱신
+                    steadyProject.setCurrentDays(newSteadyContent.getCurrentDays());
+                    steadyProject.setLast_date(newSteadyContent.getAccomplishDate());
+
+                    if ( newSteadyContent.getCurrentDays() == steadyProject.getCompleteDays() ) {
+                        steadyProject.setStatus(1);
+                    }
+
+                    // 툴바 상태 갱신
+                    textViewCurrentDays.setText(String.valueOf(steadyProject.getCurrentDays()));
+                    setDurationColor(steadyProject.getCurrentDays(), newSteadyContent.getCompleteDays());
+
+                    if ( steadyProject.getStatus() == 1 ) {
+                        textViewProjectStatus.setVisibility(View.VISIBLE);
+                        textViewProjectStatus.setText("[ Success ]");
+                        textViewProjectStatus.setTextColor(getResources().getColor(R.color.colorGreen));
+                        ButterKnife.apply(textViewDateStatusList, setDateStatusGone, View.GONE);
+                    }
+
+                    String message = "오늘의 꾸준함이 등록되었습니다.";
+                    showSnackBar(message);
+                    break;
+                case REQUEST_CODE_MODIFY_STEADY_CONTENT_ACTIVITY:
+                    int modifyPosition = data.getIntExtra("modifyPosition", -1);
+                    SteadyContent modifySteadyContent = data.getParcelableExtra("modifySteadyContent");
+
+                    adapter.modifySteadyContent(modifyPosition, modifySteadyContent);
+
+                    String modifyMessage = "프로젝트가 수정되었습니다.";
+                    showSnackBar(modifyMessage);
+
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void init() {
@@ -134,9 +209,9 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
         // 인텐트 데이터 할당
         Intent intent = getIntent();
         steadyProject = intent.getParcelableExtra("steadyProject");
+        adapterPosition = intent.getIntExtra("adapterPosition", 0);
 
         // 툴바 세팅
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // 프로젝트 정보 세팅
@@ -211,19 +286,55 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
         }
     }
 
+    public void addNewContent(SteadyContent newSteadyContent) {
+        adapter.addNewItem(newSteadyContent);
+        adapter.notifyItemInserted(0);
+
+        showContentByProjectLayout();
+
+        recyclerViewContentByProject.scrollToPosition(0);
+    }
+
+    public boolean isCreatedContentToday(String lastContentDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String todayString = dateFormat.format(new Date());
+
+        if ( lastContentDate.equals(todayString) ) {
+            return true;
+        }
+
+        return false;
+    }
+
     @OnClick(R.id.imageViewContentByProjectBack)
     public void onContentByProjectBack() {
-        // 액티비티 종료하면서 프로젝트 갱신
-        // - 오늘 콘텐츠 올렸으면 날짜, 초록/빨강 불 등 데이터 업데이트
-        // Main 액티비티/홈 프래그먼트 의 onStop 나 onResume 에서 진행될 수 있도록 함.
-        // Main 액티비티/홈 프래그먼트의 onActivityResult
-        // 또는 setResult 로 보내서 해당 프로젝트만 갱신될 수 있도록한다.
+        finish();
     }
 
     @OnClick(R.id.floatingActionButton)
     public void onClickFloatingActionButtion() {
+        if ( steadyProject.getStatus() == 1 ) {
+            String message = "[ " + steadyProject.getProjectTitle() + " ] 프로젝트의 꾸준함을 모두 달성하셨습니다.";
+            showSnackBar(message);
+
+            return;
+        } else if ( steadyProject.getStatus() == 3 ) {
+            String message = "[ " + steadyProject.getProjectTitle() + " ] 프로젝트의 꾸준함이 이어지지 못했습니다.\n새로운 프로젝트로 다시 도전해 주세요.";
+            showSnackBar(message);
+
+            return;
+        }
+
+        if ( isCreatedContentToday(steadyProject.getLast_date()) ) {
+            String message = "이미 오늘의 꾸준함을 등록하셨습니다.";
+            showSnackBar(message);
+
+            return;
+        }
+
         // 새 콘텐츠 만드는 액티비티 호출
         Intent intent = new Intent(ContentByProjectActivity.this, NewContentActivity.class);
+        intent.putExtra("steadyProject", steadyProject);
         startActivityForResult(intent, REQUEST_CODE_NEW_CONTENT_ACTIVITY);
     }
 
@@ -333,6 +444,34 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
             return items.get(position);
         }
 
+        @Override
+        public void modifySteadyContent(int modifyPosition, SteadyContent modifySteadyContent) {
+            items.set(modifyPosition, modifySteadyContent);
+
+            // 해당 뷰홀더를 얻기
+            ContentByProjectViewHolder modifyViewHolder = (ContentByProjectViewHolder)recyclerViewContentByProject.findViewHolderForAdapterPosition(modifyPosition);
+            // 콘텐츠 이미지 갱신
+            if ( modifySteadyContent.getContentImage() != null ) {
+                // 이미지뷰에 있는 drawable이 Glide에 영향을 주므로 초기화 진행
+                modifyViewHolder.imageViewContentImage.setImageDrawable(null);
+                // 이미지뷰 초기화 후 Glide 사용
+                Glide.with(ContentByProjectActivity.this)
+                        .load(modifySteadyContent.getContentImage())
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.icon_load_fail)
+                        .into(modifyViewHolder.imageViewContentImage);
+            } else {
+                modifyViewHolder.imageViewContentImage.setVisibility(View.GONE);
+            }
+            // 콘텐츠 텍스트 갱신
+            modifyViewHolder.textViewContentText.setText(modifySteadyContent.getContentText());
+        }
+
+        public void addNewItem(SteadyContent item) {
+            items.add(0, item);
+        }
+
         public class ContentByProjectViewHolder extends RecyclerView.ViewHolder {
 
             Context context = null;
@@ -396,11 +535,19 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
                     public boolean onMenuItemClick(MenuItem item) {
                         switch ( item.getItemId() ) {
                             case R.id.popup_content_modify:
-                                showSnackBar("콘텐츠 수정");
+                                SteadyContent modifyContent = adapter.getSteadyContentItem(getAdapterPosition());
+
+                                Intent intent = new Intent(ContentByProjectActivity.this, ModifySteadyContentActivity.class);
+                                intent.putExtra("modifyPosition", getAdapterPosition());
+                                intent.putExtra("projectTitle", steadyProject.getProjectTitle());
+                                intent.putExtra("modifyContent", modifyContent);
+                                intent.putExtra("steadyProject", steadyProject);
+
+                                startActivityForResult(intent, REQUEST_CODE_MODIFY_STEADY_CONTENT_ACTIVITY);
 
                                 break;
                             case R.id.popup_content_delete:
-                                showSnackBar("콘텐츠 삭제");
+                                //=================================================================================================================
 
                                 break;
                             default:

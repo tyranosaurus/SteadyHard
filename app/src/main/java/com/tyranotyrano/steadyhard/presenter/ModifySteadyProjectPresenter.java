@@ -89,7 +89,7 @@ public class ModifySteadyProjectPresenter implements ModifySteadyProjectContract
         @Override
         protected String doInBackground(String... params) {
             String modifyProjectImagePath = params[0];
-            String modifiedProjectImagePath = mRepository.uploadModifyProjectImage(modifyProjectImagePath);// Model 세팅하고 진행할 것.
+            String modifiedProjectImagePath = mRepository.uploadModifyProjectImage(modifyProjectImagePath);
 
             return modifiedProjectImagePath;
         }

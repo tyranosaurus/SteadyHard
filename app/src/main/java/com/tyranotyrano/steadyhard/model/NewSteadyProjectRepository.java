@@ -20,6 +20,7 @@ public class NewSteadyProjectRepository implements NewSteadyProjectDataSource {
     @Override
     public String uploadSteadyProjectImage(String imagePath) {
         String steadyProjectImagePath = mNewSteadyProjectRemoteDataSource.uploadSteadyProjectImage(imagePath);
+
         return steadyProjectImagePath;
     }
 
