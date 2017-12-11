@@ -8,4 +8,5 @@ import java.util.Map;
 
 public interface ContentByProjectDataSource {
     Map<String, Object> getContentsByProjectNo(int projectNo);
+    boolean deleteSteadyContent(int deleteContentNo, String userEmail, String deleteContentImageName, String parentProjectPath, int currentDays, int projectNo);
 }

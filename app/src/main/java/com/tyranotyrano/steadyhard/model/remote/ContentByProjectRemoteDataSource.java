@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -85,5 +87,59 @@ public class ContentByProjectRemoteDataSource implements ContentByProjectDataSou
         }
 
         return map;
+    }
+
+    @Override
+    public boolean deleteSteadyContent(int deleteContentNo, String userEmail, String deleteContentImageName, String parentProjectPath, int currentDays, int projectNo) {
+        OkHttpClient client = OkHttpInitSingtonManager.getOkHttpClient();
+        Response response = null;
+
+        boolean result = false;
+        String message = null;
+
+        FormBody.Builder requestBuilder = new FormBody.Builder();
+
+        if ( deleteContentImageName != null ) {
+            requestBuilder.add("deleteContentImageName", deleteContentImageName);
+        }
+
+        requestBuilder
+                .add("userEmail", userEmail)
+                .add("deleteContentNo", String.valueOf(deleteContentNo))
+                .add("currentDays", String.valueOf(currentDays))
+                .add("projectNo", String.valueOf(projectNo))
+                .add("parentProjectPath", parentProjectPath);
+
+        RequestBody requestBody = requestBuilder.build();
+
+        try {
+            response = OkHttpAPICall.DELETE(client, NetworkDefineConstant.SERVER_URL_DELETE_STEADY_CONTENT, requestBody);
+
+            if ( response == null ) {
+                Log.e(TAG, "Response of deleteSteadyContent() is null.");
+
+                return false;
+            } else {
+                JSONObject jsonFromServer = new JSONObject(response.body().string());
+                result = jsonFromServer.getBoolean("result");
+
+                if ( jsonFromServer.has("message") ) {
+                    message = jsonFromServer.getString("message");
+                    Log.e(TAG, message);
+                }
+            }
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if ( response != null ) {
+                response.close();
+            }
+        }
+
+        return result;
     }
 }

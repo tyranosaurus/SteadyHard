@@ -260,6 +260,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             // 프로젝트 오늘 등록여부 설정
             if ( item.getStatus() != 2 ) {
                 holder.viewTodayCheck.setVisibility(View.INVISIBLE);
+            } else {
+                holder.viewTodayCheck.setVisibility(View.VISIBLE);
             }
 
             if ( holder.checkSteadyProjectToday(item.getLast_date()) ) {
@@ -300,6 +302,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 holder.textViewProjectStatus.setTextColor(getResources().getColor(R.color.colorRed));
 
                 holder.setDurationGone();
+            } else {
+                holder.textViewProjectStatus.setVisibility(View.GONE);
+                ButterKnife.apply(holder.textViewDateStatusList, holder.setDateStatusGone, View.VISIBLE);
             }
             // 프로젝트 현재 진행날짜 색깔 설정
             holder.setDurationColor(item.getCurrentDays(), item.getCompleteDays());
@@ -321,9 +326,10 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         @Override
         public void notifyAdapterDelete(int deletePosition) {
-            showSteadyProjectsLayout();
             // 삭제 후 데이터 갱신(애니메이션)
             adapter.notifyItemRemoved(deletePosition);
+
+            showSteadyProjectsLayout();
         }
 
         @Override

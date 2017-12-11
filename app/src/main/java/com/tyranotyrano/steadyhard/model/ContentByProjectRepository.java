@@ -23,4 +23,11 @@ public class ContentByProjectRepository implements ContentByProjectDataSource {
 
         return map;
     }
+
+    @Override
+    public boolean deleteSteadyContent(int deleteContentNo, String userEmail, String deleteContentImageName, String parentProjectPath, int currentDays, int projectNo) {
+        boolean deleteResult = mContentByProjectRemoteDataSource.deleteSteadyContent(deleteContentNo, userEmail, deleteContentImageName, parentProjectPath, currentDays, projectNo);
+
+        return deleteResult;
+    }
 }

@@ -10,6 +10,7 @@ public interface ContentByProjectAdapterContract {
     interface View {
         void notifyAdapter();
         void setOnContentByProjectClickListener(ContentByProjectAdapterContract.OnContentByProjectClickListener onContentByProjectClickListener);
+        void notifyAdapterDelete(int deletePosition);
     }
 
     interface Model {
@@ -17,6 +18,7 @@ public interface ContentByProjectAdapterContract {
         SteadyContent getSteadyContentItem(int position);
         void clearAdapter();
         void modifySteadyContent(int modifyPosition, SteadyContent modifySteadyContent);
+        void deleteSteadyContent(SteadyContent deleteItem);
     }
 
     interface OnContentByProjectClickListener {

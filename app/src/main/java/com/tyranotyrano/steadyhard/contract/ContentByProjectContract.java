@@ -3,6 +3,7 @@ package com.tyranotyrano.steadyhard.contract;
 import com.tyranotyrano.steadyhard.contract.adapter.ContentByProjectAdapterContract;
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
+import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.remote.datasource.ContentByProjectDataSource;
 
 /**
@@ -14,6 +15,7 @@ public interface ContentByProjectContract {
     interface View extends BaseView {
         void showSnackBar(String message);
         void showContentByProjectLayout();
+        void refreshSteadyProjectAndToolbar(int currentDays, String lastDate, int status);
     }
 
     // ContentByProjectActivity 관련 Presenter 처리
@@ -25,5 +27,6 @@ public interface ContentByProjectContract {
         void setContentByProjectAdapterModel(ContentByProjectAdapterContract.Model adapterModel);
         void setContentByProjectAdapterOnItemClickListener();
         void getContentByProject(int projectNo);
+        void deleteSteadyContent(int position, SteadyProject steadyProject);
     }
 }

@@ -169,4 +169,21 @@ public class SteadyProject implements Parcelable {
     public void setUserNo(int userNo) {
         this.userNo = userNo;
     }
+
+
+    @Override
+    public String toString() {
+        return "SteadyProject{" +
+                "no=" + no +
+                ", projectTitle='" + projectTitle + '\'' +
+                ", projectImage='" + projectImage + '\'' +
+                ", currentDays=" + currentDays +
+                ", completeDays=" + completeDays +
+                ", description='" + description + '\'' +
+                ", projectDate='" + projectDate + '\'' +
+                ", status=" + status +
+                ", last_date='" + last_date + '\'' +
+                ", userNo=" + userNo +
+                '}';
+    }
 }

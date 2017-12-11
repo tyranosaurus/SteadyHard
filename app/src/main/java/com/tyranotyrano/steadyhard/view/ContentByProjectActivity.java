@@ -354,6 +354,22 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
         }
     }
 
+    @Override
+    public void refreshSteadyProjectAndToolbar(int currentDays, String lastDate, int status) {
+        steadyProject.setCurrentDays(currentDays);
+        steadyProject.setLast_date(lastDate);
+        steadyProject.setStatus(status);
+
+        // 툴바 상태 갱신
+        textViewCurrentDays.setText(String.valueOf(currentDays));
+        setDurationColor(currentDays, steadyProject.getCompleteDays());
+
+        if ( steadyProject.getStatus() == 2 ) {
+            textViewProjectStatus.setVisibility(View.GONE);
+            ButterKnife.apply(textViewDateStatusList, setDateStatusGone, View.VISIBLE);
+        }
+    }
+
     // 리사이클러뷰 어댑터
     public class ContentByProjectRecyclerViewAdapter extends RecyclerView.Adapter<ContentByProjectRecyclerViewAdapter.ContentByProjectViewHolder>
                                                      implements ContentByProjectAdapterContract.View, ContentByProjectAdapterContract.Model {
@@ -472,6 +488,19 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
             items.add(0, item);
         }
 
+        @Override
+        public void deleteSteadyContent(SteadyContent deleteItem) {
+            items.remove(deleteItem);
+        }
+
+        @Override
+        public void notifyAdapterDelete(int deletePosition) {
+            // 삭제 후 데이터 갱신(애니메이션)
+            adapter.notifyItemRemoved(deletePosition);
+
+            showContentByProjectLayout();
+        }
+
         public class ContentByProjectViewHolder extends RecyclerView.ViewHolder {
 
             Context context = null;
@@ -547,8 +576,7 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
 
                                 break;
                             case R.id.popup_content_delete:
-                                //=================================================================================================================
-
+                                mPresenter.deleteSteadyContent(getAdapterPosition(), steadyProject);
                                 break;
                             default:
                                 break;
