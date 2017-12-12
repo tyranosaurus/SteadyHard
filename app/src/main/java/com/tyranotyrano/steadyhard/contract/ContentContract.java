@@ -17,6 +17,7 @@ public interface ContentContract {
         void showSnackBar(String message);
         void showSteadyContentsLayout();
         Context getActivityContext();
+        void refreshContentFragment();
     }
 
     // ContentFragment 관련 Presenter 처리

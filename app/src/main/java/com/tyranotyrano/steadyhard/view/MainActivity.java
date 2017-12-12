@@ -174,13 +174,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                /*if ( fragment instanceof HomeFragment ) {
+                fragment = mPresenter.getCurrentFragment();
 
+                if ( fragment instanceof HomeFragment ) {
+                    ((HomeFragment)fragment).refreshHomeFragment();
                 } else if ( fragment instanceof ContentFragment ) {
-
+                    ((ContentFragment)fragment).refreshContentFragment();
                 } else if ( fragment instanceof ProfileFragment ) {
-
-                }*/
+                    ((ProfileFragment)fragment).refreshProfileFragment();
+                }
 
                 showSnackBar("새로고침 완료");
 

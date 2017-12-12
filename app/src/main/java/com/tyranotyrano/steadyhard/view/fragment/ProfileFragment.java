@@ -314,4 +314,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     public Context getActivityContext() {
         return activity;
     }
+
+    @Override
+    public void refreshProfileFragment() {
+        mPresenter.getSteadyProjectStatusCount();
+    }
 }

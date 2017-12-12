@@ -20,6 +20,7 @@ public interface ProfileContract {
         void showSnackBar(String message);
         void drawSteadyProjectPieChart(int success, int ongoing, int fail);
         Context getActivityContext();
+        void refreshProfileFragment();
     }
 
     // ProfileFragment 관련 View 처리

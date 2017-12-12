@@ -20,6 +20,7 @@ public interface HomeContract {
         void showSteadyProjectsLayout();
         void callContentByProjectActivity(SteadyProject steadyProject, int position);
         Context getActivityContext();
+        void refreshHomeFragment();
     }
 
     // HomeFragment 관련 Presenter 처리

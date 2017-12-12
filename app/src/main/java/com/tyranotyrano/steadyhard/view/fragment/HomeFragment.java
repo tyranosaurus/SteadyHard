@@ -236,6 +236,12 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         return activity;
     }
 
+    @Override
+    public void refreshHomeFragment() {
+        // 홈프래그먼트의 모든 SteadyProject 갱신
+        mPresenter.getSteadyProjects();
+    }
+
     // 리사이클러뷰 어댑터
     public class SteadyProjectRecyclerViewAdapter extends RecyclerView.Adapter<SteadyProjectRecyclerViewAdapter.SteadyProjectViewHolder>
                                                   implements SteadyProjectAdapterContract.View, SteadyProjectAdapterContract.Model {

@@ -72,7 +72,7 @@ public class MainPresenter implements MainContract.Presenter {
                         break;
                 }
 
-                /** 이런식으로 프래그먼트에 따라 Floating Action 버튼 기능 설정할 것 - 기능은 함수로 따로 구현 */
+                // 이런식으로 프래그먼트에 따라 Floating Action 버튼 기능 설정
                 if ( fragment instanceof HomeFragment ) {
                     mView.setFloatingActionButtionVisibility(View.VISIBLE);
                 } else if ( fragment instanceof ContentFragment ) {
