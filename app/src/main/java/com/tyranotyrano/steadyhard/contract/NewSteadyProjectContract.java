@@ -1,5 +1,7 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
+
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
 import com.tyranotyrano.steadyhard.model.data.SteadyProject;
@@ -18,6 +20,7 @@ public interface NewSteadyProjectContract {
         void setDefaultSteadyProjectImage();
         void setKeyboardDown();
         void completeNewSteadyProject(SteadyProject newSteadyProject);
+        Context getActivityContext();
     }
 
     // NewSteadyProjectActivity 관련 Presenter 처리

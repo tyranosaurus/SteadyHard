@@ -231,6 +231,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         startActivityForResult(intent, REQUEST_CODE_CONTENT_BY_PROJECT_ACTIVITY);
     }
 
+    @Override
+    public Context getActivityContext() {
+        return activity;
+    }
+
     // 리사이클러뷰 어댑터
     public class SteadyProjectRecyclerViewAdapter extends RecyclerView.Adapter<SteadyProjectRecyclerViewAdapter.SteadyProjectViewHolder>
                                                   implements SteadyProjectAdapterContract.View, SteadyProjectAdapterContract.Model {

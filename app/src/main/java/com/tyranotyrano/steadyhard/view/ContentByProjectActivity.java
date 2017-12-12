@@ -370,6 +370,11 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
         }
     }
 
+    @Override
+    public Context getActivityContext() {
+        return ContentByProjectActivity.this;
+    }
+
     // 리사이클러뷰 어댑터
     public class ContentByProjectRecyclerViewAdapter extends RecyclerView.Adapter<ContentByProjectRecyclerViewAdapter.ContentByProjectViewHolder>
                                                      implements ContentByProjectAdapterContract.View, ContentByProjectAdapterContract.Model {

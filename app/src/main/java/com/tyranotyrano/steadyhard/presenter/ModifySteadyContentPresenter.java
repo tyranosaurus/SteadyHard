@@ -1,7 +1,11 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.ModifySteadyContentContract;
 import com.tyranotyrano.steadyhard.model.data.SteadyContent;
 import com.tyranotyrano.steadyhard.model.data.SteadyProject;
@@ -79,10 +83,20 @@ public class ModifySteadyContentPresenter implements ModifySteadyContentContract
     }
 
     public class ModifyContentImageUploadTask extends AsyncTask<String, Integer, String> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -98,6 +112,7 @@ public class ModifySteadyContentPresenter implements ModifySteadyContentContract
         @Override
         protected void onPostExecute(String modifyContentImageURLPath) {
             super.onPostExecute(modifyContentImageURLPath);
+            progressDialog.dismiss();
 
             if ( modifyContentImageURLPath != null ) {
                 // 프로젝트 이미지 수정 성공
@@ -111,10 +126,20 @@ public class ModifySteadyContentPresenter implements ModifySteadyContentContract
     }
 
     public class ModifyContentImageDeleteTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -130,6 +155,7 @@ public class ModifySteadyContentPresenter implements ModifySteadyContentContract
         @Override
         protected void onPostExecute(Boolean deleteResult) {
             super.onPostExecute(deleteResult);
+            progressDialog.dismiss();
 
             // empty
             /*if ( deleteResult ) {
@@ -141,10 +167,20 @@ public class ModifySteadyContentPresenter implements ModifySteadyContentContract
     }
 
     public class SteadyContentModifyTask extends AsyncTask<Object, Integer, Map<String, Object>> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -183,6 +219,7 @@ public class ModifySteadyContentPresenter implements ModifySteadyContentContract
         @Override
         protected void onPostExecute(Map<String, Object> map) {
             super.onPostExecute(map);
+            progressDialog.dismiss();
 
             if ( map != null ) {
                 // 프로젝트 수정 성공

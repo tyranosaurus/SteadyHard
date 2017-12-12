@@ -1,5 +1,7 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
+
 import com.tyranotyrano.steadyhard.contract.adapter.ContentByProjectAdapterContract;
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
@@ -16,6 +18,7 @@ public interface ContentByProjectContract {
         void showSnackBar(String message);
         void showContentByProjectLayout();
         void refreshSteadyProjectAndToolbar(int currentDays, String lastDate, int status);
+        Context getActivityContext();
     }
 
     // ContentByProjectActivity 관련 Presenter 처리

@@ -1,8 +1,11 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.HomeContract;
@@ -114,10 +117,20 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
     }
 
     public class SteadyProjectsGetTask extends AsyncTask<Integer, Integer, Map<String, Object>> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -132,6 +145,7 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
         @Override
         protected void onPostExecute(Map<String, Object> map) {
             super.onPostExecute(map);
+            progressDialog.dismiss();
 
             if ( map != null ) {
                 if ( (boolean)map.get("result") ) {
@@ -165,12 +179,22 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
     }
 
     public class SteadyProjectDeleteTask extends AsyncTask<Object, Integer, Boolean> {
+        Dialog progressDialog;
+
         int deletePosition = 0;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -203,6 +227,7 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
         @Override
         protected void onPostExecute(Boolean deleteResult) {
             super.onPostExecute(deleteResult);
+            progressDialog.dismiss();
 
             if ( deleteResult ) {
                 // 프로젝트 삭제 성공

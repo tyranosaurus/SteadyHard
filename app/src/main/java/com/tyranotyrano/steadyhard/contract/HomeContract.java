@@ -1,5 +1,6 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
 import com.tyranotyrano.steadyhard.contract.adapter.SteadyProjectAdapterContract;
@@ -18,6 +19,7 @@ public interface HomeContract {
         void showSnackBar(String message);
         void showSteadyProjectsLayout();
         void callContentByProjectActivity(SteadyProject steadyProject, int position);
+        Context getActivityContext();
     }
 
     // HomeFragment 관련 Presenter 처리

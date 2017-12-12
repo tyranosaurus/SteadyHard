@@ -1,8 +1,12 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.ProfileContract;
 import com.tyranotyrano.steadyhard.model.remote.datasource.ProfileDataSource;
 
@@ -46,11 +50,20 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     }
 
     public class SessionLogoutTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -64,6 +77,7 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         @Override
         protected void onPostExecute(Boolean isSessionLogout) {
             super.onPostExecute(isSessionLogout);
+            progressDialog.dismiss();
 
             if ( isSessionLogout ) {
                 mView.clearCookie();
@@ -78,10 +92,20 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     }
 
     public class ProjectStatusGetCountTask extends AsyncTask<Void, Integer, Map<String, Object>> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -93,6 +117,7 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         @Override
         protected void onPostExecute(Map<String, Object> map) {
             super.onPostExecute(map);
+            progressDialog.dismiss();
 
             if ( map != null ) {
                 // 성공

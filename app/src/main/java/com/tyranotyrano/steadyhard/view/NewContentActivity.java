@@ -251,4 +251,9 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
 
         finish();
     }
+
+    @Override
+    public Context getActivityContext() {
+        return NewContentActivity.this;
+    }
 }

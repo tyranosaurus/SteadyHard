@@ -1,7 +1,11 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.JoinContract;
 import com.tyranotyrano.steadyhard.model.remote.datasource.JoinDataSource;
 
@@ -131,10 +135,20 @@ public class JoinPresenter implements JoinContract.Presenter {
     }
 
     public class EmailDuplicationTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -149,6 +163,7 @@ public class JoinPresenter implements JoinContract.Presenter {
         @Override
         protected void onPostExecute(Boolean availableEmail) {
             super.onPostExecute(availableEmail);
+            progressDialog.dismiss();
 
             if ( availableEmail ) {
                 mView.checkedEmailDuplication();
@@ -160,10 +175,20 @@ public class JoinPresenter implements JoinContract.Presenter {
     }
 
     public class NewUserTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -179,6 +204,7 @@ public class JoinPresenter implements JoinContract.Presenter {
         @Override
         protected void onPostExecute(Boolean isJoinSuccess) {
             super.onPostExecute(isJoinSuccess);
+            progressDialog.dismiss();
 
             if ( isJoinSuccess ) {
                 mView.joinedNewUser();
@@ -194,10 +220,20 @@ public class JoinPresenter implements JoinContract.Presenter {
     }
 
     public class ProfileImageUploadTask extends AsyncTask<String, Integer, String> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -211,6 +247,7 @@ public class JoinPresenter implements JoinContract.Presenter {
         @Override
         protected void onPostExecute(String userProfileImagePath) {
             super.onPostExecute(userProfileImagePath);
+            progressDialog.dismiss();
 
             if ( userProfileImagePath != null ) {
                 // 이미지 전송에 성공한 경우
@@ -226,9 +263,20 @@ public class JoinPresenter implements JoinContract.Presenter {
     }
 
     public class ProfileInfoSaveTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -245,6 +293,7 @@ public class JoinPresenter implements JoinContract.Presenter {
         @Override
         protected void onPostExecute(Boolean saveResult) {
             super.onPostExecute(saveResult);
+            progressDialog.dismiss();
 
             if ( saveResult ) {
                 String message = "회원가입을 완료하였습니다.\n로그인 후 이용해주세요.";

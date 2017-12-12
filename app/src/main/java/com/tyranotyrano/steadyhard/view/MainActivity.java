@@ -1,5 +1,6 @@
 package com.tyranotyrano.steadyhard.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -63,11 +64,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     protected void onDestroy() {
         super.onDestroy();
 
-        if ( !isLogout ) {
-            // 로그아웃 없이 MainActivity 종료시 세션에 있는 토큰 정보 삭제
-            mPresenter.clearSessionToken(user.getToken());
-        }
-
         // 자동 로그인이 아닌 경우
         SharedPreferences autoLoginPreferences = getSharedPreferences("autoLogin", MODE_PRIVATE);
         boolean isAutoLogin = autoLoginPreferences.getBoolean("isAutoLogin", false);
@@ -75,6 +71,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         if ( !isAutoLogin ) {
             mPresenter.clearUserInfo();
         }
+    }
+
+    @Override
+    public void finish() {
+        if ( !isLogout ) {
+            // 로그아웃 없이 MainActivity 종료시 세션에 있는 토큰 정보 삭제
+            mPresenter.clearSessionToken(user.getToken());
+        }
+
+        super.finish();
     }
 
     @Override
@@ -168,6 +174,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                /*if ( fragment instanceof HomeFragment ) {
+
+                } else if ( fragment instanceof ContentFragment ) {
+
+                } else if ( fragment instanceof ProfileFragment ) {
+
+                }*/
+
                 showSnackBar("새로고침 완료");
 
                 // 새로고침 종료 - 원하는 작업 끝나면 호출할 것(아마 이거 종료하는 함수만들어서 onPostExcute() 에서 호출할 듯)
@@ -243,5 +257,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showSnackBar(String message) {
         Snackbar.make(getWindow().getDecorView().getRootView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setFloatingActionButtionVisibility(int visibility) {
+        floatingActionButton.setVisibility(visibility);
+    }
+
+    @Override
+    public Context getActivityContext() {
+        return MainActivity.this;
     }
 }

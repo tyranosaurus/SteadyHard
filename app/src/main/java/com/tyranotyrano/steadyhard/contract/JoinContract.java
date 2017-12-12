@@ -1,5 +1,7 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
+
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
 import com.tyranotyrano.steadyhard.model.remote.datasource.JoinDataSource;
@@ -19,6 +21,7 @@ public interface JoinContract {
         void setUserProfileImagePath(String userProfileImagePath);
         void setDefaultProfileImage();
         void finishJoinActivity(String message);
+        Context getActivityContext();
     }
 
     // JoinActivity 관련 Presenter 처리

@@ -1,5 +1,6 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +24,8 @@ public interface MainContract {
         void clearUserInfo();
         void setOnBottomNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationItemSelectedListener);
         void showSnackBar(String message);
+        void setFloatingActionButtionVisibility(int visibility);
+        Context getActivityContext();
     }
 
     // MainActivity 관련 Presenter 처리

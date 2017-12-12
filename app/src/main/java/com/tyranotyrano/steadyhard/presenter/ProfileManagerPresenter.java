@@ -1,11 +1,14 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.ProfileManagerContract;
@@ -126,11 +129,20 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
     }
 
     public class UserDeleteTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -144,6 +156,7 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
         @Override
         protected void onPostExecute(Boolean deleteResult) {
             super.onPostExecute(deleteResult);
+            progressDialog.dismiss();
 
             if ( deleteResult ) {
                 // 회원탈퇴 성공
@@ -158,10 +171,20 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
     }
 
     public class NewProfileImageUploadTask extends AsyncTask<String, Integer, String> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -175,6 +198,7 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
         @Override
         protected void onPostExecute(String newProfileImagePath) {
             super.onPostExecute(newProfileImagePath);
+            progressDialog.dismiss();
 
             if ( newProfileImagePath != null ) {
                 // 새 프로필 사진 업로드 성공
@@ -190,10 +214,20 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
     }
 
     public class NewProfileImageDeleteTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -207,6 +241,7 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
         @Override
         protected void onPostExecute(Boolean deleteResult) {
             super.onPostExecute(deleteResult);
+            progressDialog.dismiss();
 
             // empty
             /*if ( deleteResult ) {
@@ -218,10 +253,20 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
     }
 
     public class NewProfileUpdateTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -239,6 +284,7 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
         @Override
         protected void onPostExecute(Boolean updateResult) {
             super.onPostExecute(updateResult);
+            progressDialog.dismiss();
 
             if ( updateResult ) {
                 // 프로필 업데이트 성공 시

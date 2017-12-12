@@ -309,4 +309,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     public void drawSteadyProjectPieChart(int success, int ongoing, int fail) {
         createPieChart(success, ongoing, fail);
     }
+
+    @Override
+    public Context getActivityContext() {
+        return activity;
+    }
 }

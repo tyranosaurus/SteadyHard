@@ -1,7 +1,11 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.LoginContract;
 import com.tyranotyrano.steadyhard.model.data.User;
 import com.tyranotyrano.steadyhard.model.remote.datasource.LoginDataSource;
@@ -73,6 +77,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     // 로그인 체크하는 AsyncTask
     public class LoginCheckTask extends AsyncTask<Object, String, User> {
+        Dialog progressDialog;
 
         int callcode = 0;
 
@@ -80,6 +85,14 @@ public class LoginPresenter implements LoginContract.Presenter {
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -107,6 +120,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         @Override
         protected void onPostExecute(User userInfo) {
             super.onPostExecute(userInfo);
+            progressDialog.dismiss();
 
             if ( userInfo != null ) {
                 // 유저정보 Sharedpreferences에 저장

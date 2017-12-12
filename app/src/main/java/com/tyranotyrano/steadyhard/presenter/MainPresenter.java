@@ -1,5 +1,6 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -10,6 +11,9 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.MainContract;
@@ -69,9 +73,13 @@ public class MainPresenter implements MainContract.Presenter {
                 }
 
                 /** 이런식으로 프래그먼트에 따라 Floating Action 버튼 기능 설정할 것 - 기능은 함수로 따로 구현 */
-                /*if ( fragment instanceof ProfileFragment ) {
-                    floatingActionButton.setVisibility(View.GONE);
-                }*/
+                if ( fragment instanceof HomeFragment ) {
+                    mView.setFloatingActionButtionVisibility(View.VISIBLE);
+                } else if ( fragment instanceof ContentFragment ) {
+                    mView.setFloatingActionButtionVisibility(View.GONE);
+                } else if ( fragment instanceof ProfileFragment ) {
+                    mView.setFloatingActionButtionVisibility(View.GONE);
+                }
 
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
@@ -121,12 +129,30 @@ public class MainPresenter implements MainContract.Presenter {
         mView.clearUserInfo();
     }
 
+    @Override
+    public Fragment getCurrentFragment() {
+        if ( fragment == null ) {
+            return null;
+        }
+
+        return fragment;
+    }
+
     public class SessionLogoutTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -140,6 +166,7 @@ public class MainPresenter implements MainContract.Presenter {
         @Override
         protected void onPostExecute(Boolean isSessionLogout) {
             super.onPostExecute(isSessionLogout);
+            progressDialog.dismiss();
 
             if ( isSessionLogout ) {
                 mView.clearCookie();
@@ -148,14 +175,5 @@ public class MainPresenter implements MainContract.Presenter {
                 Log.e("clearSessionToken()","There is no Token value for Session Logout.");
             }
         }
-    }
-
-    @Override
-    public Fragment getCurrentFragment() {
-        if ( fragment == null ) {
-            return null;
-        }
-
-        return fragment;
     }
 }

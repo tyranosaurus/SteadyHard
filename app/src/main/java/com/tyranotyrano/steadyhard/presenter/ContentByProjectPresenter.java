@@ -1,7 +1,11 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.ContentByProjectContract;
 import com.tyranotyrano.steadyhard.contract.adapter.ContentByProjectAdapterContract;
 import com.tyranotyrano.steadyhard.model.data.SteadyContent;
@@ -97,10 +101,20 @@ public class ContentByProjectPresenter implements ContentByProjectContract.Prese
     }
 
     public class ContentByProjectGetTask extends AsyncTask<Integer, Integer, Map<String, Object>> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -115,6 +129,7 @@ public class ContentByProjectPresenter implements ContentByProjectContract.Prese
         @Override
         protected void onPostExecute(Map<String, Object> map) {
             super.onPostExecute(map);
+            progressDialog.dismiss();
 
             if ( map != null ) {
                 if ( (boolean)map.get("result") ) {
@@ -148,6 +163,8 @@ public class ContentByProjectPresenter implements ContentByProjectContract.Prese
     }
 
     public class SteadyContentDeleteTask extends AsyncTask<Object, Integer, Boolean> {
+        Dialog progressDialog;
+
         int deletePosition = 0;
         SteadyProject steadyProject = null;
 
@@ -155,6 +172,14 @@ public class ContentByProjectPresenter implements ContentByProjectContract.Prese
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -206,6 +231,7 @@ public class ContentByProjectPresenter implements ContentByProjectContract.Prese
         @Override
         protected void onPostExecute(Boolean deleteResult) {
             super.onPostExecute(deleteResult);
+            progressDialog.dismiss();
 
             if ( deleteResult ) {
                 // 프로젝트 삭제 성공

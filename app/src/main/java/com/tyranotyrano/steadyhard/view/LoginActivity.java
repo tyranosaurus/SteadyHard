@@ -1,6 +1,7 @@
 package com.tyranotyrano.steadyhard.view;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -247,5 +248,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 break;
             }
         }
+    }
+
+    @Override
+    public Context getActivityContext() {
+        return LoginActivity.this;
     }
 }

@@ -1,5 +1,7 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
+
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
 import com.tyranotyrano.steadyhard.model.data.User;
@@ -15,6 +17,7 @@ public interface LoginContract {
         void callActivity(int callCode);
         void showSnackBar(String message);
         void setLoginSharedpreferences(User user);
+        Context getActivityContext();
     }
 
     // LoginActivity 관련 Presenter 처리

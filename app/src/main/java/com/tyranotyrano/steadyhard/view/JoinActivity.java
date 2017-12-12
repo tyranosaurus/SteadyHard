@@ -221,4 +221,9 @@ public class JoinActivity extends AppCompatActivity implements JoinContract.View
 
         finish();
     }
+
+    @Override
+    public Context getActivityContext() {
+        return JoinActivity.this;
+    }
 }

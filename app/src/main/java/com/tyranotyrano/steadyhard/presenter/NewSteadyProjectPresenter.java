@@ -1,7 +1,11 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.NewSteadyProjectContract;
 import com.tyranotyrano.steadyhard.model.data.SteadyProject;
 import com.tyranotyrano.steadyhard.model.remote.datasource.NewSteadyProjectDataSource;
@@ -101,10 +105,20 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
     }
 
     public class SteadyProjectImageUploadTask extends AsyncTask<String, Integer, String> {
+        Dialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -118,6 +132,7 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
         @Override
         protected void onPostExecute(String steadyProjectImagePath) {
             super.onPostExecute(steadyProjectImagePath);
+            progressDialog.dismiss();
 
             if ( steadyProjectImagePath != null ) {
                 // 이미지 전송에 성공한 경우
@@ -133,11 +148,20 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
     }
 
     public class NewProjectImageDeleteTask extends AsyncTask<String, Integer, Boolean> {
+        Dialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -151,6 +175,7 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
         @Override
         protected void onPostExecute(Boolean deleteResult) {
             super.onPostExecute(deleteResult);
+            progressDialog.dismiss();
 
             // empty
             /*if ( deleteResult ) {
@@ -162,11 +187,20 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
     }
 
     public class NewProjectCreateTask extends AsyncTask<Object, Integer, Map<String, Object>> {
+        Dialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -205,6 +239,7 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
         @Override
         protected void onPostExecute(Map<String, Object> map) {
             super.onPostExecute(map);
+            progressDialog.dismiss();
 
             if ( map != null ) {
                 if ( (boolean)map.get("result") ) {

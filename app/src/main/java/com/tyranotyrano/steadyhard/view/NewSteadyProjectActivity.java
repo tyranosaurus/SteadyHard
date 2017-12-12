@@ -199,4 +199,9 @@ public class NewSteadyProjectActivity extends AppCompatActivity implements NewSt
 
         finish();
     }
+
+    @Override
+    public Context getActivityContext() {
+        return NewSteadyProjectActivity.this;
+    }
 }

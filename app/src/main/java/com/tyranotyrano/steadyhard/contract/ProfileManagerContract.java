@@ -1,5 +1,6 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 
@@ -21,6 +22,7 @@ public interface ProfileManagerContract {
         void setOriginalProfileImage();
         void setNewProfileImagePath(String newProfileImagePath);
         void updatedNewProfileInfo();
+        Context getActivityContext();
     }
 
     // ProfileManagerActivity 관련 Presenter 처리

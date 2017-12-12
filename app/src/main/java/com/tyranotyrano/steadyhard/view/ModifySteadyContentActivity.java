@@ -250,4 +250,9 @@ public class ModifySteadyContentActivity extends AppCompatActivity implements Mo
 
         finish();
     }
+
+    @Override
+    public Context getActivityContext() {
+        return ModifySteadyContentActivity.this;
+    }
 }

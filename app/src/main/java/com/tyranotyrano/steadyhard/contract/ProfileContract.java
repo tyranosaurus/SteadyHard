@@ -1,5 +1,7 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
+
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
 import com.tyranotyrano.steadyhard.model.remote.datasource.ProfileDataSource;
@@ -17,6 +19,7 @@ public interface ProfileContract {
         void turnOffAutoLogin();
         void showSnackBar(String message);
         void drawSteadyProjectPieChart(int success, int ongoing, int fail);
+        Context getActivityContext();
     }
 
     // ProfileFragment 관련 View 처리

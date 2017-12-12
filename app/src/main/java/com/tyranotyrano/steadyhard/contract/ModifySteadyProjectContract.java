@@ -1,5 +1,7 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
+
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
 import com.tyranotyrano.steadyhard.model.data.SteadyProject;
@@ -17,6 +19,7 @@ public interface ModifySteadyProjectContract {
         void setModifiedProjectImagePath(String modifiedSteadyProjectImagePath);
         void setKeyboardDown();
         void completeModifySteadyProject(SteadyProject modifySteadyProject);
+        Context getActivityContext();
     }
 
     // LoginActivity 관련 Presenter 처리

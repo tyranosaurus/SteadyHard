@@ -1,5 +1,6 @@
 package com.tyranotyrano.steadyhard.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -257,5 +258,10 @@ public class ProfileManagerActivity extends AppCompatActivity implements Profile
 
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public Context getActivityContext() {
+        return ProfileManagerActivity.this;
     }
 }

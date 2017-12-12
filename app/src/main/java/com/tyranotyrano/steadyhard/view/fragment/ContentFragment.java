@@ -205,6 +205,11 @@ public class ContentFragment extends Fragment implements ContentContract.View{
         }
     }
 
+    @Override
+    public Context getActivityContext() {
+        return activity;
+    }
+
     // 리사이클러뷰 어댑터
     public class SteadyContentRecyclerViewAdapter extends RecyclerView.Adapter<SteadyContentRecyclerViewAdapter.SteadyContentViewHolder>
                                                    implements SteadyContentAdapterContract.View, SteadyContentAdapterContract.Model {
