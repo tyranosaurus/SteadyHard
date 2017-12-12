@@ -42,6 +42,7 @@ public class NetworkDefineConstant {
     public static String SERVER_URL_DELETE_MODIFY_STEADY_CONTENT_IMAGE;
     public static String SERVER_URL_UPDATE_STEADY_CONTENT;
     public static String SERVER_URL_DELETE_STEADY_CONTENT;
+    public static String SERVER_URL_GET_STEADY_CONTENTS;
 
     static {
         // 로그인
@@ -77,5 +78,6 @@ public class NetworkDefineConstant {
         SERVER_URL_DELETE_MODIFY_STEADY_CONTENT_IMAGE = HOST_URL + "/steadyhard/home/deleteModifySteadyContentImage.php";
         SERVER_URL_UPDATE_STEADY_CONTENT = HOST_URL + "/steadyhard/home/updateSteadyContent.php";
         SERVER_URL_DELETE_STEADY_CONTENT = HOST_URL + "/steadyhard/home/deleteSteadyContent.php";
+        SERVER_URL_GET_STEADY_CONTENTS = HOST_URL + "/steadyhard/home/getSteadyContents.php?userNo=";
     }
 }

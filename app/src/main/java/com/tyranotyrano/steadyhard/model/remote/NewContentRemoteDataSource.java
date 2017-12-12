@@ -162,7 +162,8 @@ public class NewContentRemoteDataSource implements NewContentDataSource {
                 .add("contentImageName", contentImageName)
                 .add("currentDays", String.valueOf(currentDays))
                 .add("completeDays", String.valueOf(completeDays))
-                .add("projectNo", String.valueOf(projectNo));
+                .add("projectNo", String.valueOf(projectNo))
+                .add("userNo", String.valueOf(MainActivity.user.getNo()));
 
         RequestBody requestBody = requestBuilder.build();
 
@@ -174,6 +175,7 @@ public class NewContentRemoteDataSource implements NewContentDataSource {
 
                 return null;
             } else {
+
                 JSONObject jsonFromServer = new JSONObject(response.body().string());
 
                 result = jsonFromServer.getBoolean("result");

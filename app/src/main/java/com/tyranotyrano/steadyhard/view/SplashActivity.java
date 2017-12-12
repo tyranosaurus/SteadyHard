@@ -1,5 +1,6 @@
 package com.tyranotyrano.steadyhard.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -100,5 +101,10 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
         // 어플리케이션 정보로 쿠키 저장
         SteadyHardApplication.setCookie(cookie);
+    }
+
+    @Override
+    public Context getActivityContext() {
+        return SplashActivity.this;
     }
 }

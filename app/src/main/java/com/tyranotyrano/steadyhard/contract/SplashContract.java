@@ -1,5 +1,7 @@
 package com.tyranotyrano.steadyhard.contract;
 
+import android.content.Context;
+
 import com.tyranotyrano.steadyhard.contract.base.BasePresenter;
 import com.tyranotyrano.steadyhard.contract.base.BaseView;
 import com.tyranotyrano.steadyhard.model.remote.datasource.SplashDataSource;
@@ -13,6 +15,7 @@ public interface SplashContract {
     interface View extends BaseView {
         void callActivity(int callCode);
         void setCookieSharedpreferences(String cookie);
+        Context getActivityContext();
     }
 
     // SplashActivity 관련 Presenter 처리

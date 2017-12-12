@@ -9,15 +9,17 @@ import com.tyranotyrano.steadyhard.model.data.SteadyContent;
 public interface SteadyContentAdapterContract {
     interface View {
         void notifyAdapter();
-        void setOnItemClickListener(SteadyContentAdapterContract.OnItemClickListener onItemClickListener);
+        void setOnItemClickListener(SteadyContentAdapterContract.OnSteadyContentClickListener onSteadyContentClickListener);
     }
 
     interface Model {
         void addItem(SteadyContent item);
-        SteadyContent getItem(int position);
+        SteadyContent getSteadyContentItem(int position);
+        void modifySteadyContent(int modifyPosition, SteadyContent modifySteadyContent);
+        void clearAdapter();
     }
 
-    interface OnItemClickListener {
-        void onItemClick(int position);
+    interface OnSteadyContentClickListener {
+        void onSteadyContentClick(int position);
     }
 }

@@ -24,12 +24,16 @@ public class SteadyContent implements Parcelable {
     private int completeDays;
     @SerializedName("project_no")
     private int projectNo;
-    // setter로 설정할 것
-    private SteadyProject steadyProject;
+    @SerializedName("user_no")
+    private int userNo;
+    @SerializedName("project_title")
+    private String projectTitle;
+    @SerializedName("project_image")
+    private String projectImage;
 
     public SteadyContent() { }
 
-    public SteadyContent(int no, String contentImage, String contentText, String accomplishDate, int currentDays, int completeDays, int projectNo) {
+    public SteadyContent(int no, String contentImage, String contentText, String accomplishDate, int currentDays, int completeDays, int projectNo, int userNo, String projectImage, String projectTitle) {
         this.no = no;
         this.contentImage = contentImage;
         this.contentText = contentText;
@@ -37,6 +41,9 @@ public class SteadyContent implements Parcelable {
         this.currentDays = currentDays;
         this.completeDays = completeDays;
         this.projectNo = projectNo;
+        this.userNo = userNo;
+        this.projectImage = projectImage;
+        this.projectTitle = projectTitle;
     }
 
     public SteadyContent(Parcel src) {
@@ -47,7 +54,10 @@ public class SteadyContent implements Parcelable {
         currentDays = src.readInt();
         completeDays = src.readInt();
         projectNo = src.readInt();
-        steadyProject = src.readParcelable(SteadyProject.class.getClassLoader());
+        userNo = src.readInt();
+
+        projectImage = src.readString();
+        projectTitle = src.readString();
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -74,7 +84,11 @@ public class SteadyContent implements Parcelable {
         dest.writeInt(currentDays);
         dest.writeInt(completeDays);
         dest.writeInt(projectNo);
-        dest.writeParcelable(steadyProject, flags);
+        dest.writeInt(userNo);
+
+        dest.writeString(projectImage);
+        dest.writeString(projectTitle);
+
     }
 
     public int getNo() {
@@ -133,11 +147,27 @@ public class SteadyContent implements Parcelable {
         this.projectNo = projectNo;
     }
 
-    public SteadyProject getSteadyProject() {
-        return steadyProject;
+    public int getUserNo() {
+        return userNo;
     }
 
-    public void setSteadyProject(SteadyProject steadyProject) {
-        this.steadyProject = steadyProject;
+    public void setUserNo(int userNo) {
+        this.userNo = userNo;
+    }
+
+    public String getProjectImage() {
+        return projectImage;
+    }
+
+    public void setProjectImage(String projectImage) {
+        this.projectImage = projectImage;
+    }
+
+    public String getProjectTitle() {
+        return projectTitle;
+    }
+
+    public void setProjectTitle(String projectTitle) {
+        this.projectTitle = projectTitle;
     }
 }

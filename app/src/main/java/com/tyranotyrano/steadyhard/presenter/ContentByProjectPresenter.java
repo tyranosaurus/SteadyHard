@@ -214,9 +214,6 @@ public class ContentByProjectPresenter implements ContentByProjectContract.Prese
                 // 화면갱신
                 mAdapterView.notifyAdapterDelete(deletePosition);
 
-
-
-
                 int currentDays = steadyProject.getCurrentDays() - 1;
                 String lastDate = null;
                 int status = 2;

@@ -1,7 +1,11 @@
 package com.tyranotyrano.steadyhard.presenter;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.SplashContract;
 import com.tyranotyrano.steadyhard.model.remote.datasource.SplashDataSource;
 import com.tyranotyrano.steadyhard.view.SplashActivity;
@@ -43,11 +47,20 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     public class AutoLoginTask extends AsyncTask<String, Integer, String> {
+        Dialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
         }
 
         @Override
@@ -62,6 +75,7 @@ public class SplashPresenter implements SplashContract.Presenter {
         @Override
         protected void onPostExecute(String cookie) {
             super.onPostExecute(cookie);
+            progressDialog.dismiss();
 
             if ( cookie != null ) {
                 mView.setCookieSharedpreferences(cookie);

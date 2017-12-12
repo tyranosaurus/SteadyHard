@@ -169,7 +169,7 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
 
                     adapter.modifySteadyContent(modifyPosition, modifySteadyContent);
 
-                    String modifyMessage = "프로젝트가 수정되었습니다.";
+                    String modifyMessage = "오늘의 꾸준함이 수정되었습니다.";
                     showSnackBar(modifyMessage);
 
                     break;
@@ -400,6 +400,7 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
             holder.textViewCompleteDays.setText(String.valueOf(item.getCompleteDays()));
             // 콘텐츠 이미지 설정
             if ( item.getContentImage() != null ) {
+                holder.imageViewContentImage.setVisibility(View.VISIBLE);
                 // 이미지뷰에 있는 drawable이 Glide에 영향을 주므로 초기화 진행
                 holder.imageViewContentImage.setImageDrawable(null);
                 // 이미지뷰 초기화 후 Glide 사용
@@ -468,6 +469,7 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
             ContentByProjectViewHolder modifyViewHolder = (ContentByProjectViewHolder)recyclerViewContentByProject.findViewHolderForAdapterPosition(modifyPosition);
             // 콘텐츠 이미지 갱신
             if ( modifySteadyContent.getContentImage() != null ) {
+                modifyViewHolder.imageViewContentImage.setVisibility(View.VISIBLE);
                 // 이미지뷰에 있는 drawable이 Glide에 영향을 주므로 초기화 진행
                 modifyViewHolder.imageViewContentImage.setImageDrawable(null);
                 // 이미지뷰 초기화 후 Glide 사용
@@ -482,6 +484,8 @@ public class ContentByProjectActivity extends AppCompatActivity implements Conte
             }
             // 콘텐츠 텍스트 갱신
             modifyViewHolder.textViewContentText.setText(modifySteadyContent.getContentText());
+
+            recyclerViewContentByProject.scrollToPosition(0);
         }
 
         public void addNewItem(SteadyContent item) {

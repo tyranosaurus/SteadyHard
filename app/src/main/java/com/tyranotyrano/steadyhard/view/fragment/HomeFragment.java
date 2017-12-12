@@ -117,9 +117,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
-        mRepository = null;
-        mPresenter.detachView();
 
         // Glide 저장된 메모리 캐시 삭제
         Glide.get(activity).clearMemory();
@@ -135,6 +132,10 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onDetach() {
         super.onDetach();
+
+        unbinder.unbind();
+        mRepository = null;
+        mPresenter.detachView();
 
         this.mContext = null;
         this.activity = null;

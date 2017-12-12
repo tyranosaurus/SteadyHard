@@ -150,17 +150,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        unbinder.unbind();
-        /*mRepository = null;
-        mPresenter.detachView();*/
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
+
+        unbinder.unbind();
+        mRepository = null;
+        mPresenter.detachView();
 
         this.mContext = null;
         this.activity = null;
@@ -208,6 +203,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     }
 
     public void createPieChart(int successCount, int ongoingCount, int failCount) {
+        if ( pieChart == null ) {
+            return;
+        }
+
         if ( successCount + ongoingCount + failCount == 0 ) {
             linearLayoutPieChartDefault.setVisibility(View.VISIBLE);
             pieChart.setVisibility(View.GONE);
