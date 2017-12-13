@@ -1,6 +1,5 @@
 package com.tyranotyrano.steadyhard.presenter;
 
-import android.app.Dialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -12,8 +11,6 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.MainContract;
@@ -139,20 +136,20 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     public class SessionLogoutTask extends AsyncTask<String, Integer, Boolean> {
-        Dialog progressDialog;
+        //Dialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // 프로그래스바 다이얼로그 띄우는 용도로 사용
-            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            /*progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
             progressDialog.setCancelable(true);
 
             ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
             progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
 
             progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            progressDialog.show();
+            progressDialog.show();*/
         }
 
         @Override
@@ -166,7 +163,7 @@ public class MainPresenter implements MainContract.Presenter {
         @Override
         protected void onPostExecute(Boolean isSessionLogout) {
             super.onPostExecute(isSessionLogout);
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
 
             if ( isSessionLogout ) {
                 mView.clearCookie();
