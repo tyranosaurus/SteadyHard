@@ -24,6 +24,7 @@ import com.tyranotyrano.steadyhard.model.data.User;
 import com.tyranotyrano.steadyhard.model.remote.MainRemoteDataSource;
 import com.tyranotyrano.steadyhard.model.remote.datasource.MainDataSource;
 import com.tyranotyrano.steadyhard.presenter.MainPresenter;
+import com.tyranotyrano.steadyhard.utils.QuitDialog;
 import com.tyranotyrano.steadyhard.view.fragment.ContentFragment;
 import com.tyranotyrano.steadyhard.view.fragment.HomeFragment;
 import com.tyranotyrano.steadyhard.view.fragment.ProfileFragment;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // SearchView 설정
-        setSearchView(menu);
+        // setSearchView(menu);
 
         return true;
     }
@@ -126,6 +127,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     break;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        QuitDialog quitDialog = new QuitDialog(MainActivity.this);
+        quitDialog.show();
     }
 
     private void init() {

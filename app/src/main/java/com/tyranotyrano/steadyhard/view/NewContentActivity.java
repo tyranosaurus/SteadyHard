@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,7 +27,9 @@ import com.tyranotyrano.steadyhard.presenter.NewContentPresenter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -186,8 +189,43 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
         finish();
     }
 
+    public boolean isTodayContentAccomplishable() {
+        Date lastDate = null;
+        Date todayDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            lastDate = dateFormat.parse(steadyProject.getLast_date());
+
+            calendar.setTime(todayDate);
+            calendar.add(Calendar.DATE, -1);
+
+            todayDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Log.e("========", lastDate+"");
+        Log.e("========", todayDate+"");
+        if ( lastDate.compareTo(todayDate) == 0 ) {
+            return true;
+        }
+
+        return false;
+    }
+
     @OnClick(R.id.textViewNewContentCreate)
     public void onNewContentCreateClick() {
+        // 새 콘텐츠(오늘의 꾸준함)이 오늘안에 등록하는지 체크
+        if ( !isTodayContentAccomplishable() ) {
+
+            String message = "오늘의 꾸준함이 이어지지 못했습니다. 프로젝트를 확인해주세요.";
+            showSnackBar(message);
+
+            return;
+        }
+
         // 새 콘텐츠(오늘의 꾸준함) 생성
         String contentImageName = steadyProject.getProjectTitle() + "_" + steadyProject.getNo() + "_content_" + (steadyProject.getCurrentDays() + 1);
         contentImageName = contentImageName.replaceAll(" ", "_");
