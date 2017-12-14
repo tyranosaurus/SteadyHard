@@ -8,7 +8,6 @@ import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -192,6 +191,7 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
     public boolean isTodayContentAccomplishable() {
         Date lastDate = null;
         Date todayDate = new Date();
+        Date yesterdayDate = null;
         Calendar calendar = Calendar.getInstance();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -202,13 +202,18 @@ public class NewContentActivity extends AppCompatActivity implements NewContentC
             calendar.setTime(todayDate);
             calendar.add(Calendar.DATE, -1);
 
-            todayDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+            yesterdayDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.e("========", lastDate+"");
-        Log.e("========", todayDate+"");
-        if ( lastDate.compareTo(todayDate) == 0 ) {
+
+        // 프로젝트의 첫 Content 등록시
+        String todayStr = dateFormat.format(todayDate);
+        if ( steadyProject.getProjectDate().equals(todayStr) ) {
+            return true;
+        }
+
+        if ( lastDate.compareTo(yesterdayDate) == 0 ) {
             return true;
         }
 
