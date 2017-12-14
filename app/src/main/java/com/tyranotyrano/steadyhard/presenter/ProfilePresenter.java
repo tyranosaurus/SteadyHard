@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import com.tyranotyrano.steadyhard.R;
 import com.tyranotyrano.steadyhard.contract.ProfileContract;
 import com.tyranotyrano.steadyhard.model.remote.datasource.ProfileDataSource;
+import com.tyranotyrano.steadyhard.view.MainActivity;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,11 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     @Override
     public void getSteadyProjectStatusCount() {
         new ProjectStatusGetCountTask().execute();
+    }
+
+    @Override
+    public void refreshProjectPieChart() {
+        new ProjectPieChartRefreshTask().execute();
     }
 
     public class SessionLogoutTask extends AsyncTask<String, Integer, Boolean> {
@@ -129,6 +135,56 @@ public class ProfilePresenter implements ProfileContract.Presenter {
             } else {
                 // 실패
                 String message = "파이차트 정보를 가져오는데 실패했습니다.";
+                mView.showSnackBar(message);
+            }
+        }
+    }
+
+    public class ProjectPieChartRefreshTask extends AsyncTask<Void, Integer, Map<String, Object>> {
+        Dialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
+        }
+
+        @Override
+        protected Map<String, Object> doInBackground(Void... params) {
+            Map<String, Object> map = mRepository.getSteadyProjectStatusCount();
+            return map;
+        }
+
+        @Override
+        protected void onPostExecute(Map<String, Object> map) {
+            super.onPostExecute(map);
+            progressDialog.dismiss();
+
+            if ( map != null ) {
+                if ( (boolean)map.get("result") ) {
+                    int success = (int)((List)map.get("projectStatusCount")).get(0);
+                    int ongoing = (int)((List)map.get("projectStatusCount")).get(1);
+                    int fail = (int)((List)map.get("projectStatusCount")).get(2);
+
+                    mView.drawSteadyProjectPieChart(success, ongoing, fail);
+                    mView.showSnackBar("새로고침 완료");
+                    ((MainActivity)mView.getActivityContext()).completeRefreshing();
+                } else {
+                    // 실패
+                    String message = "프로젝트 차트 새로고침에 실패했습니다. 잠시후 다시 시도해주세요.";
+                    mView.showSnackBar(message);
+                }
+            } else {
+                // 통신 실패
+                String message = "인터넷 연결이 원활하지 않습니다. 잠시후 다시 시도해주세요.";
                 mView.showSnackBar(message);
             }
         }

@@ -75,6 +75,11 @@ public class ContentPresenter implements ContentContract.Presenter, SteadyConten
         new SteadyContentsGetTask().execute(MainActivity.user.getNo());
     }
 
+    @Override
+    public void refreshSteadyContents() {
+        new SteadyContentsRefreshTask().execute(MainActivity.user.getNo());
+    }
+
     public class SteadyContentsGetTask extends AsyncTask<Integer, Integer, Map<String, Object>> {
         Dialog progressDialog;
 
@@ -127,6 +132,70 @@ public class ContentPresenter implements ContentContract.Presenter, SteadyConten
                 } else {
                     // 데이터 제대로 못 가지고 온 경우
                     String message = "오늘의 꾸준함을 가져오는데 실패했습니다. 잠시후 다시 시도해주세요.";
+                    mView.showSnackBar(message);
+                }
+            } else {
+                // 통신 실패
+                String message = "인터넷 연결이 원활하지 않습니다. 잠시후 다시 시도해주세요.";
+                mView.showSnackBar(message);
+            }
+        }
+    }
+
+    public class SteadyContentsRefreshTask extends AsyncTask<Integer, Integer, Map<String, Object>> {
+        Dialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
+        }
+
+        @Override
+        protected Map<String, Object> doInBackground(Integer... params) {
+            int userNo = params[0];
+
+            Map<String, Object> map = mRepository.getSteadyContentsByUserNo(userNo);
+
+            return map;
+        }
+
+        @Override
+        protected void onPostExecute(Map<String, Object> map) {
+            super.onPostExecute(map);
+            progressDialog.dismiss();
+
+            if ( map != null ) {
+                if ( (boolean)map.get("result") ) {
+                    // 데이터 제대로 잘 가지고 온 경우
+                    List<SteadyContent> steadyContentList = new ArrayList<>();
+
+                    if ( map.get("steadyContentList") instanceof List) {
+                        steadyContentList.addAll((List<SteadyContent>) map.get("steadyContentList"));
+                    }
+
+                    mAdapterModel.clearAdapter();
+
+                    for ( SteadyContent item : steadyContentList ) {
+                        mAdapterModel.addItem(item);
+                    }
+
+                    mAdapterView.notifyAdapter();
+
+                    mView.showSteadyContentsLayout();
+                    mView.showSnackBar("새로고침 완료");
+                    ((MainActivity)mView.getActivityContext()).completeRefreshing();
+                } else {
+                    // 데이터 제대로 못 가지고 온 경우
+                    String message = "오늘의 꾸준함 새로고침에 실패했습니다. 잠시후 다시 시도해주세요.";
                     mView.showSnackBar(message);
                 }
             } else {

@@ -192,11 +192,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 } else if ( fragment instanceof ProfileFragment ) {
                     ((ProfileFragment)fragment).refreshProfileFragment();
                 }
-
-                showSnackBar("새로고침 완료");
-
-                // 새로고침 종료 - 원하는 작업 끝나면 호출할 것(아마 이거 종료하는 함수만들어서 onPostExcute() 에서 호출할 듯)
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -227,6 +222,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     public void setUserLogout() {
         isLogout = true;
+    }
+
+    public void completeRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

@@ -29,5 +29,6 @@ public interface ContentContract {
         void setSteadyContentAdapterModel(SteadyContentAdapterContract.Model adapterModel);
         void setSteadyContentAdapterOnItemClickListener();
         void getContents();
+        void refreshSteadyContents();
     }
 }

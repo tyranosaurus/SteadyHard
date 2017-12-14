@@ -30,5 +30,6 @@ public interface ProfileContract {
 
         void clearSessionToken(String token);
         void getSteadyProjectStatusCount();
+        void refreshProjectPieChart();
     }
 }

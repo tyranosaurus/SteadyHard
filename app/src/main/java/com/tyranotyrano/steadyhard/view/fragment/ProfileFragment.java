@@ -317,6 +317,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     @Override
     public void refreshProfileFragment() {
-        mPresenter.getSteadyProjectStatusCount();
+        mPresenter.refreshProjectPieChart();
     }
 }

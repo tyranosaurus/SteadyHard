@@ -116,6 +116,11 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
         return builder;
     }
 
+    @Override
+    public void refreshSteadyProjects() {
+        new SteadyProjectsRefreshTask().execute(MainActivity.user.getNo());
+    }
+
     public class SteadyProjectsGetTask extends AsyncTask<Integer, Integer, Map<String, Object>> {
         Dialog progressDialog;
 
@@ -238,6 +243,70 @@ public class HomePresenter implements HomeContract.Presenter, SteadyProjectAdapt
             } else {
                 // 프로젝트 삭제 실패
                 String message = "프로젝트 삭제에 실패했습니다. 잠시후 다시 시도해주세요.";
+                mView.showSnackBar(message);
+            }
+        }
+    }
+
+    public class SteadyProjectsRefreshTask extends AsyncTask<Integer, Integer, Map<String, Object>> {
+        Dialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // 프로그래스바 다이얼로그 띄우는 용도로 사용
+            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
+            progressDialog.setCancelable(true);
+
+            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
+            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
+
+            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            progressDialog.show();
+        }
+
+        @Override
+        protected Map<String, Object> doInBackground(Integer... params) {
+            int userNo = params[0];
+
+            Map<String, Object> map = mRepository.getSteadyProjectsByUserNo(userNo);
+
+            return map;
+        }
+
+        @Override
+        protected void onPostExecute(Map<String, Object> map) {
+            super.onPostExecute(map);
+            progressDialog.dismiss();
+
+            if ( map != null ) {
+                if ( (boolean)map.get("result") ) {
+                    // 데이터 제대로 잘 가지고 온 경우
+                    List<SteadyProject> steadyProjectList = new ArrayList<>();
+
+                    if ( map.get("steadyProjectList") instanceof List) {
+                        steadyProjectList.addAll((List<SteadyProject>) map.get("steadyProjectList"));
+                    }
+
+                    mAdapterModel.clearAdapter();
+
+                    for ( SteadyProject item : steadyProjectList ) {
+                        mAdapterModel.addItem(item);
+                    }
+
+                    mAdapterView.notifyAdapter();
+
+                    mView.showSteadyProjectsLayout();
+                    mView.showSnackBar("새로고침 완료");
+                    ((MainActivity)mView.getActivityContext()).completeRefreshing();
+                } else {
+                    // 데이터 제대로 못 가지고 온 경우
+                    String message = "프로젝트 새로고침에 실패했습니다. 잠시후 다시 시도해주세요.";
+                    mView.showSnackBar(message);
+                }
+            } else {
+                // 통신 실패
+                String message = "인터넷 연결이 원활하지 않습니다. 잠시후 다시 시도해주세요.";
                 mView.showSnackBar(message);
             }
         }

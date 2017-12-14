@@ -212,7 +212,7 @@ public class ContentFragment extends Fragment implements ContentContract.View{
 
     @Override
     public void refreshContentFragment() {
-        mPresenter.getContents();
+        mPresenter.refreshSteadyContents();
     }
 
     // 리사이클러뷰 어댑터

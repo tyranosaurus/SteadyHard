@@ -33,5 +33,6 @@ public interface HomeContract {
         void setSteadyProjectAdapterOnItemClickListener();
         void getSteadyProjects();
         AlertDialog.Builder buildDeleteAlertDialog(AlertDialog.Builder builder, int position);
+        void refreshSteadyProjects();
     }
 }
