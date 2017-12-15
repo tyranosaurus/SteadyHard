@@ -124,20 +124,9 @@ public class ModifySteadyProjectPresenter implements ModifySteadyProjectContract
     }
 
     public class ModifyProjectImageDeleteTask extends AsyncTask<String, Integer, Boolean> {
-        Dialog progressDialog;
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // 프로그래스바 다이얼로그 띄우는 용도로 사용
-            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
-            progressDialog.setCancelable(true);
-
-            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
-            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
-
-            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            progressDialog.show();
         }
 
         @Override
@@ -151,7 +140,6 @@ public class ModifySteadyProjectPresenter implements ModifySteadyProjectContract
         @Override
         protected void onPostExecute(Boolean deleteResult) {
             super.onPostExecute(deleteResult);
-            progressDialog.dismiss();
 
             // empty
             /*if ( deleteResult ) {

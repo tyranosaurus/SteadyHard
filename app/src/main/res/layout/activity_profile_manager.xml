@@ -167,15 +167,16 @@
             <TextView
                 android:id="@+id/textViewProfileManagerEmail"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="32dp"
                 android:layout_weight="1"
                 android:background="@drawable/rectangle_dark"
                 android:gravity="center"
-                android:text="email@email.com"
+                android:padding="10dp"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 android:textColor="@color/colorLiteBlue"
-                android:textSize="20dp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/textViewProfileManagerDelete"
