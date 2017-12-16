@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -50,6 +51,7 @@ public class ProfileManagerActivity extends AppCompatActivity implements Profile
     @BindView(R.id.editTextProfileManagerPasswordOriginal) EditText editTextProfileManagerPasswordOriginal;
     @BindView(R.id.editTextProfileManagerNewPasswordFirst) EditText editTextProfileManagerNewPasswordFirst;
     @BindView(R.id.editTextProfileManagerNewPasswordSecond) EditText editTextProfileManagerNewPasswordSecond;
+    @BindView(R.id.textViewProfilePrivateInfoPolicy) TextView textViewProfilePrivateInfoPolicy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +150,15 @@ public class ProfileManagerActivity extends AppCompatActivity implements Profile
 
         builder = mPresenter.buildAlertDialog(builder, edittextInputPassword);
         builder.show();
+    }
+
+    @OnClick(R.id.textViewProfilePrivateInfoPolicy)
+    public void onPrivateInfoPolicyClick() {
+        String privateInfoPolicyURL = "http://blog.naver.com/tyrano_1/221164727191";
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(privateInfoPolicyURL));
+        startActivity(intent);
     }
 
     public void init() {
