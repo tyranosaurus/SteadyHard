@@ -91,6 +91,11 @@ public class ProfileManagerPresenter implements ProfileManagerContract.Presenter
             return;
         }
 
+        if ( newNickname != null ) {
+            newNickname = newNickname.replace("\'", "");
+            newNickname = newNickname.replace("\"", "");
+        }
+
         new NewProfileUpdateTask().execute(newProfileImagePath, newNickname, originalPassword, newPasswordFirst);
     }
 

@@ -67,6 +67,9 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
 
             return;
         } else {
+            projectTitle = projectTitle.replace("\'", "");
+            projectTitle = projectTitle.replace("\"", "");
+
             projectImageName = projectTitle.replaceAll(" ", "_");
         }
 
@@ -99,6 +102,9 @@ public class NewSteadyProjectPresenter implements NewSteadyProjectContract.Prese
             mView.setKeyboardDown();
 
             return;
+        } else {
+            description = description.replace("\'", "");
+            description = description.replace("\"", "");
         }
 
         new NewProjectCreateTask().execute(projectTitle, steadyProjectImagePath, completeDate, description, projectImageName);

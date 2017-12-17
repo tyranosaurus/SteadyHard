@@ -61,7 +61,7 @@ public class NewContentPresenter implements NewContentContract.Presenter {
     }
 
     @Override
-    public void createNewContent(String newContentImagePath, String contextText, SteadyProject steadyProject) {
+    public void createNewContent(String newContentImagePath, String contentText, SteadyProject steadyProject) {
         int currentDays = steadyProject.getCurrentDays() + 1; // 1 증가
         int completeDays = steadyProject.getCompleteDays();
         int projectNo = steadyProject.getNo();
@@ -74,15 +74,18 @@ public class NewContentPresenter implements NewContentContract.Presenter {
             newContentImageURLPath = newContentImagePath.replace(MainActivity.user.getEmail() + "_NewContentImage", contentImageName + "_content_" + (steadyProject.getCurrentDays() + 1));
         }
 
-        if ( contextText == null || contextText.length() < 1 ) {
+        if ( contentText == null || contentText.length() < 1 ) {
             String message = "오늘의 꾸준함에 대해 적어주세요.";
             mView.showSnackBar(message);
             mView.setKeyboardDown();
 
             return;
+        } else {
+            contentText = contentText.replace("\'", "");
+            contentText = contentText.replace("\"", "");
         }
 
-        new NewContentCreateTask().execute(newContentImageURLPath, contextText, contentImageName, currentDays, completeDays, projectNo);
+        new NewContentCreateTask().execute(newContentImageURLPath, contentText, contentImageName, currentDays, completeDays, projectNo);
     }
 
     public class NewContentImageUploadTask extends AsyncTask<String, Integer, String> {
@@ -131,20 +134,10 @@ public class NewContentPresenter implements NewContentContract.Presenter {
     }
 
     public class NewContentImageDeleteTask extends AsyncTask<String, Integer, Boolean> {
-        Dialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // 프로그래스바 다이얼로그 띄우는 용도로 사용
-            progressDialog = new Dialog(mView.getActivityContext(), R.style.SemoDialog);
-            progressDialog.setCancelable(true);
-
-            ProgressBar progressbar = new ProgressBar(mView.getActivityContext());
-            progressbar.setIndeterminateDrawable(mView.getActivityContext().getDrawable(R.drawable.progress_dialog));
-
-            progressDialog.addContentView(progressbar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            progressDialog.show();
         }
 
         @Override
@@ -160,7 +153,6 @@ public class NewContentPresenter implements NewContentContract.Presenter {
         @Override
         protected void onPostExecute(Boolean deleteResult) {
             super.onPostExecute(deleteResult);
-            progressDialog.dismiss();
 
             // empty
             /*if ( deleteResult ) {

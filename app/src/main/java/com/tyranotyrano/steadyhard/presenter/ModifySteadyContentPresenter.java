@@ -71,6 +71,9 @@ public class ModifySteadyContentPresenter implements ModifySteadyContentContract
             mView.setKeyboardDown();
 
             return;
+        } else {
+            contentText = contentText.replace("\'", "");
+            contentText = contentText.replace("\"", "");
         }
 
         if ( modifiedSteadyContentImagePath != null ) {

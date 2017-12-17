@@ -64,6 +64,9 @@ public class ModifySteadyProjectPresenter implements ModifySteadyProjectContract
 
             return;
         } else {
+            projectTitle = projectTitle.replace("\'", "");
+            projectTitle = projectTitle.replace("\"", "");
+
             modifyProjectImageName = projectTitle.replaceAll(" ", "_") + "_" + modifyProjectNo;
         }
 
@@ -77,6 +80,9 @@ public class ModifySteadyProjectPresenter implements ModifySteadyProjectContract
             mView.setKeyboardDown();
 
             return;
+        } else {
+            description = description.replace("\'", "");
+            description = description.replace("\"", "");
         }
 
         new SteadyProjectModifyTask().execute(projectTitle, modifiedSteadyProjectImagePath, description, modifyProjectImageName, originalProjectImageName, modifyProjectNo);

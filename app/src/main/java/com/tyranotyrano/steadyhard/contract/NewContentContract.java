@@ -32,6 +32,6 @@ public interface NewContentContract {
         void selectPictureByGallery();
         void uploadNewContentImage(String contentImagePath, SteadyProject steadyProject);
         void deleteNewContentImage(String deleteFileName, SteadyProject steadyProject);
-        void createNewContent(String newContentImagePath, String contextText, SteadyProject steadyProject);
+        void createNewContent(String newContentImagePath, String contentText, SteadyProject steadyProject);
     }
 }
