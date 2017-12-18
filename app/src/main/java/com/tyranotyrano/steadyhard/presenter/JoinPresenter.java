@@ -40,8 +40,8 @@ public class JoinPresenter implements JoinContract.Presenter {
     @Override
     public void checkEmailDuplication(String email) {
 
-        String regExp = "\\w+@\\w+\\.\\w+(\\.\\w+)?";
-        boolean checkEmail = Pattern.matches(regExp,email);
+        String emailRegExp = "\\w+(\\.\\w+)*@\\w+\\.\\w+(\\.\\w+)?";
+        boolean checkEmail = Pattern.matches(emailRegExp,email);
 
         if ( email == null || email.length() < 1 ) {
             String message = "이메일을 입력해주세요.";
@@ -93,8 +93,8 @@ public class JoinPresenter implements JoinContract.Presenter {
     }
 
     public boolean checkJoinInput(String email, String passwordFirst, String passwordSecond) {
-        String regExp = "\\w+@\\w+\\.\\w+(\\.\\w+)?";
-        boolean checkEmail = Pattern.matches(regExp,email);
+        String emailRegExp = "\\w+(\\.\\w+)*@\\w+\\.\\w+(\\.\\w+)?";
+        boolean checkEmail = Pattern.matches(emailRegExp,email);
 
         if ( email == null || email.length() < 1 ) {
             String message = "이메일을 입력해주세요.";

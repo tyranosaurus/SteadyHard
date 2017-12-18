@@ -6,7 +6,7 @@ package com.tyranotyrano.steadyhard.network;
 
 public class NetworkDefineConstant {
     // Host 주소
-    public static final String HOST_URL = "";
+    public static final String HOST_URL = "http://35.187.156.145";
 
     //요청 URL path
     // 로그인
